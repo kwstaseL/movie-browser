@@ -24,8 +24,8 @@ namespace constants
 
     namespace Movie_Sizes
     {
-        inline constexpr float Movie_Banner_Height{4.15};
-        inline constexpr float Movie_Banner_Width{3.5};
+        inline constexpr float Movie_Banner_Height{4.15f};
+        inline constexpr float Movie_Banner_Width{3.5f};
     }
 
     namespace ASSETS
@@ -50,7 +50,7 @@ namespace constants
         {
             float dx{ x1 - x2 };
             float dy{ y1 - y2 };
-            return sqrt(dx * dx + dy * dy);
+            return sqrtf(dx * dx + dy * dy);
         }
 
     }

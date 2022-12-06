@@ -34,14 +34,14 @@ void GUI::CreateMovies()
 {
 	//Creating our movies.
 
-	Movie* movie1{ new Movie("Harry Potter", "A skirmish in Shanghai puts archaeologist Indiana Jones, his partner Short Round and singer Willie Scott crossing paths with an Indian village desperate to reclaim a rock stolen by a secret cult beneath the catacombs of an ancient palace.", "This is age",AssetsConst::HARRY_POTTER) };
-	Movie* movie2{ new Movie("GodFather", "This is desc", "This is age", AssetsConst::GODFATHER) };
-	Movie* movie3{ new Movie("Terminator", "This is desc", "This is age", AssetsConst::TERMINATOR) };
-	Movie* movie4{ new Movie("A New Hope", "This is desc", "This is age", AssetsConst::ANEWHOPE) };
-	Movie* movie5{ new Movie("Schindlers List", "This is desc", "This is age", AssetsConst::SCHINDLERSLIST) };
-	Movie* movie6{ new Movie("Temple Of Doom", "This is desc", "This is age", AssetsConst::TEMPLEOFDOOM) };
-	Movie* movie7{ new Movie("Empire Strikes Back", "This is desc", "This is age", AssetsConst::EMPIRESTRIKESBACK) };
-	Movie* movie8{ new Movie("Pulp Fiction", "This is desc", "This is age", AssetsConst::PULPFICTION) };
+	Movie* movie1{ new Movie("Harry Potter", "A skirmish in Shanghai puts archaeologist Indiana Jones, his partner Short Round and singer Willie Scott crossing paths with an Indian village desperate to reclaim a rock stolen by a secret cult beneath the catacombs of an ancient palace.", "This is age",AssetsConst::HARRY_POTTER, "1/1/1", "The director", "The protagonist", "The genre")};
+	Movie* movie2{ new Movie("GodFather", "This is desc", "This is age", AssetsConst::GODFATHER, "1/1/1", "The director", "The protagonist", "The genre") };
+	Movie* movie3{ new Movie("Terminator", "This is desc", "This is age", AssetsConst::TERMINATOR, "1/1/1", "The director", "The protagonist", "The genre") };
+	Movie* movie4{ new Movie("A New Hope", "This is desc", "This is age", AssetsConst::ANEWHOPE, "1/1/1", "The director", "The protagonist", "The genre") };
+	Movie* movie5{ new Movie("Schindlers List", "This is desc", "This is age", AssetsConst::SCHINDLERSLIST, "1/1/1", "The director", "The protagonist", "The genre") };
+	Movie* movie6{ new Movie("Temple Of Doom", "This is desc", "This is age", AssetsConst::TEMPLEOFDOOM, "1/1/1", "The director", "The protagonist", "The genre") };
+	Movie* movie7{ new Movie("Empire Strikes Back", "This is desc", "This is age", AssetsConst::EMPIRESTRIKESBACK, "1/1/1", "The director", "The protagonist", "The genre") };
+	Movie* movie8{ new Movie("Pulp Fiction", "This is desc", "This is age", AssetsConst::PULPFICTION, "1/1/1", "The director", "The protagonist", "The genre") };
 
 
 	//Put them in a vector

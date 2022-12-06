@@ -2,6 +2,7 @@
 
 #include <string>
 #include <string_view>
+#include <vector>
 #include "sgg/graphics.h"
 #include "constants.h"
 
@@ -25,8 +26,12 @@ private:
 
 
 	std::string m_image{};
-
 	//Add a class Image? and add and istance of this class here so we can save the asset 
+
+	std::string m_production_date{};
+	std::string m_director{};
+	std::string m_protagonist{};
+	std::string m_genre{};
 
 	bool m_highlighted{ false };
 	bool PlaySound{ true };
@@ -36,7 +41,7 @@ private:
 
 public:
 
-	Movie(const std::string_view n, const std::string_view desc, const std::string_view age,const std::string_view);
+	Movie(const std::string_view n, const std::string_view desc, const std::string_view age,const std::string_view image,const std::string_view date, const std::string_view dir, const std::string_view prot, const std::string_view genre);
 
 
 	void draw();
@@ -51,6 +56,10 @@ public:
 
 	const std::string& getName() const;
 	const std::string& getDesc() const;
+	const std::string& getDate() const;
+	const std::string& getDir() const;
+	const std::string& getProt() const;
+	const std::string& getGenre() const;
 
 
 	void DisplayInfo();

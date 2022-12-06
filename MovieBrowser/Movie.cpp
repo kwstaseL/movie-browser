@@ -1,8 +1,8 @@
 #include "Movie.h"
 
-Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view age, const std::string_view image)
+Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view age, const std::string_view image, const std::string_view date, const std::string_view dir, const std::string_view prot, const std::string_view genre)
 
-	: m_name(name), m_description(desc), m_age_restriction(age),m_image(image)
+	: m_name(name), m_description(desc), m_age_restriction(age),m_image(image),m_production_date(date),m_director(dir),m_protagonist(prot),m_genre(genre)
 
 {
 }
@@ -87,6 +87,26 @@ const std::string& Movie::getDesc() const
 	return m_description;
 }
 
+const std::string& Movie::getDate() const
+{
+	return m_production_date;
+}
+
+const std::string& Movie::getDir() const
+{
+	return m_director;
+}
+
+const std::string& Movie::getProt() const
+{
+	return m_protagonist;
+}
+
+const std::string& Movie::getGenre() const
+{
+	return m_genre;
+}
+
 void Movie::DisplayInfo()
 {
 	graphics::Brush br;
@@ -96,7 +116,12 @@ void Movie::DisplayInfo()
 
 	char info[80];
 	sprintf_s(info, " ", getDesc());
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.09, 0.5f, getDesc(), br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.25, 0.5f, getDesc(), br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.20, 0.5f, getDate(), br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.15, 0.5f, getDir(), br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.10, 0.5f, getProt(), br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.05, 0.5f, getGenre(), br);
+
 
 
 }

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef  GUI_H
+#define GUI_H
+
 #include <vector>
 #include "Movie.h"
 #include "Dock.h"
@@ -27,25 +29,28 @@ private:
 
 	static GUI* gui;
 
-
-public:
-
 	Dock* dock{ nullptr };
 	std::vector<Movie*> movie_list;	//Here we keep all our movies
 
-	void init();
-	void draw();
-	void update();
 	void CreateMovies();
 	void CreateDock();
 	~GUI();
-	static GUI* Get();
-	static void releaseInstance();
 	void updateLoadingScreen();
 	void updateStartScreen();
 	void drawLoadingScreen();
 	void drawStartScreen();
 
 
+public:
+
+	void draw();
+	void init();
+	void update();
+	static GUI* Get();
+	static void releaseInstance();
+
+
+
 };
 
+#endif

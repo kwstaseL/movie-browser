@@ -1,4 +1,6 @@
-#pragma once
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
 #include <math.h>
 
 
@@ -24,8 +26,8 @@ namespace constants
 
     namespace Movie_Sizes
     {
-        inline constexpr float Movie_Banner_Height{4.15f};
-        inline constexpr float Movie_Banner_Width{3.5f};
+        inline constexpr float Movie_Banner_Height{4.15};
+        inline constexpr float Movie_Banner_Width{3.5};
     }
 
     namespace ASSETS
@@ -40,6 +42,9 @@ namespace constants
         inline constexpr const char* const PULPFICTION{ "PulpFiction.png" };
         inline constexpr const char* const SCHINDLERSLIST{ "SchindlersList.png" };
         inline constexpr const char* const TEMPLEOFDOOM{ "TempleOfDoom.png" };
+        inline constexpr const char* const MIDSOMMAR{ "MidSommar.png" };
+        inline constexpr const char* const THEINVISIBLEMAN { "TheInvisibleMan.png" };
+
         inline constexpr const char* const DOCK         { "dock.png" };
 
     }
@@ -50,7 +55,7 @@ namespace constants
         {
             float dx{ x1 - x2 };
             float dy{ y1 - y2 };
-            return sqrtf(dx * dx + dy * dy);
+            return sqrt(dx * dx + dy * dy);
         }
 
     }
@@ -66,3 +71,5 @@ namespace CanvasConst = constants::CANVAS;
 namespace MovieConst  = constants::Movie_Sizes;
 namespace AssetsConst = constants::ASSETS;
 namespace FunctionsConst = constants::functions;
+
+#endif

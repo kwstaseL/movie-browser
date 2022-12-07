@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MOVIE_H
+#define MOVIE_H
 
 #include <string>
 #include <string_view>
@@ -7,13 +8,21 @@
 #include "constants.h"
 
 
+enum class Genre
+{
+	Action,
+	Horror,
+	Adventure
+};
+
+
 class Movie
 {
 private:
 
 	/*
-	
-	Improvements: Make m_image, name and m_age a char* or char[] for 
+
+	Improvements: Make m_image, name and m_age a char* or char[] for
 
 	*/
 
@@ -23,7 +32,6 @@ private:
 
 	//Button buttons; an array list of all the categories this movie is so we can make the buttons
 	std::string m_age_restriction{};
-
 
 	std::string m_image{};
 	//Add a class Image? and add and istance of this class here so we can save the asset 
@@ -41,8 +49,9 @@ private:
 
 public:
 
-	Movie(const std::string_view n, const std::string_view desc, const std::string_view age,const std::string_view image,const std::string_view date, const std::string_view dir, const std::string_view prot, const std::string_view genre);
+	Movie(const std::string_view n, const std::string_view desc, const std::string_view age, const std::string_view image, const std::string_view date, const std::string_view dir, const std::string_view prot, const std::string_view genre);
 
+	std::vector<Genre> mv_genre;
 
 	void draw();
 	void update();
@@ -66,16 +75,4 @@ public:
 
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif

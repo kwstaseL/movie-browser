@@ -2,8 +2,7 @@
 
 Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view age, const std::string_view image, const std::string_view date, const std::string_view dir, const std::string_view prot, const std::string_view genre)
 
-	: m_name(name), m_description(desc), m_age_restriction(age),m_image(image),m_production_date(date),m_director(dir),m_protagonist(prot),m_genre(genre)
-
+	: m_name(name), m_description(desc), m_age_restriction(age), m_image(image), m_production_date(date), m_director(dir), m_protagonist(prot), m_genre(genre)
 {
 }
 
@@ -25,7 +24,7 @@ void Movie::draw()
 	SETCOLOR(br2.fill_color, h, h, h);
 	br2.outline_opacity = 0.0f;
 
-	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width+0.125, MovieConst::Movie_Banner_Height+0.125, br2);
+	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width + 0.125, MovieConst::Movie_Banner_Height + 0.125, br2);
 
 
 	//Drawing our Movie
@@ -33,7 +32,7 @@ void Movie::draw()
 	br.outline_opacity = 0.1f;
 
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
-	graphics::drawRect(m_pos[0],m_pos[1], MovieConst::Movie_Banner_Width, MovieConst::Movie_Banner_Height, br);
+	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width, MovieConst::Movie_Banner_Height, br);
 	graphics::resetPose();
 
 
@@ -51,29 +50,29 @@ void Movie::update()
 
 	//Going with my mouse to movie images , mouse_x and mouse_y is on the image if they are on movie's "zone"
 
-	
-		if (contains(mx, my)) {
+	if (contains(mx, my)) {
 
-			if (PlaySound)
-			{
-				graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("browse.wav"), 0.4f);
-			}
-			setHighlight(true);
-			DisplayInfo();
-			PlaySound = false;
-		}
-		else
+		if (PlaySound)
 		{
-			PlaySound = true;
-			setHighlight(false);
-
+			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("browse.wav"), 0.4f);
 		}
+		setHighlight(true);
+		DisplayInfo();
+		PlaySound = false;
+	}
+	else
+	{
+
+		PlaySound = true;
+		setHighlight(false);
+
+	}
 
 }
 
 bool Movie::contains(float x, float y) const
 {
-	return FunctionsConst::distance(x, y,m_pos[0],m_pos[1]) < MovieConst::Movie_Banner_Height*MovieConst::Movie_Banner_Width*0.14f;
+	return FunctionsConst::distance(x, y, m_pos[0], m_pos[1]) < MovieConst::Movie_Banner_Height * MovieConst::Movie_Banner_Width * 0.14f;
 
 }
 
@@ -111,12 +110,9 @@ void Movie::DisplayInfo()
 {
 	graphics::Brush br;
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.35, 1.0f,getName(), br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.35, 1.0f, getName(), br);
 
-
-	char info[80];
-	sprintf_s(info, " ", getDesc());
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.25, 0.5f, getDesc(), br);
+	//graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.25, 0.5f, getDesc(), br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.20, 0.5f, getDate(), br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.15, 0.5f, getDir(), br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.10, 0.5f, getProt(), br);

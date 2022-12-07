@@ -4,7 +4,6 @@
 void Dock::update()
 {
 
-
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);	//Fills our ms state, ms inside has states of our mouse , button left pressed, button left down..
 
@@ -13,12 +12,10 @@ void Dock::update()
 
 	//Going with my mouse to movie images , mouse_x and mouse_y is on the image if they are on movie's "zone"
 
-	//Try enums here
-
-
-
+	
 	if (contains(mx, my)) 
 	{
+		setOffset(0.0f);
 		if (PlaySound)
 		{
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("minimize.wav"), 0.5f);
@@ -32,6 +29,7 @@ void Dock::update()
 	}
 	else
 	{
+		setOffset(-16.0f);
 		PlaySound = true;
 		height -= 0.01f * graphics::getDeltaTime();
 		if (height < 0.5f)
@@ -39,6 +37,7 @@ void Dock::update()
 			height = 0.0f;
 		}
 	}
+
 }
 
 
@@ -62,6 +61,6 @@ void Dock::draw() const
 bool Dock::contains(float x, float y) const
 {
 	
-	return FunctionsConst::distance(x, y, m_posX, m_posY) < CanvasConst::CANVAS_WIDTH/2*(0.56f);
+	return FunctionsConst::distance(x, y, m_posX-1.0f, m_posY+m_offset) < ((((CanvasConst::CANVAS_WIDTH) / 2) + 3.6f))/2;
 
 }

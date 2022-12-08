@@ -21,16 +21,29 @@ void GUI::updateStartScreen()
 
 	for (auto& movie : movie_list)
 	{
+
 		if (movie)
 		{
 			movie->update();		//Updating our movies
 		}
+
+		if (dock->isPressed() && dock)
+		{
+			movie->setActive(false);
+		}
+		else
+		{
+			movie->setActive(true);
+		}
+
 	}
 
 	if (dock)
 	{
 		dock->update();	//Updating our dock
 	}
+
+	
 }
 
 
@@ -114,7 +127,6 @@ void GUI::CreateMovies()
 
 			movie_list[j + (i * 3 + i * 1 + i*1)]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - i * 6.3)));
 			movie_list[j + (i * 3 + i * 1 + i*1)]->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + j * 5.5);
-			std::cout << "J = " << j + (i * 3 + i * 1 + i*1) << std::endl;
 			size--;
 			if (j + (i * 3 + i * 1 + i * 1) == 7)
 			{

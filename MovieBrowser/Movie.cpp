@@ -52,13 +52,17 @@ void Movie::update()
 
 	if (contains(mx, my)) {
 
-		if (PlaySound)
+		if (m_active)
 		{
-			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("browse.wav"), 0.4f);
+			if (PlaySound)
+			{
+				graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("browse.wav"), 0.4f);
+			}
+			setHighlight(true);
+			DisplayInfo();
+			PlaySound = false;
 		}
-		setHighlight(true);
-		DisplayInfo();
-		PlaySound = false;
+		
 	}
 	else
 	{

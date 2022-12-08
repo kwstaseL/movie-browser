@@ -43,6 +43,7 @@ private:
 
 	bool m_highlighted{ false };
 	bool PlaySound{ true };
+	bool m_active{ true };
 
 	class graphics::Brush br;
 
@@ -57,6 +58,7 @@ public:
 	void update();
 
 	void setHighlight(bool h) { m_highlighted = h; }
+	void setActive(bool a) { m_active = a; }
 
 	void setPosX(float x) { m_pos[0] = x; }
 	void setPosY(float y) { m_pos[1] = y; }

@@ -13,6 +13,7 @@ private:
 	float height{ 0.0f };
 	float m_offset{ -15.0f };
 	bool PlaySound{ true };
+	bool Pressed{ false };
 
 public:
 
@@ -34,6 +35,7 @@ public:
 	void setPosY(float y) { m_posY = y; }
 	bool contains(float x, float y) const;
 	void setOffset(float off) { m_offset = off; }
+	bool isPressed() const { return Pressed; }
 
 };
 

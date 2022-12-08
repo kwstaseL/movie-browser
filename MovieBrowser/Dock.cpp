@@ -15,7 +15,8 @@ void Dock::update()
 	
 	if (contains(mx, my)) 
 	{
-		setOffset(0.0f);
+		Pressed = true;
+		setOffset(-9.0f);
 		if (PlaySound)
 		{
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("minimize.wav"), 0.5f);
@@ -29,6 +30,7 @@ void Dock::update()
 	}
 	else
 	{
+		Pressed = false;
 		setOffset(-16.0f);
 		PlaySound = true;
 		height -= 0.01f * graphics::getDeltaTime();

@@ -8,17 +8,13 @@
 
 class GUI
 {
-
-public:
-
-	enum gui_state_t {
-
+private:
+	
+	enum gui_state_t
+	{
 		STATUS_LOADING,
 		STATUS_LOADED
-
 	};
-
-private:
 
 	//Marking constructor and copy constructor as private so we only make 1 instance of our class
 	graphics::Brush br;

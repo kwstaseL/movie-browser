@@ -40,6 +40,9 @@ private:
 	std::string m_director{};
 	std::string m_protagonist{};
 	std::string m_genre{};
+	
+
+	std::vector<std::string> genres;
 
 	bool m_highlighted{ false };
 	bool PlaySound{ true };
@@ -50,9 +53,8 @@ private:
 
 public:
 
-	Movie(const std::string_view n, const std::string_view desc, const std::string_view age, const std::string_view image, const std::string_view date, const std::string_view dir, const std::string_view prot, const std::string_view genre);
+	Movie(const std::string_view n, const std::string_view desc, const std::string_view age, const std::string_view image, const std::string_view date, const std::string_view dir, const std::string_view prot, const std::vector<std::string>& genre);
 
-	std::vector<Genre> mv_genre;
 
 	void draw();
 	void update();

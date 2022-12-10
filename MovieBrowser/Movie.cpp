@@ -1,27 +1,30 @@
 #include "Movie.h"
 
-Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view age, const std::string_view image, const std::string_view date, const std::string_view dir, const std::string_view prot, const std::string_view genre)
+Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view age, const std::string_view image, const std::string_view date, const std::string_view dir, const std::string_view prot, const std::vector<std::string>& genre)
 
-	: m_name(name), m_description(desc), m_age_restriction(age), m_image(image), m_production_date(date), m_director(dir), m_protagonist(prot), m_genre(genre)
+	: m_name(name), m_description(desc), m_age_restriction(age), m_image(image), m_production_date(date), m_director(dir), m_protagonist(prot)
 {
+	for (auto& g : genre)
+	{
+		genres.push_back(g);
+	}
+
 }
 
 void Movie::draw()
 {
-	//This function will draw a Movie to the screen
 	graphics::Brush br2;
 
 	//This is for our glow when doing mouse over movie
 
-	float glow{ 0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted };
-
+	glow =  0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted;
 	//Hightlight movie when mouse over movie
 
-	float h{ 0.2f * m_highlighted + glow * 0.5f };	//If we mouse over a movie, then it gets highlighted
+	highlight = 0.2f * m_highlighted + glow * 0.5f ;	//If we mouse over a movie, then it gets highlighted
 
 	//Drawing our highlight/glow
 
-	SETCOLOR(br2.fill_color, h, h, h);
+	SETCOLOR(br2.fill_color, highlight, highlight, highlight);
 	br2.outline_opacity = 0.0f;
 
 	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width + 0.125, MovieConst::Movie_Banner_Height + 0.125, br2);
@@ -112,6 +115,7 @@ const std::string& Movie::getGenre() const
 
 void Movie::DisplayInfo()
 {
+	
 	graphics::Brush br;
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.35, 1.0f, getName(), br);
@@ -120,7 +124,13 @@ void Movie::DisplayInfo()
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.20, 0.5f, getDate(), br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.15, 0.5f, getDir(), br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.10, 0.5f, getProt(), br);
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15, CanvasConst::CANVAS_HEIGHT / 1.05, 0.5f, getGenre(), br);
+
+	float offset{ 0.0f };
+	for (auto& g : genres)
+	{
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15+offset, CanvasConst::CANVAS_HEIGHT / 1.28, 0.5f, g, br);
+		offset += 2.5f;
+	}
 
 
 

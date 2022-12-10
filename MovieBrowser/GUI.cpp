@@ -106,16 +106,16 @@ void GUI::CreateMovies()
 
 	//Creating our 9 movies.
 
-	movie_list.push_back(new Movie("Harry Potter", "This is desc", "This is age", AssetsConst::HARRY_POTTER, "4/5/2004", "Chris Columbus", "Daniel Radcliffe", "Fantasy"));
-	movie_list.push_back(new Movie("GodFather", "This is desc", "This is age", AssetsConst::GODFATHER, "15/3/1972", "The director", "The protagonist", "The genre"));
-	movie_list.push_back(new Movie("Terminator", "This is desc", "This is age", AssetsConst::TERMINATOR, "26/10/1984", "The director", "The protagonist", "The genre"));
-	movie_list.push_back(new Movie("A New Hope", "This is desc", "This is age", AssetsConst::ANEWHOPE, "28/3/1997", "The director", "The protagonist", "The genre"));
-	movie_list.push_back(new Movie("Schindlers List", "This is desc", "This is age", AssetsConst::SCHINDLERSLIST, "2/3/1994", "The director", "The protagonist", "The genre"));
-	movie_list.push_back(new Movie("Temple Of Doom", "This is desc", "This is age", AssetsConst::TEMPLEOFDOOM, "8/5/1984", "The director", "The protagonist", "The genre"));
-	movie_list.push_back(new Movie("Empire Strikes Back", "This is desc", "This is age", AssetsConst::EMPIRESTRIKESBACK, "19/12/1980", "The director", "The protagonist", "The genre"));
-	movie_list.push_back(new Movie("Pulp Fiction", "This is desc", "This is age", AssetsConst::PULPFICTION, "1/5/1995", "The director", "The protagonist", "The genre"));
-	movie_list.push_back(new Movie("MidSommar", "This is desc", "This is age", AssetsConst::MIDSOMMAR, "1/5/1995", "The director", "The protagonist", "The genre"));
-	movie_list.push_back(new Movie("The Invisible Man", "This is desc", "This is age", AssetsConst::THEINVISIBLEMAN, "1/5/1995", "The director", "The protagonist", "The genre"));
+	movie_list.push_back(new Movie("Harry Potter", "This is desc", "This is age", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", "Daniel Radcliffe", { "Adventure","Fantasy"}));
+	movie_list.push_back(new Movie("GodFather", "This is desc", "This is age", AssetsConst::GODFATHER, "1972", "The director", "The protagonist", { "Crime","Drama"}));
+	movie_list.push_back(new Movie("Terminator", "This is desc", "This is age", AssetsConst::TERMINATOR, "1984", "The director", "The protagonist", { "Action","Sci-Fi"}));
+	movie_list.push_back(new Movie("A New Hope", "This is desc", "This is age", AssetsConst::ANEWHOPE, "1997", "The director", "The protagonist", { "Action","Adventure","Fantasy"}));
+	movie_list.push_back(new Movie("Schindlers List", "This is desc", "This is age", AssetsConst::SCHINDLERSLIST, "1994", "The director", "The protagonist", { "Drama","History"}));
+	movie_list.push_back(new Movie("The Chronicles Of Narnia", "This is desc", "This is age", AssetsConst::NARNIA, "1984", "The director", "The protagonist", { "Adventure","Fantasy" }));
+	movie_list.push_back(new Movie("Home Alone", "This is desc", "This is age", AssetsConst::HOMEALONE, "1980", "The director", "The protagonist", { "Comedy" , "Family"}));
+	movie_list.push_back(new Movie("Pulp Fiction", "This is desc", "This is age", AssetsConst::PULPFICTION, "1995", "The director", "The protagonist", { "Crime", "Drama"}));
+	movie_list.push_back(new Movie("MidSommar", "This is desc", "This is age", AssetsConst::MIDSOMMAR, "1995", "The director", "The protagonist", { "Horror","Mystery"}));
+	movie_list.push_back(new Movie("The Invisible Man", "This is desc", "This is age", AssetsConst::THEINVISIBLEMAN, "1995", "The director", "The protagonist", { "Horror", "Sci-Fi"}));
 
 
 

@@ -2,8 +2,6 @@
 #define CONSTANTS_H
 
 #include <math.h>
-
-
 #define SETCOLOR(c,r,g,b) {c[0] = r,c[1] = g; c[2] = b;}
 
 
@@ -21,7 +19,6 @@ namespace constants
     {
         inline constexpr int CANVAS_WIDTH{ 28 };
         inline constexpr int CANVAS_HEIGHT{ 16 };
-
     }
 
     namespace Movie_Sizes
@@ -33,15 +30,16 @@ namespace constants
     namespace ASSETS
     {
         inline constexpr const char* const ASSET_PATH{ ".\\assets\\" };
+
         inline constexpr const char* const HARRY_POTTER{ "HarryPotter.png" };
         inline constexpr const char* const GODFATHER{ "GodFather.png" };
         inline constexpr const char* const TERMINATOR{ "Terminator.png" };
         inline constexpr const char* const BACKGROUND{ "Background.png" };
         inline constexpr const char* const ANEWHOPE{ "ANewHope.png" };
-        inline constexpr const char* const EMPIRESTRIKESBACK{ "EmpireStrikesBack.png" };
+        inline constexpr const char* const HOMEALONE { "HomeAlone.png" };
         inline constexpr const char* const PULPFICTION{ "PulpFiction.png" };
         inline constexpr const char* const SCHINDLERSLIST{ "SchindlersList.png" };
-        inline constexpr const char* const TEMPLEOFDOOM{ "TempleOfDoom.png" };
+        inline constexpr const char* const NARNIA { "Narnia.png" };
         inline constexpr const char* const MIDSOMMAR{ "MidSommar.png" };
         inline constexpr const char* const THEINVISIBLEMAN { "TheInvisibleMan.png" };
 
@@ -71,5 +69,7 @@ namespace CanvasConst = constants::CANVAS;
 namespace MovieConst  = constants::Movie_Sizes;
 namespace AssetsConst = constants::ASSETS;
 namespace FunctionsConst = constants::functions;
+
+
 
 #endif

@@ -31,7 +31,9 @@ int main()
 	graphics::setUpdateFunction(update);
 
 	graphics::startMessageLoop();	//Starting the loop of our program. This function, processes all window and user events. Its also responsible for calling the draw to refresh the visual content, and update to update our screen
-	
+	graphics::destroyWindow();
+
+
 	GUI::releaseInstance();		//Delete the GUI
 	return 0;
 }

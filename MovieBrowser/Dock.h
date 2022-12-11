@@ -8,6 +8,15 @@ class Dock
 {
 private:
 
+	enum dock_state_t
+	{
+		STATE_IDLE,
+		STATE_DRAWING,
+		STATE_MOVING_TRIGGERED
+
+	};
+
+
 	float m_posX{};
 	float m_posY{};
 	float height{ 0.0f };
@@ -16,16 +25,6 @@ private:
 	bool Pressed{ false };
 
 public:
-
-
-
-	enum dock_state_t
-	{
-		STATE_IDLE,
-		STATE_DRAWING,
-		STATE_MOVING_TRIGGERED
-
-	};
 
 	dock_state_t m_current_state = STATE_DRAWING;
 

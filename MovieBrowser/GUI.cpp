@@ -10,12 +10,12 @@ Note-> First GUI Draw is called and then GUI update by message loop
 
 
 //Updating Loading Screen
-void GUI::updateLoadingScreen()
+void GUI::updateLoadingScreen() const
 {
 }
 
 //Updating Start Screen
-void GUI::updateStartScreen()
+void GUI::updateStartScreen() const
 {
 	//For every movie and for our dock, update its state
 
@@ -24,7 +24,15 @@ void GUI::updateStartScreen()
 
 		if (movie)
 		{
-			movie->update();		//Updating our movies
+			if (!movie->isDisabled())
+			{
+				movie->update();		//Updating our movies
+			}
+			else
+			{
+				// ?
+			}
+			
 		}
 
 		if (dock->isPressed() && dock)
@@ -42,6 +50,20 @@ void GUI::updateStartScreen()
 	{
 		dock->update();	//Updating our dock
 	}
+
+	for (const auto& widget : widgets)	//Polymorphism
+	{
+		widget->update();
+
+		if (widget->actionTriggered() &&  !widget->isOperating())
+		{
+			widget->setOperating(true);
+			widget->takeAction(movie_list);
+
+		}
+	}
+
+	
 
 	
 }
@@ -64,19 +86,33 @@ void GUI::drawStartScreen()
 
 	//For every movie and for our dock, draw it
 
-	for (auto& movie : movie_list)
+	for (const auto& movie : movie_list)
 	{
 		if (movie)
 		{
-			movie->draw();
+			if (!movie->isDisabled())
+			{
+				movie->draw();
+			}
+			else 
+			{
+				// ?
+			}
 		}
 	}
-
 
 	if (dock)
 	{
 		dock->draw();
 	}
+
+
+	for (const auto& widget : widgets)	//Polymorphism
+	{
+		widget->draw();
+
+	}
+
 }
 
 
@@ -85,6 +121,7 @@ void GUI::init()
 	graphics::setFont("FreeSans.ttf");
 	CreateDock();
 	CreateMovies();	//Creating our Movies
+	CreateWidgets();
 
 	graphics::preloadBitmaps(AssetsConst::ASSET_PATH);
 
@@ -99,6 +136,15 @@ void GUI::CreateDock()
 
 }
 
+void GUI::CreateWidgets()
+{
+
+	widgets.push_back(new Button(CanvasConst::CANVAS_WIDTH / 15 + 7.0f, CanvasConst::CANVAS_HEIGHT / 1.28, "Action"));
+	widgets.push_back(new Button(CanvasConst::CANVAS_WIDTH / 15 + 15.0f, CanvasConst::CANVAS_HEIGHT / 1.28, "Drama"));
+	widgets.push_back(new Button(CanvasConst::CANVAS_WIDTH / 15 + 20.0f, CanvasConst::CANVAS_HEIGHT / 1.28, "Horror"));
+
+}
+
 
 
 void GUI::CreateMovies()
@@ -108,7 +154,7 @@ void GUI::CreateMovies()
 
 	movie_list.push_back(new Movie("Harry Potter", "This is desc", "This is age", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", "Daniel Radcliffe", { "Adventure","Fantasy"}));
 	movie_list.push_back(new Movie("GodFather", "This is desc", "This is age", AssetsConst::GODFATHER, "1972", "The director", "The protagonist", { "Crime","Drama"}));
-	movie_list.push_back(new Movie("Terminator", "This is desc", "This is age", AssetsConst::TERMINATOR, "1984", "The director", "The protagonist", { "Action","Sci-Fi"}));
+	movie_list.push_back(new Movie("Terminator", "This is desc", "This is age", AssetsConst::TERMINATOR, "1984", "The director", "The protagonist", { "Action","Sci-Fi","Drama"}));
 	movie_list.push_back(new Movie("A New Hope", "This is desc", "This is age", AssetsConst::ANEWHOPE, "1997", "The director", "The protagonist", { "Action","Adventure","Fantasy"}));
 	movie_list.push_back(new Movie("Schindlers List", "This is desc", "This is age", AssetsConst::SCHINDLERSLIST, "1994", "The director", "The protagonist", { "Drama","History"}));
 	movie_list.push_back(new Movie("The Chronicles Of Narnia", "This is desc", "This is age", AssetsConst::NARNIA, "1984", "The director", "The protagonist", { "Adventure","Fantasy" }));
@@ -175,7 +221,7 @@ void GUI::update()	//Updating of all our classes
 
 GUI::~GUI()
 {
-	for (auto& movie : movie_list)
+	for (const auto& movie : movie_list)
 	{
 		delete movie;
 	}
@@ -183,8 +229,15 @@ GUI::~GUI()
 	{
 		delete dock;
 	}
+
+	for (const auto& widget : widgets)
+	{
+		delete widget;
+	}
+
 	dock = nullptr;
 	movie_list.clear();		//Clearing out our movie vector
+	widgets.clear();
 
 }
 

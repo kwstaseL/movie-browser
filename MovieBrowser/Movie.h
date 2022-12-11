@@ -7,15 +7,6 @@
 #include "sgg/graphics.h"
 #include "constants.h"
 
-
-enum class Genre
-{
-	Action,
-	Horror,
-	Adventure
-};
-
-
 class Movie
 {
 private:
@@ -42,11 +33,11 @@ private:
 	std::string m_genre{};
 	
 
-	std::vector<std::string> genres;
 
 	bool m_highlighted{ false };
 	bool PlaySound{ true };
 	bool m_active{ true };
+	bool m_disabled{ false };
 
 	class graphics::Brush br;
 
@@ -55,17 +46,23 @@ public:
 
 	Movie(const std::string_view n, const std::string_view desc, const std::string_view age, const std::string_view image, const std::string_view date, const std::string_view dir, const std::string_view prot, const std::vector<std::string>& genre);
 
-
+	float glow{};
+	float highlight{};
 	void draw();
 	void update();
 
+
+	std::vector<std::string> genres;
+
 	void setHighlight(bool h) { m_highlighted = h; }
 	void setActive(bool a) { m_active = a; }
+	void setDisabled(bool d) { m_disabled = d; }
 
 	void setPosX(float x) { m_pos[0] = x; }
 	void setPosY(float y) { m_pos[1] = y; }
 
 	bool contains(float x, float y) const;
+	bool isDisabled() { return m_disabled; } const
 
 	const std::string& getName() const;
 	const std::string& getDesc() const;

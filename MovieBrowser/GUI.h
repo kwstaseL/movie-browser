@@ -4,7 +4,8 @@
 #include <vector>
 #include "Movie.h"
 #include "Dock.h"
-
+#include "Widget.h"
+#include "Button.h"
 
 class GUI
 {
@@ -27,23 +28,28 @@ private:
 
 	Dock* dock{ nullptr };
 	std::vector<Movie*> movie_list;	//Here we keep all our movies
+	std::vector<Widget*> widgets;
 
 	void CreateMovies();
 	void CreateDock();
+	void CreateWidgets();
+
 	~GUI();
-	void updateLoadingScreen();
-	void updateStartScreen();
+	void updateLoadingScreen() const;
+	void updateStartScreen() const;
 	void drawLoadingScreen();
 	void drawStartScreen();
 
 
 public:
 
+
 	void draw();
 	void init();
 	void update();
 	static GUI* Get();
 	static void releaseInstance();
+
 
 
 

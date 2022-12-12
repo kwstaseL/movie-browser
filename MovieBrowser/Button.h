@@ -29,13 +29,7 @@ private:
 	void update() override;
 	void draw() override;
 
-	bool actionTriggered() override { return m_action; }
-	void setOperating(bool o) override { operating = o; }
-	void setAction(bool action) override { this->m_action = action; }
-
 	bool contains(float x, float y) const;
-
-	bool isOperating() override { return operating; }
 
 	void filterByGenre(const std::vector<Movie*>& movie_list) const;
 	void resetFilter(const std::vector<Movie*>& movie_list) const;

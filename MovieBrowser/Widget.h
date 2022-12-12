@@ -16,11 +16,13 @@ protected:
 	float m_positionY{};
 
 	bool m_highlighted{ false };
+
 	bool m_visible{ false };			//Visible only if Dock is down (ex for Buttons)
 
 	bool m_action{ false };
 
-	static inline int s_idGenerator{0};
+	static inline int s_idGenerator{};
+
 	int m_uid{};
 
 	graphics::Brush brush;
@@ -31,22 +33,25 @@ protected:
 
 	bool operating{ false };
 
+	static inline std::vector<std::string> s_scanned_genres;
+
 
 public:
 
-	static std::vector<std::string> m_scanned_genres;
 
-	virtual bool isOperating() = 0;
-	virtual void setOperating(bool o) = 0;
+	virtual bool isOperating() { return operating; }
+	virtual void setOperating(bool o) { operating = o; }
 
-	virtual void update() = 0;
-	virtual void draw() = 0;
+	virtual bool actionTriggered() { return m_action; }
+	virtual void setAction(bool action) { m_action = action; }
 
 	virtual ~Widget();
 
-	virtual bool actionTriggered() = 0;
-	virtual void setAction(bool action) = 0;
+
+	virtual void update() = 0;
+	virtual void draw() = 0;
 	virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
+
 
 	Widget(float posX, float posY);
 

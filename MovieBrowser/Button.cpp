@@ -92,19 +92,56 @@ void Button::filterByGenre(const std::vector<Movie*>& movie_list) const
 {
 	std::cout << "Button with id: " << m_uid << std::endl;
 
+	bool hasGenre{};
+	s_scanned_genres.push_back(m_button_text);
+
 	for (const auto& movie : movie_list)
 	{
+		hasGenre = false;
+		for (const auto& pressed_genres : s_scanned_genres)
+		{
+			for (const auto& genre : movie->genres)
+			{
+				if (genre == pressed_genres)
+				{
+					movie->setDisabled(false);
+					hasGenre = true;
+				}
+				else
+				{
+					movie->setDisabled(true);
+				}
+			}
+		}
+		if (hasGenre)
+		{
+			movie->setDisabled(false);
+		}
+		else
+		{
+			movie->setDisabled(true);
+		}
+	}
+
+	/*
+	bool hasGenre;
+
+	for (const auto& movie : movie_list)
+	{
+		hasGenre = false;
 		if (movie)
 		{
 			for (const auto& movie_genre : movie->genres)
 			{
-				if (movie_genre == m_button_text)
+				std::cout << "Now scanning for movie_genre" << movie_genre << std::endl;
+				if (movie_genre == m_button_text || hasGenre)
 				{
-					if (!m_scanned_genres.empty())	//Edw thelei ftiajimo
+					hasGenre = true;
+					if (!s_scanned_genres.empty())	//Edw thelei ftiajimo
 					{
 
 						//Find if it is equal with already scanned movies
-						for (const auto& already_scanned_genre : m_scanned_genres)
+						for (const auto& already_scanned_genre : s_scanned_genres)
 						{
 							std::cout << "Movie Genre here is : " << movie_genre << std::endl;
 							std::cout << "Already Scanned Genre here is : " << already_scanned_genre << std::endl;
@@ -121,12 +158,13 @@ void Button::filterByGenre(const std::vector<Movie*>& movie_list) const
 						}
 						if (!movie->isDisabled())
 						{
-							break;
+;							break;
 						}
 					}
 					else
 					{
 						movie->setDisabled(false);
+						break;
 					}
 				}
 				else
@@ -141,7 +179,8 @@ void Button::filterByGenre(const std::vector<Movie*>& movie_list) const
 			continue;
 		}
 	}
-	m_scanned_genres.push_back(m_button_text);
+	s_scanned_genres.push_back(m_button_text);
+	*/
 }
 
 

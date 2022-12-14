@@ -9,8 +9,8 @@ struct ClickableBox
 {
 private:
 
-	static inline float m_positionX{};
-	static inline float m_positionY{};
+	float m_positionX{};
+	float m_positionY{};
 
 	bool m_active{ false };
 
@@ -44,9 +44,9 @@ private:
 
 	m_slider_state m_status_slider{ SLIDER_IDLE };
 
-	static inline ClickableBox box;
+	ClickableBox box;
 
-	static inline int m_year{ 1950 };
+	int m_year{ 1950 };
 
 	void update() override;
 	void draw() override;
@@ -61,11 +61,6 @@ public:
 	Slider(float posX, float posY, const std::string_view text);
 	virtual ~Slider() = default;
 
-	static void resetSlider()
-	{
-		box.setPosX(CanvasConst::CANVAS_WIDTH / 15 + 11.5f - 2.9f);
-		m_year = 1950;
-	}
 
 };
 

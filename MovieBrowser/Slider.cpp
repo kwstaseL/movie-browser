@@ -170,10 +170,32 @@ bool Slider::contains(float x, float y) const
 void Slider::takeAction(const std::vector<Movie*>& movie_list)
 {
 
-    for (const auto& movie : movie_list)
+    if (m_uid == 9)
     {
-        
-        
+        for (const auto& movie : movie_list)
+        {
+
+
+            if (std::stoi(movie->getDate()) >= (m_year) && movie->getHasGenre())
+            {
+                movie->setDisabled(false);
+                movie->setSkipped(false);
+            }
+            else
+            {
+                movie->setDisabled(true);
+                movie->setSkipped(true);
+
+            }
+        }
+
+    }
+    else if (m_uid == 10)
+    {
+        for (const auto& movie : movie_list)
+        {
+
+
             if (std::stoi(movie->getDate()) < (m_year) && movie->getHasGenre())
             {
                 movie->setDisabled(false);
@@ -186,6 +208,8 @@ void Slider::takeAction(const std::vector<Movie*>& movie_list)
 
             }
         }
+    }
+
 
     setAction(false);
     setOperating(false);

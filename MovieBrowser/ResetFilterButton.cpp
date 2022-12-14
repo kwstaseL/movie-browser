@@ -7,7 +7,6 @@ void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
 		movie->setDisabled(false);
 		movie->setHasGenre(true);
 		s_scanned_genres.clear();
-		Slider::resetSlider();
 	}
 }
 

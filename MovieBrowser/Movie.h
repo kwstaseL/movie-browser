@@ -113,7 +113,6 @@ public:
 	void setHasGenre(bool g) { hasGenre = g; }
 	bool getHasGenre() const { return hasGenre; }
 
-
 	const std::string& getName() const;
 	const std::string& getDesc() const;
 	const std::string& getDate() const;

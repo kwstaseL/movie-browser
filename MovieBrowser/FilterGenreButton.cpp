@@ -42,7 +42,9 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 	{
 		for (const auto& movie : s_genreMap[m_button_text])
 		{
+			
 			movie->setDisabled(false);
+			
 		}
 	}
 }

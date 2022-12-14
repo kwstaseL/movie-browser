@@ -1,4 +1,5 @@
 #include "Slider.h"
+#include <iostream>
 
 //DONE
 
@@ -27,34 +28,34 @@ void Slider::update()
     //Based on slider id we will filter
     SETCOLOR(brush.fill_color, 1.0f, 1.0f, 1.0f);
 
-    int temp{ ClickableBox.getPosX() };
+    int temp{ box.getPosX() };
 
     if (contains(mx, my))
     {
-        ClickableBox.setActive(true);
+        box.setActive(true);
 
-        if (ms.dragging && ClickableBox.isActive())
+        if (ms.dragging && box.isActive())
         {
 
-            if (mx >= 16.0f && ClickableBox.getPosX() >= 16.0f)
+            if (mx >= 16.0f && box.getPosX() >= 16.0f)
             {
                 mx = 16.0f;
             }
-            
-            if (mx <= m_positionX - 2.9f && ClickableBox.getPosX() <= m_positionX - 2.9f)
+
+            if (mx <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
             {
                 mx = m_positionX - 2.9f;
             }
 
-            ClickableBox.setPosX(mx);
+            box.setPosX(mx);
 
             m_status_slider = SLIDER_DRAGGING;
 
-            if (temp < ClickableBox.getPosX())
+            if (temp < box.getPosX())
             {
                 m_year += 10;
             }
-            else if (temp > ClickableBox.getPosX())
+            else if (temp > box.getPosX())
             {
                 m_year -= 10;
             }
@@ -63,18 +64,18 @@ void Slider::update()
                 m_year += 0;
             }
 
-            if (ClickableBox.getPosX() >= m_positionX + 3.5f)
+            if (box.getPosX() >= m_positionX + 3.5f)
             {
-                ClickableBox.setPosX(m_positionX + 3.5f);
+                box.setPosX(m_positionX + 3.5f);
             }
-            if (ClickableBox.getPosX() <= m_positionX - 2.9f)
+            if (box.getPosX() <= m_positionX - 2.9f)
             {
-                ClickableBox.setPosX(m_positionX - 2.9f);
+                box.setPosX(m_positionX - 2.9f);
             }
         }
         if (ms.button_left_released)
         {
-            ClickableBox.setActive(false);
+            box.setActive(false);
             m_status_slider = SLIDER_RELEASED;
             setAction(true);
         }
@@ -84,23 +85,23 @@ void Slider::update()
         if (m_status_slider == SLIDER_DRAGGING)
         {
 
-            if (mx >= 16.0f && ClickableBox.getPosX() >= 16.0f)
+            if (mx >= 16.0f && box.getPosX() >= 16.0f)
             {
                 mx = 16.0f;
             }
 
-            if (mx <= m_positionX - 2.9f && ClickableBox.getPosX() <= m_positionX - 2.9f)
+            if (mx <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
             {
                 mx = m_positionX - 2.9f;
             }
 
-            ClickableBox.setPosX(mx);
+            box.setPosX(mx);
 
-            if (temp < ClickableBox.getPosX())
+            if (temp < box.getPosX())
             {
-                m_year +=  10;
+                m_year += 10;
             }
-            else if (temp > ClickableBox.getPosX())
+            else if (temp > box.getPosX())
             {
                 m_year -= 10;
             }
@@ -109,23 +110,23 @@ void Slider::update()
                 m_year += 0;
             }
 
-            if (ClickableBox.getPosX() >= m_positionX + 3.5f)
+            if (box.getPosX() >= m_positionX + 3.5f)
             {
-                ClickableBox.setPosX(m_positionX + 3.5f);
+                box.setPosX(m_positionX + 3.5f);
             }
-            if (ClickableBox.getPosX() <= m_positionX - 2.9f)
+            if (box.getPosX() <= m_positionX - 2.9f)
             {
-                ClickableBox.setPosX(m_positionX - 2.9f);
+                box.setPosX(m_positionX - 2.9f);
             }
             if (!ms.dragging)
             {
-                ClickableBox.setActive(false);
+                box.setActive(false);
                 m_status_slider = SLIDER_RELEASED;
                 setAction(true);
             }
         }
     }
-   
+
 
 }
 
@@ -140,9 +141,9 @@ void Slider::draw()
     //Drawing Line
     graphics::Brush br;
     SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
-    graphics::drawText(m_positionX - 4.5f, m_positionY + m_height + 0.115f,0.3f, m_text, br);
+    graphics::drawText(m_positionX - 4.5f, m_positionY + m_height + 0.115f, 0.3f, m_text, br);
 
-    graphics::drawText(ClickableBox.getPosX()-0.25f,ClickableBox.getPosY()+m_height, 0.3f, std::to_string((m_year)), br);
+    graphics::drawText(box.getPosX() - 0.25f, box.getPosY() + m_height, 0.3f, std::to_string((m_year)), br);
 
 
     brush.texture = "";
@@ -152,14 +153,14 @@ void Slider::draw()
 
     //Drawing box
     br.texture = "";
-    graphics::drawRect(ClickableBox.getPosX()+0.1f, ClickableBox.getPosY() + m_height +0.6, 0.2f, 0.5f, br);
+    graphics::drawRect(box.getPosX() + 0.1f, box.getPosY() + m_height + 0.6, 0.2f, 0.5f, br);
 
 }
 
 bool Slider::contains(float x, float y) const
 {
-    if (x >= ClickableBox.getPosX() - 0.1f * 0.2f && x <= ClickableBox.getPosX() + 0.1f * 0.2f ||
-        y >= ClickableBox.getPosY() + 4.0f + 0.6 - 0.1f * 0.5f && y <= ClickableBox.getPosY() + 4.0f + 0.6f + 0.1f * 0.5f)
+    if (x >= box.getPosX() - 0.1f * 0.2f && x <= box.getPosX() + 0.1f * 0.2f ||
+        y >= box.getPosY() + 4.0f + 0.6 - 0.1f * 0.5f && y <= box.getPosY() + 4.0f + 0.6f + 0.1f * 0.5f)
     {
         return true;
     }
@@ -168,11 +169,10 @@ bool Slider::contains(float x, float y) const
 
 void Slider::takeAction(const std::vector<Movie*>& movie_list)
 {
-    
+
     for (const auto& movie : movie_list)
     {
-        if (!movie->isDisabled())
-        {
+        
             if (std::stoi(movie->getDate()) >= (m_year))
             {
                 movie->setDisabled(true);
@@ -185,8 +185,6 @@ void Slider::takeAction(const std::vector<Movie*>& movie_list)
 
             }
         }
-        
-    }
 
     setAction(false);
     setOperating(false);
@@ -197,15 +195,9 @@ Slider::Slider(float posX, float posY, const std::string_view text)
     : Widget(posX, posY), m_text{ text }
 {
 
-    ClickableBox.setPosX(m_positionX-2.9f);
-    ClickableBox.setPosY(m_positionY- 0.56f);
+    box.setPosX(m_positionX - 2.9f);
+    box.setPosY(m_positionY - 0.56f);
     //Create button here
 
-}
-
-void Slider::resetSlider()
-{
-   ClickableBox.setPosX(m_positionX - 2.9f);
-   m_year = 1950;
 }
 

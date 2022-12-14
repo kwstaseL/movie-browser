@@ -5,6 +5,28 @@
 
 //DONE
 
+struct ClickableBox
+{
+private:
+
+	static inline float m_positionX{};
+	static inline float m_positionY{};
+
+	bool m_active{ false };
+
+public:
+
+	bool isActive() const { return m_active; }
+	int getPosX() const { return m_positionX; }
+	int getPosY() const { return m_positionY; }
+	
+	void setPosX(int x) { m_positionX = x; }
+	void setPosY(int y) { m_positionY = y; }
+	void setActive(bool a) { m_active = a; }
+
+
+};
+
 class Slider : public Widget
 {
 private:
@@ -22,9 +44,9 @@ private:
 
 	m_slider_state m_status_slider{ SLIDER_IDLE };
 
-	Box ClickableBox;
+	static inline ClickableBox box;
 
-	int m_year{ 1950 };
+	static inline int m_year{ 1950 };
 
 	void update() override;
 	void draw() override;
@@ -38,7 +60,12 @@ public:
 
 	Slider(float posX, float posY, const std::string_view text);
 	virtual ~Slider() = default;
-	void resetSlider();
+
+	static void resetSlider()
+	{
+		box.setPosX(CanvasConst::CANVAS_WIDTH / 15 + 11.5f - 2.9f);
+		m_year = 1950;
+	}
 
 };
 

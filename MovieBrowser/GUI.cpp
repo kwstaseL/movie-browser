@@ -1,82 +1,102 @@
 #include "GUI.h"
-#include <math.h>
-#include <iostream>
 
-/*
+//DONE
 
-Note-> First GUI Draw is called and then GUI update by message loop
-
-*/
-
-
-//Updating Loading Screen
-void GUI::updateLoadingScreen() const
+void GUI::draw()	//Drawing of all our classes
 {
+	if (m_state == STATUS_LOADING)
+	{
+		drawLoadingScreen();
+	}
+	else if (m_state == STATUS_STARTED)
+	{
+		drawStartedScreen();
+	}
+	else if (m_state == STATUS_MOVIE_PRESSED)
+	{
+		drawPressedMovieScreen();
+	}
+
+}
+
+void GUI::update()	//Updating of all our classes
+{
+	if (m_state == STATUS_LOADING)
+	{
+		updateLoadingScreen();
+	}
+	else if (m_state == STATUS_STARTED)
+	{
+		updateStartedScreen();
+	}
+	else if (m_state == STATUS_MOVIE_PRESSED)
+	{
+		updatePressedMovieScreen();
+	}
+
 }
 
 //Updating Start Screen
-void GUI::updateStartScreen() const
+void GUI::updateStartedScreen()
 {
 	//For every movie and for our dock, update its state
-
 	for (auto& movie : movie_list)
 	{
-
 		if (movie)
 		{
 			if (!movie->isDisabled())
 			{
-				movie->update();		//Updating our movies
+				movie->update();
 			}
-			else
+			if (movie->isClickTriggered() && movie->isActive())
 			{
-				// ?
+				m_state = STATUS_MOVIE_PRESSED;
+				clickedMovie = movie;
 			}
-			
 		}
+	}
 
-		if (dock->isPressed() && dock)
+	for (const auto& widget : widgets)
+	{
+		if (widget)
 		{
-			movie->setActive(false);
-		}
-		else
-		{
-			movie->setActive(true);
-		}
+			widget->update();
 
+			if (widget->actionTriggered() && !widget->isOperating())
+			{
+				widget->setOperating(true);
+				widget->takeAction(movie_list);
+			}
+		}
 	}
 
 	if (dock)
 	{
-		dock->update();	//Updating our dock
+		dock->update();
 	}
-
-	for (const auto& widget : widgets)	//Polymorphism
+	
+	for (const auto& widget : widgets)
 	{
-		widget->update();
+		for (const auto& movie : movie_list) {
 
-		if (widget->actionTriggered() &&  !widget->isOperating())
-		{
-			widget->setOperating(true);
-			widget->takeAction(movie_list);
+			if (dock->isPressed() && dock)
+			{
+				widget->setVisibility(true);
+				movie->setActive(false);
+			}
+			else
+			{
+				movie->setActive(true);
+				widget->setVisibility(false);
+			}
 
 		}
 	}
 
-	
-
-	
 }
-
-
-//Drawing Loading Screen
-void GUI::drawLoadingScreen()
-{
-}
-
 
 //Actual GUI drawing
-void GUI::drawStartScreen()
+void GUI::drawStartedScreen()
 {
 	//Background
 	br.fill_opacity = 0.5f;
@@ -84,7 +104,6 @@ void GUI::drawStartScreen()
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::BACKGROUND);
 	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 2, CanvasConst::CANVAS_HEIGHT / 2, CanvasConst::CANVAS_WIDTH, CanvasConst::CANVAS_HEIGHT, br);
 
-	//For every movie and for our dock, draw it
 
 	for (const auto& movie : movie_list)
 	{
@@ -93,10 +112,6 @@ void GUI::drawStartScreen()
 			if (!movie->isDisabled())
 			{
 				movie->draw();
-			}
-			else 
-			{
-				// ?
 			}
 		}
 	}
@@ -107,20 +122,59 @@ void GUI::drawStartScreen()
 	}
 
 
-	for (const auto& widget : widgets)	//Polymorphism
+	for (const auto& widget : widgets)	
 	{
-		widget->draw();
+		if (widget)
+		{
+			widget->draw();
+		}
 
+	}
+
+	
+
+}
+
+void GUI::drawPressedMovieScreen()
+{
+	if (clickedMovie)
+	{
+		clickedMovie->drawInformation();
+	}
+}
+
+void GUI::updatePressedMovieScreen()
+{
+	for (const auto& movie : movie_list)
+	{
+		if (movie)
+		{
+			movie->setActive(false);
+		}
+	}
+
+	if (clickedMovie)
+	{
+		clickedMovie->update();
+
+		if (!clickedMovie->isClickTriggered())
+		{
+			for (const auto& movie : movie_list)
+			{
+				movie->setActive(true);
+			}
+			m_state = STATUS_STARTED;
+		}
 	}
 
 }
 
-
 void GUI::init()
 {
 	graphics::setFont("FreeSans.ttf");
+
 	CreateDock();
-	CreateMovies();	//Creating our Movies
+	CreateMovies();
 	CreateWidgets();
 
 	graphics::preloadBitmaps(AssetsConst::ASSET_PATH);
@@ -138,32 +192,35 @@ void GUI::CreateDock()
 
 void GUI::CreateWidgets()
 {
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f-2.0f, "Action"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f-2.0f, "Drama"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f-2.0f, "Horror"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f-2.0f, "Adventure"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f-2.0f, "Fantasy"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f-2.0f, "Sci-Fi"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f-2.0f, "History"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f-2.0f, "Comedy"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f-2.0f, "Crime"));
 
-	widgets.push_back(new Button(CanvasConst::CANVAS_WIDTH / 15 + 7.0f, CanvasConst::CANVAS_HEIGHT / 1.28, "Action"));
-	widgets.push_back(new Button(CanvasConst::CANVAS_WIDTH / 15 + 15.0f, CanvasConst::CANVAS_HEIGHT / 1.28, "Drama"));
-	widgets.push_back(new Button(CanvasConst::CANVAS_WIDTH / 15 + 20.0f, CanvasConst::CANVAS_HEIGHT / 1.28, "Horror"));
+	widgets.push_back(new Slider(CanvasConst::CANVAS_WIDTH / 15 + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.20 - 12.0f - 2.0f, "Less"));
+
+	widgets.push_back(new ResetFilterButton(CanvasConst::CANVAS_WIDTH / 15 + 18.0f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f-2.0f, "Clear Filter"));
 
 }
-
-
 
 void GUI::CreateMovies()
 {
 
-	//Creating our 9 movies.
-
-	movie_list.push_back(new Movie("Harry Potter", "This is desc", "This is age", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", "Daniel Radcliffe", { "Adventure","Fantasy"}));
-	movie_list.push_back(new Movie("GodFather", "This is desc", "This is age", AssetsConst::GODFATHER, "1972", "The director", "The protagonist", { "Crime","Drama"}));
-	movie_list.push_back(new Movie("Terminator", "This is desc", "This is age", AssetsConst::TERMINATOR, "1984", "The director", "The protagonist", { "Action","Sci-Fi","Drama"}));
-	movie_list.push_back(new Movie("A New Hope", "This is desc", "This is age", AssetsConst::ANEWHOPE, "1997", "The director", "The protagonist", { "Action","Adventure","Fantasy"}));
-	movie_list.push_back(new Movie("Schindlers List", "This is desc", "This is age", AssetsConst::SCHINDLERSLIST, "1994", "The director", "The protagonist", { "Drama","History"}));
-	movie_list.push_back(new Movie("The Chronicles Of Narnia", "This is desc", "This is age", AssetsConst::NARNIA, "1984", "The director", "The protagonist", { "Adventure","Fantasy" }));
-	movie_list.push_back(new Movie("Home Alone", "This is desc", "This is age", AssetsConst::HOMEALONE, "1980", "The director", "The protagonist", { "Comedy" , "Family"}));
-	movie_list.push_back(new Movie("Pulp Fiction", "This is desc", "This is age", AssetsConst::PULPFICTION, "1995", "The director", "The protagonist", { "Crime", "Drama"}));
-	movie_list.push_back(new Movie("MidSommar", "This is desc", "This is age", AssetsConst::MIDSOMMAR, "1995", "The director", "The protagonist", { "Horror","Mystery"}));
-	movie_list.push_back(new Movie("The Invisible Man", "This is desc", "This is age", AssetsConst::THEINVISIBLEMAN, "1995", "The director", "The protagonist", { "Horror", "Sci-Fi"}));
-
-
+	movie_list.push_back(new Movie("Harry Potter and the Goblet Of Fire", "<Description>", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", "Daniel Radcliffe", { "Adventure","Fantasy"}));
+	movie_list.push_back(new Movie("The Godfather", "<Description>", AssetsConst::GODFATHER, "1972", "The director", "The protagonist", { "Crime","Drama"}));
+	movie_list.push_back(new Movie("Terminator", "<Description>", AssetsConst::TERMINATOR, "1984", "The director", "The protagonist", { "Action","Sci-Fi","Drama"}));
+	movie_list.push_back(new Movie("A New Hope", "<Description>", AssetsConst::ANEWHOPE, "1997", "The director", "The protagonist", { "Action","Adventure","Fantasy"}));
+	movie_list.push_back(new Movie("Schindlers List", "<Description>", AssetsConst::SCHINDLERSLIST, "1994", "The director", "The protagonist", { "Drama","History"}));
+	movie_list.push_back(new Movie("The Chronicles Of Narnia", "<Description>", AssetsConst::NARNIA, "1984", "The director", "The protagonist", { "Adventure","Fantasy" }));
+	movie_list.push_back(new Movie("Home Alone 1", "<Description>", AssetsConst::HOMEALONE, "1980", "The director", "The protagonist", { "Comedy" , "Family"}));
+	movie_list.push_back(new Movie("Pulp Fiction", "<Description>", AssetsConst::PULPFICTION, "1995", "The director", "The protagonist", { "Crime", "Drama"}));
+	movie_list.push_back(new Movie("MidSommar", "<Description>", AssetsConst::MIDSOMMAR, "1995", "The director", "The protagonist", { "Horror","Drama"}));
+	movie_list.push_back(new Movie("The Invisible Man", "<Description>", AssetsConst::THEINVISIBLEMAN, "1995", "The director", "The protagonist", { "Horror", "Sci-Fi"}));
 
 	size_t size = movie_list.size();
 	for (size_t i = 0; i < 2; i++)
@@ -181,6 +238,7 @@ void GUI::CreateMovies()
 
 		}
 	}
+
 	movie_list[8]->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + 3 * 5.5);
 	movie_list[8]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - 1 * 6.3)));
 
@@ -188,36 +246,6 @@ void GUI::CreateMovies()
 	movie_list[9]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - 1 * 6.3)));
 
 }
-
-
-void GUI::draw()	//Drawing of all our classes
-{
-	if (m_state == STATUS_LOADING)
-	{
-		drawLoadingScreen();
-	}
-	else
-	{
-		drawStartScreen();
-	}
-
-
-}
-
-
-void GUI::update()	//Updating of all our classes
-{
-	if (m_state == STATUS_LOADING)
-	{
-		updateLoadingScreen();
-	}
-	else
-	{
-		updateStartScreen();
-	}
-
-}
-
 
 GUI::~GUI()
 {
@@ -229,42 +257,43 @@ GUI::~GUI()
 	{
 		delete dock;
 	}
-
 	for (const auto& widget : widgets)
 	{
 		delete widget;
 	}
 
 	dock = nullptr;
-	movie_list.clear();		//Clearing out our movie vector
+	movie_list.clear();	
 	widgets.clear();
-
 }
-
-
-
-
 
 GUI* GUI::Get()		//Here we set it as static so we can use it without the need of an existing object, if there is no instance of gui made yet, make one and return it
 					//So the next time get gets called, it won't make another instance and just return the existing one
 {
-	if (!gui)
+	if (!s_gui)
 	{
-		gui = new GUI();
+		s_gui = new GUI();
 	}
-	return gui;
+	return s_gui;
 
 }
 
 void GUI::releaseInstance() //Delete object
 {
-	if (gui)
+	if (s_gui)
 	{
-		delete gui;
+		delete s_gui;
 	}
-	gui = nullptr;
+	s_gui = nullptr;
 }
 
+//Drawing Loading Screen
+void GUI::drawLoadingScreen()
+{
+}
 
+//Updating Loading Screen
+void GUI::updateLoadingScreen() const
+{
+}
 
-GUI* GUI::gui{}; //Because its static we need to initialize it 

@@ -1,5 +1,6 @@
 #include "Dock.h"
-#include <iostream>
+
+//DONE
 
 void Dock::update()
 {
@@ -13,22 +14,28 @@ void Dock::update()
 	if (contains(mx, my)) 
 	{
 		Pressed = true;
+
 		setOffset(-9.0f);
+
 		if (PlaySound)
 		{
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("minimize.wav"), 0.5f);
 		}
+
 		height += 0.01f*graphics::getDeltaTime();
 		if (height > 6.0f)
 		{
 			height = 6.0f;
 		}
+
 		PlaySound = false;
 	}
 	else
 	{
+
 		Pressed = false;
 		setOffset(-16.0f);
+
 		PlaySound = true;
 		height -= 0.01f * graphics::getDeltaTime();
 		if (height < 0.5f)

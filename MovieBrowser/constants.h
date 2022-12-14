@@ -5,6 +5,20 @@
 #define SETCOLOR(c,r,g,b) {c[0] = r,c[1] = g; c[2] = b;}
 
 
+/*
+
+After slider:
+1. Remove unecessary variables, or optimize them (ex std::string use char*)
+2. Add const on every method that needs it
+3. virtual remove some methods
+4. break classes more?
+5. Description
+
+
+*/
+
+//DONE
+
 namespace constants
 {
 
@@ -42,6 +56,7 @@ namespace constants
         inline constexpr const char* const NARNIA { "Narnia.png" };
         inline constexpr const char* const MIDSOMMAR{ "MidSommar.png" };
         inline constexpr const char* const THEINVISIBLEMAN { "TheInvisibleMan.png" };
+        inline constexpr const char* const CROSS{ "cross.png" };
 
         inline constexpr const char* const DOCK         { "dock.png" };
 
@@ -58,8 +73,6 @@ namespace constants
 
     }
  
-
-    
 }
 
 

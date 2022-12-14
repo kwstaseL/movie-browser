@@ -1,11 +1,13 @@
-#ifndef  GUI_H
+#ifndef GUI_H
 #define GUI_H
 
-#include <vector>
 #include "Movie.h"
 #include "Dock.h"
 #include "Widget.h"
-#include "Button.h"
+#include "ResetFilterButton.h"
+#include "FilterGenreButton.h"
+#include "Slider.h"
+
 
 class GUI
 {
@@ -14,20 +16,26 @@ private:
 	enum gui_state_t
 	{
 		STATUS_LOADING,
-		STATUS_LOADED
+		STATUS_STARTED,
+		STATUS_MOVIE_PRESSED
 	};
 
-	//Marking constructor and copy constructor as private so we only make 1 instance of our class
+	gui_state_t m_state{ STATUS_STARTED };
+
+	Movie* clickedMovie{ nullptr };
+
 	graphics::Brush br;
-	GUI() {}
+
+	GUI() {};
 	GUI(const GUI& other) = delete;
+	GUI& operator=(const GUI&) = delete;
 
-	gui_state_t m_state{STATUS_LOADED};
-
-	static GUI* gui;
+	static inline GUI* s_gui{};
 
 	Dock* dock{ nullptr };
-	std::vector<Movie*> movie_list;	//Here we keep all our movies
+
+	//Here we use a vector as its efficient for our purpose
+	std::vector<Movie*> movie_list;
 	std::vector<Widget*> widgets;
 
 	void CreateMovies();
@@ -36,22 +44,22 @@ private:
 
 	~GUI();
 	void updateLoadingScreen() const;
-	void updateStartScreen() const;
 	void drawLoadingScreen();
-	void drawStartScreen();
 
+	void updateStartedScreen();
+	void drawStartedScreen();
+
+	void updatePressedMovieScreen();
+	void drawPressedMovieScreen();
 
 public:
 
-
 	void draw();
-	void init();
 	void update();
+
+	void init();
 	static GUI* Get();
 	static void releaseInstance();
-
-
-
 
 };
 

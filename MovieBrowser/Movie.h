@@ -65,6 +65,7 @@ private:
 	bool m_disabled{ false };
 	bool m_clickTriggered{ false };
 	bool m_skip{ false };
+	bool hasGenre{ true };
 
 	int m_genreCount{ 0 };
 
@@ -108,6 +109,9 @@ public:
 
 	void setActive(bool a) { m_active = a; }
 	bool isActive() const { return m_active; }
+
+	void setHasGenre(bool g) { hasGenre = g; }
+	bool getHasGenre() const { return hasGenre; }
 
 
 	const std::string& getName() const;

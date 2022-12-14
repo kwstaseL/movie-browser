@@ -5,6 +5,7 @@ void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
 	for (const auto& movie : movie_list)
 	{
 		movie->setDisabled(false);
+		movie->setHasGenre(true);
 		s_scanned_genres.clear();
 		Slider::resetSlider();
 	}

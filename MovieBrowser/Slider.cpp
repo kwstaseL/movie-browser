@@ -175,7 +175,6 @@ void Slider::takeAction(const std::vector<Movie*>& movie_list)
         for (const auto& movie : movie_list)
         {
 
-
             if (std::stoi(movie->getDate()) >= (m_year) && movie->getHasGenre())
             {
                 movie->setDisabled(false);

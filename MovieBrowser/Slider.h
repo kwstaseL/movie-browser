@@ -49,6 +49,7 @@ private:
 	int m_year{ 1950 };
 
 	void update() override;
+
 	void draw() override;
 
 	bool contains(float x, float y) const;
@@ -60,7 +61,6 @@ public:
 
 	Slider(float posX, float posY, const std::string_view text);
 	virtual ~Slider() = default;
-
 
 };
 

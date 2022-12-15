@@ -39,7 +39,7 @@ void ResetFilterButton::update()
 
 	if (contains(mouse_X, mouse_Y))
 	{
-		m_button_state = BUTTON_HIGHLIGHTED;
+		m_button_state = button_state_t::BUTTON_HIGHLIGHTED;
 
 		m_highlighted = true;
 
@@ -50,14 +50,14 @@ void ResetFilterButton::update()
 				return;
 			}
 
-			m_button_state = BUTTON_PRESSED;
+			m_button_state = button_state_t::BUTTON_PRESSED;
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("button.wav"), 0.5f);
 			setActionTriggered(true);
 		}
 		if (ms.button_left_released) //Button was pressed and now is released
 		{
 			//filter
-			m_button_state = BUTTON_IDLE;
+			m_button_state = button_state_t::BUTTON_IDLE;
 			setActionTriggered(false);
 			releaseFocus();
 			setOperating(false);

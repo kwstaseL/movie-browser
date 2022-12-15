@@ -7,7 +7,7 @@ class Button : public Widget
 {
 protected:
 
-	enum button_state_t {
+	enum class button_state_t {
 
 		BUTTON_IDLE,
 		BUTTON_PRESSED,
@@ -20,7 +20,7 @@ protected:
 	const float m_Genrebutton_height{ .5f };
 	const float m_Genrebutton_width{ 3.0f };
 
-	button_state_t m_button_state{ BUTTON_IDLE };
+	button_state_t m_button_state{ button_state_t::BUTTON_IDLE };
 
 	static inline std::unordered_set<std::string> s_scanned_genres;
 

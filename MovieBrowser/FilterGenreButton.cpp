@@ -30,24 +30,25 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 		}
 	}
 
-	int movies_without = 0;
+	int movies_without_genre = 0;
 
 	for (const auto& movie : movie_list)
 	{
 		if (movie->getGenreCount() != (s_scanned_genres.size()) && movie->isDisabled())
 		{
-			movies_without++;
+			movies_without_genre++;
 		}
 	}
 
-	if (movies_without == movie_list.size())
+	if (movies_without_genre == movie_list.size())
 	{
 		for (const auto& movie : s_genreMap[m_button_text])
 		{
-			
-			movie->setDisabled(false);
+			if (!movie->isSkipped())
+			{
+				movie->setDisabled(false);
+			}
 			movie->setHasGenre(true);
-
 			
 		}
 	}

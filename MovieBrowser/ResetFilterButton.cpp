@@ -1,4 +1,5 @@
 #include "ResetFilterButton.h"
+#include "Slider.h"
 
 void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
 {

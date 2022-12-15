@@ -49,10 +49,8 @@ private:
 
 	const std::string m_name{};
 	const std::string m_description{};
-
 	const std::string m_image{};
 	const std::string m_production_year{};
-
 	const std::string m_director{};
 	const std::string m_protagonist{};
 
@@ -66,6 +64,10 @@ private:
 	bool m_clickTriggered{ false };
 	bool m_skip{ false };
 	bool hasGenre{ true };
+
+	int lastYearComparedfromTo{2020};
+	int lastYearComparedFrom{1950};
+
 
 	int m_genreCount{ 0 };
 
@@ -112,6 +114,12 @@ public:
 
 	void setHasGenre(bool g) { hasGenre = g; }
 	bool getHasGenre() const { return hasGenre; }
+
+	void setLastYearComparedfromTo(int y) { lastYearComparedfromTo = y; }
+	int getLastYearComparedfromTo() const { return lastYearComparedfromTo; }
+
+	void setLastYearComparedFrom(int y) { lastYearComparedFrom = y; }
+	int getLastYearComparedFrom() const { return lastYearComparedFrom; }
 
 	const std::string& getName() const;
 	const std::string& getDesc() const;

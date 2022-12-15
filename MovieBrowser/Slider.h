@@ -46,7 +46,7 @@ private:
 
 	ClickableBox box;
 
-	int m_year{ 1950 };
+	int m_year{};
 
 	void update() override;
 
@@ -55,9 +55,11 @@ private:
 	bool contains(float x, float y) const;
 
 	void takeAction(const std::vector<Movie*>& movie_list) override;
+	void clearSlider();
 
 
 public:
+
 
 	Slider(float posX, float posY, const std::string_view text);
 	virtual ~Slider() = default;

@@ -4,19 +4,6 @@
 #include <math.h>
 #define SETCOLOR(c,r,g,b) {c[0] = r,c[1] = g; c[2] = b;}
 
-
-/*
-
-After slider:
-1. Remove unecessary variables, or optimize them (ex std::string use char*)
-2. Add const on every method that needs it
-3. virtual remove some methods
-4. break classes more?
-5. Description
-
-
-*/
-
 //DONE
 
 namespace constants

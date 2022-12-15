@@ -1,5 +1,4 @@
 #include "sgg/graphics.h"
-#include "constants.h"
 #include "GUI.h"
 
 
@@ -42,6 +41,6 @@ int main()
 	graphics::destroyWindow();
 
 
-	GUI::releaseInstance();		//Deleting the GUI
+	GUI::releaseInstance();
 	return 0;
 }

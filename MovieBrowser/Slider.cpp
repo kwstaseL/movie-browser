@@ -1,16 +1,6 @@
 #include "Slider.h"
 #include <iostream>
 
-//DONE
-
-/*
-
-To do:
-1) Fix when from goes to end and to goes to start why is it drawing the movies?
-2) when from goes to 1950 all movies appear
-
-*/
-
 void Slider::update()
 {
     m_height += 0.008f * graphics::getDeltaTime();
@@ -29,20 +19,17 @@ void Slider::update()
     graphics::MouseState ms;
     graphics::getMouseState(ms);
 
-    float mx{ graphics::windowToCanvasX(ms.cur_pos_x) };
-    float my{ graphics::windowToCanvasY(ms.cur_pos_y) };
+    mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
+    mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
 
     //Based on slider id we will filter
-    SETCOLOR(brush.fill_color, 1.0f, 1.0f, 1.0f);
-
     int temp{ box.getPosX() };
 
-    if (contains(mx, my))
+    if (contains(mouse_X, mouse_Y))
     {
         box.setActive(true);
 
-   
         if (ms.dragging && box.isActive())          //FIX THIS
         {
             if (!requestFocus())
@@ -50,19 +37,19 @@ void Slider::update()
                 return;
             }
 
-            if (mx >= 16.0f && box.getPosX() >= 16.0f)
+            if (mouse_X >= 16.0f && box.getPosX() >= 16.0f)
             {
-                mx = 16.0f;
+                mouse_X = 16.0f;
                 m_year = 2020;
             }
 
-            if (mx <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
+            if (mouse_X <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
             {
-                mx = m_positionX - 2.9f;
+                mouse_X = m_positionX - 2.9f;
                 m_year = 1950;
             }
 
-            box.setPosX(mx);
+            box.setPosX(mouse_X);
 
             m_status_slider = SLIDER_DRAGGING;
 
@@ -93,7 +80,7 @@ void Slider::update()
             releaseFocus();
             box.setActive(false);
             m_status_slider = SLIDER_RELEASED;
-            setAction(true);
+            setActionTriggered(true);
         }
     }
     else
@@ -106,19 +93,19 @@ void Slider::update()
                 return;
             }
 
-            if (mx >= 16.0f && box.getPosX() >= 16.0f)
+            if (mouse_X >= 16.0f && box.getPosX() >= 16.0f)
             {
-                mx = 16.0f;
+                mouse_X = 16.0f;
                 m_year = 2020;
             }
 
-            if (mx <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
+            if (mouse_X <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
             {
-                mx = m_positionX - 2.9f;
+                mouse_X = m_positionX - 2.9f;
                 m_year = 1950;
             }
 
-            box.setPosX(mx);
+            box.setPosX(mouse_X);
 
             if (temp < box.getPosX())
             {
@@ -146,7 +133,7 @@ void Slider::update()
                 releaseFocus();
                 box.setActive(false);
                 m_status_slider = SLIDER_RELEASED;
-                setAction(true);
+                setActionTriggered(true);
             }
         }
     }
@@ -222,7 +209,7 @@ void Slider::takeAction(const std::vector<Movie*>& movie_list)
     {
         for (const auto& movie : movie_list)
         {
-            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->getLastYearComparedfromTo()) && movie->getHasGenre())
+            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->getLastYearComparedfromTo()) && movie->gethasFilteredGenre())
             {
                 movie->setDisabled(false);
                 movie->setSkipped(false);
@@ -240,7 +227,8 @@ void Slider::takeAction(const std::vector<Movie*>& movie_list)
     {
         for (const auto& movie : movie_list)
         {
-            if (std::stoi(movie->getDate()) <= m_year && (std::stoi(movie->getDate()) >= movie->getLastYearComparedFrom()) && !(movie->getLastYearComparedFrom() > m_year) && movie->getHasGenre())
+            if (std::stoi(movie->getDate()) <= m_year && (std::stoi(movie->getDate()) >= movie->getLastYearComparedFrom()) &&
+                !(movie->getLastYearComparedFrom() > m_year) && movie->gethasFilteredGenre())
             {
                 movie->setDisabled(false);
                 movie->setSkipped(false);
@@ -254,9 +242,7 @@ void Slider::takeAction(const std::vector<Movie*>& movie_list)
             movie->setLastYearComparedfromTo(m_year);
         }
     }
-    
-
-    setAction(false);
+    setActionTriggered(false);
     setOperating(false);
     m_status_slider = SLIDER_IDLE;
 }
@@ -281,5 +267,4 @@ Slider::Slider(float posX, float posY, const std::string_view text)
     : Widget(posX, posY), m_text{ text }
 {
     clearSlider();
- 
 }

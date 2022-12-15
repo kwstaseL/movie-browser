@@ -8,10 +8,10 @@ void Dock::update()
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
-	float mx{ graphics::windowToCanvasX(ms.cur_pos_x) };
-	float my{ graphics::windowToCanvasY(ms.cur_pos_y) };
+	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
+	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 	
-	if (contains(mx, my)) 
+	if (contains(mouse_X, mouse_Y)) 
 	{
 		Pressed = true;
 

@@ -1,12 +1,12 @@
 #include "ResetFilterButton.h"
-#include "Slider.h"
+
 
 void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
 {
 	for (const auto& movie : movie_list)
 	{
 		movie->setDisabled(false);
-		movie->setHasGenre(true);
+		movie->sethasFilteredGenre(true);
 		s_scanned_genres.clear();
 	}
 }
@@ -34,10 +34,10 @@ void ResetFilterButton::update()
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
-	float mx{ graphics::windowToCanvasX(ms.cur_pos_x) };
-	float my{ graphics::windowToCanvasY(ms.cur_pos_y) };
+	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
+	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
-	if (contains(mx, my))
+	if (contains(mouse_X, mouse_Y))
 	{
 		m_button_state = BUTTON_HIGHLIGHTED;
 
@@ -52,13 +52,13 @@ void ResetFilterButton::update()
 
 			m_button_state = BUTTON_PRESSED;
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("button.wav"), 0.5f);
-			setAction(true);
+			setActionTriggered(true);
 		}
 		if (ms.button_left_released) //Button was pressed and now is released
 		{
 			//filter
 			m_button_state = BUTTON_IDLE;
-			setAction(false);
+			setActionTriggered(false);
 			releaseFocus();
 			setOperating(false);
 		}

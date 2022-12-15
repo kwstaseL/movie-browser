@@ -22,8 +22,6 @@ private:
 
 	gui_state_t m_state{ STATUS_STARTED };
 
-	Movie* clickedMovie{ nullptr };
-
 	graphics::Brush br;
 
 	GUI() {};
@@ -32,9 +30,10 @@ private:
 
 	static inline GUI* s_gui{};
 
+	Movie* clickedMovie{ nullptr };
+
 	Dock* dock{ nullptr };
 
-	//Here we use a vector as its efficient for our purpose
 	std::vector<Movie*> movie_list;
 	std::vector<Widget*> widgets;
 

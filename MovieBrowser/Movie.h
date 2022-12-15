@@ -14,8 +14,6 @@ struct Box
 {
 private:
 
-	bool m_active{ false };
-
 	float m_posX{};
 	float m_posY{};
 
@@ -28,9 +26,6 @@ public:
 
 	int getPosX() const { return m_posX; }
 	int getPosY() const { return m_posY; }
-
-	bool isActive() const { return m_active; }
-	void setActive(bool a) { m_active = a; }
 
 };
 
@@ -63,7 +58,7 @@ private:
 	bool m_disabled{ false };
 	bool m_clickTriggered{ false };
 	bool m_skip{ false };
-	bool hasGenre{ true };
+	bool hasFilteredGenre{ true };
 
 	int lastYearComparedfromTo{2020};
 	int lastYearComparedFrom{1950};
@@ -112,8 +107,8 @@ public:
 	void setActive(bool a) { m_active = a; }
 	bool isActive() const { return m_active; }
 
-	void setHasGenre(bool g) { hasGenre = g; }
-	bool getHasGenre() const { return hasGenre; }
+	void sethasFilteredGenre(bool g) { hasFilteredGenre = g; }
+	bool gethasFilteredGenre() const { return hasFilteredGenre; }
 
 	void setLastYearComparedfromTo(int y) { lastYearComparedfromTo = y; }
 	int getLastYearComparedfromTo() const { return lastYearComparedfromTo; }
@@ -126,7 +121,6 @@ public:
 	const std::string& getDate() const;
 	const std::string& getDir() const;
 	const std::string& getProt() const;
-
 };
 
 #endif

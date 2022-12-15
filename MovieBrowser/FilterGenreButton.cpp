@@ -12,7 +12,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 	for (const auto& movie : movie_list)
 	{
 		movie->setDisabled(true);
-		movie->setHasGenre(false);
+		movie->sethasFilteredGenre(false);
 		movie->resetGenreCount();
 	}
 
@@ -25,7 +25,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 			if ((movie->getGenreCount() == (s_scanned_genres.size())) && !movie->isSkipped() && movie->isDisabled())
 			{
 				movie->setDisabled(false);
-				movie->setHasGenre(true);
+				movie->sethasFilteredGenre(true);
 			}
 		}
 	}
@@ -48,8 +48,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 			{
 				movie->setDisabled(false);
 			}
-			movie->setHasGenre(true);
-			
+			movie->sethasFilteredGenre(true);
 		}
 	}
 }
@@ -89,10 +88,10 @@ void FilterGenreButton::update()
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
-	float mx{ graphics::windowToCanvasX(ms.cur_pos_x) };
-	float my{ graphics::windowToCanvasY(ms.cur_pos_y) };
+	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
+	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
-	if (contains(mx, my))
+	if (contains(mouse_X, mouse_Y))
 	{
 		m_button_state = BUTTON_HIGHLIGHTED;
 
@@ -107,13 +106,13 @@ void FilterGenreButton::update()
 
 			m_button_state = BUTTON_PRESSED;
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("button.wav"), 0.5f);
-			setAction(true);
+			setActionTriggered(true);
 		}
 		if (ms.button_left_released) //Button was pressed and now is released
 		{
 			//filter
 			m_button_state = BUTTON_IDLE;
-			setAction(false);
+			setActionTriggered(false);
 			releaseFocus();
 			setOperating(false);
 		}
@@ -131,9 +130,7 @@ void FilterGenreButton::draw()
 		return;
 	}
 
-	float highlight = 0.2f * m_highlighted;
-
-	SETCOLOR(brush.fill_color, highlight, highlight, highlight);
+	SETCOLOR(brush.fill_color, 0.2f * m_highlighted, 0.2f * m_highlighted, 0.2f * m_highlighted);
 	brush.outline_opacity = 0.0f;
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_Genrebutton_width + 0.1, m_Genrebutton_height + 0.1, brush);
 

@@ -98,12 +98,12 @@ void GUI::updateStartedScreen()
 //Actual GUI drawing
 void GUI::drawStartedScreen()
 {
+
 	//Background
 	br.fill_opacity = 0.5f;
 	br.outline_opacity = 0.0f;
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::BACKGROUND);
 	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 2, CanvasConst::CANVAS_HEIGHT / 2, CanvasConst::CANVAS_WIDTH, CanvasConst::CANVAS_HEIGHT, br);
-
 
 	for (const auto& movie : movie_list)
 	{
@@ -130,8 +130,6 @@ void GUI::drawStartedScreen()
 		}
 
 	}
-
-	
 
 }
 

@@ -18,6 +18,11 @@ Movie::Movie(const std::string_view name, const std::string_view desc, const std
 
 void Movie::draw()
 {
+	if (isDisabled())
+	{
+		return;
+	}
+
 	m_glow =  0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted;		//This is for our glow when doing mouse over movie
 	m_highlight = 0.2f * m_highlighted + m_glow * 0.5f ;									//If we mouse over a movie, then it gets highlighted
 
@@ -39,6 +44,11 @@ void Movie::draw()
 
 void Movie::update()
 {
+
+	if (isDisabled())
+	{
+		return;
+	}
 
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);	//Fills our ms state, ms inside has states of our mouse , button left pressed, button left down..

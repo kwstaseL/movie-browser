@@ -4,7 +4,7 @@
 
 void Dock::update()
 {
-
+	
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 

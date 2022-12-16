@@ -23,6 +23,7 @@ void Dock::update()
 		}
 
 		height += 0.01f*graphics::getDeltaTime();
+
 		if (height > 6.0f)
 		{
 			height = 6.0f;

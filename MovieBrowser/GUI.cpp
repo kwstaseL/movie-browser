@@ -62,8 +62,21 @@ void GUI::updateStartedScreen()
 		{
 			widget->update();
 
+			if (lastActiveWidget)
+			{
+				if (lastActiveWidget->getID() == 11)
+				{
+					if (widget->getID() == 10 || widget->getID() == 9)
+					{
+						Slider* s = dynamic_cast<Slider*>(widget);
+						s->clearSlider();
+					}
+				}
+			}
+			
 			if (widget->actionTriggered() && !widget->isOperating())
 			{
+				lastActiveWidget = widget;
 				widget->setOperating(true);
 				widget->takeAction(movie_list);
 			}

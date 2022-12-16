@@ -55,12 +55,12 @@ private:
 	bool contains(float x, float y) const;
 
 	void takeAction(const std::vector<Movie*>& movie_list) override;
-	void clearSlider();
+
 
 
 public:
 
-
+	void clearSlider();
 	Slider(float posX, float posY, const std::string_view text);
 	virtual ~Slider() = default;
 

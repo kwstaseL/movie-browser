@@ -3,6 +3,7 @@
 
 void Slider::update()
 {
+
     m_height += 0.008f * graphics::getDeltaTime();
 
     if (m_height > 4.0f)
@@ -78,7 +79,6 @@ void Slider::update()
         }
         else if ((ms.button_left_released || !ms.dragging) && m_status_slider == SLIDER_DRAGGING)
         {
-            std::cout << "yo";
             releaseFocus();
             m_status_slider = SLIDER_RELEASED;
             box.setActive(true);
@@ -154,6 +154,7 @@ bool Slider::contains(float x, float y) const
 
 void Slider::takeAction(const std::vector<Movie*>& movie_list)
 {
+
     if (m_uid == 9) //From >= m_year
     {
         for (const auto& movie : movie_list)
@@ -222,122 +223,3 @@ Slider::Slider(float posX, float posY, const std::string_view text)
 
 
 
-/*
-
-if (contains(mouse_X, mouse_Y))
-    {
-        box.setActive(true);
-
-        if (ms.dragging && box.isActive())          //FIX THIS
-        {
-            if (!requestFocus())
-            {
-                return;
-            }
-
-            if (mouse_X >= 16.0f && box.getPosX() >= 16.0f)
-            {
-                mouse_X = 16.0f;
-                m_year = 2020;
-            }
-
-            if (mouse_X <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
-            {
-                mouse_X = m_positionX - 2.9f;
-                m_year = 1950;
-            }
-
-            box.setPosX(mouse_X);
-
-            m_status_slider = SLIDER_DRAGGING;
-
-            if (temp < box.getPosX())
-            {
-                m_year += 10;
-            }
-            else if (temp > box.getPosX())
-            {
-                m_year -= 10;
-            }
-            else {
-
-                m_year += 0;
-            }
-
-            if (box.getPosX() >= m_positionX + 3.5f)
-            {
-                box.setPosX(m_positionX + 3.5f);
-            }
-            if (box.getPosX() <= m_positionX - 2.9f)
-            {
-                box.setPosX(m_positionX - 2.9f);
-            }
-        }
-        if (ms.button_left_released)
-        {
-            releaseFocus();
-            box.setActive(false);
-            m_status_slider = SLIDER_RELEASED;
-            setActionTriggered(true);
-        }
-    }
-    else
-    {
-        if (m_status_slider == SLIDER_DRAGGING)
-        {
-
-            if (!requestFocus())
-            {
-                return;
-            }
-
-            if (mouse_X >= 16.0f && box.getPosX() >= 16.0f)
-            {
-                mouse_X = 16.0f;
-                m_year = 2020;
-            }
-
-            if (mouse_X <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
-            {
-                mouse_X = m_positionX - 2.9f;
-                m_year = 1950;
-            }
-
-            box.setPosX(mouse_X);
-
-            if (temp < box.getPosX())
-            {
-                m_year += 10;
-            }
-            else if (temp > box.getPosX())
-            {
-                m_year -= 10;
-            }
-            else {
-
-                m_year += 0;
-            }
-
-            if (box.getPosX() >= m_positionX + 3.5f)
-            {
-                box.setPosX(m_positionX + 3.5f);
-            }
-            if (box.getPosX() <= m_positionX - 2.9f)
-            {
-                box.setPosX(m_positionX - 2.9f);
-            }
-            if (!ms.dragging)
-            {
-                releaseFocus();
-                box.setActive(false);
-                m_status_slider = SLIDER_RELEASED;
-                setActionTriggered(true);
-            }
-        }
-    }
-
-
-
-
-
-*/

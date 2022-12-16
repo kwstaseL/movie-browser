@@ -24,6 +24,8 @@ private:
 
 	graphics::Brush br;
 
+	Widget* lastActiveWidget;
+
 	GUI() {};
 	GUI(const GUI& other) = delete;
 	GUI& operator=(const GUI&) = delete;

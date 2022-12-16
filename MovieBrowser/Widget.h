@@ -36,6 +36,8 @@ protected:
 
 public:
 
+	void setActionTriggered(bool action) { m_action = action; }
+
 	virtual void update() = 0;
 	virtual void draw() = 0;
 
@@ -43,11 +45,12 @@ public:
 	virtual void setOperating(bool o) { operating = o; }
 
 	virtual bool actionTriggered() const { return m_action; }
-	virtual void setActionTriggered(bool action) { m_action = action; }
+
 	virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
 
+	virtual int getID() const { return m_uid; }
+
 	virtual void setVisibility(bool v) { m_visible = v; }
-	virtual bool getVisibility() const { return m_visible; }
 
 	Widget(float posX, float posY);
 	virtual ~Widget();

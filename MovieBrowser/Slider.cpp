@@ -28,10 +28,11 @@ void Slider::update()
 
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
     {
-        box.setActive(true);
 
-        if (ms.dragging && box.isActive())          //FIX THIS
+        if (ms.dragging)          //FIX THIS
         {
+            box.setActive(true);
+
             if (!requestFocus())
             {
                 return;
@@ -75,13 +76,15 @@ void Slider::update()
                 box.setPosX(m_positionX - 2.9f);
             }
         }
-        if (ms.button_left_released || !ms.dragging)
+        else if ((ms.button_left_released || !ms.dragging) && m_status_slider == SLIDER_DRAGGING)
         {
+            std::cout << "yo";
             releaseFocus();
-            box.setActive(false);
             m_status_slider = SLIDER_RELEASED;
+            box.setActive(true);
             setActionTriggered(true);
         }
+        
     }
   
 }

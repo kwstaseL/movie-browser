@@ -7,6 +7,9 @@ void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
 	{
 		movie->setDisabled(false);
 		movie->sethasFilteredGenre(true);
+		movie->setSkipped(false);
+		movie->setLastYearComparedFrom(1950);
+		movie->setLastYearComparedfromTo(2020);
 		s_scanned_genres.clear();
 	}
 }

@@ -7,6 +7,7 @@
 #include "ResetFilterButton.h"
 #include "FilterGenreButton.h"
 #include "Slider.h"
+#include "TextField.h"
 
 
 class GUI

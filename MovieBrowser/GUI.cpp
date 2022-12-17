@@ -1,5 +1,4 @@
 #include "GUI.h"
-
 //DONE
 
 void GUI::draw()	//Drawing of all our classes
@@ -62,15 +61,20 @@ void GUI::updateStartedScreen()
 		{
 			widget->update();
 
+			//Checking if the last active widget was a clear "filter" widget, so we can reset the sliders position
 			if (lastActiveWidget)
 			{
 				if (lastActiveWidget->getID() == 11)
 				{
-					if (widget->getID() == 10 || widget->getID() == 9)
+					for (const auto& w : widgets)
 					{
-						Slider* s = dynamic_cast<Slider*>(widget);
-						s->clearSlider();
+						if (w->getID() == 10 || w->getID() == 9)
+						{
+							Slider* s = dynamic_cast<Slider*>(w);
+							s->clearSlider();
+						}
 					}
+					lastActiveWidget = nullptr;
 				}
 			}
 			

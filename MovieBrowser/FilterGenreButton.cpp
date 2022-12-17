@@ -55,6 +55,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 
 void FilterGenreButton::createGenreMap(const std::vector<Movie*>& movie_list)
 {
+
 	for (const auto& movie : movie_list)
 	{
 		for (const auto& genre : movie->genres)

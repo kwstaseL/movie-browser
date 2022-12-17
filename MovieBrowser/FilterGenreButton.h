@@ -13,7 +13,7 @@ private:
 
 	static inline genreMap s_genreMap;
 
-	bool genreMapCreated{ false };
+	static inline bool genreMapCreated{ false };
 
 	void filterByGenre(const std::vector<Movie*>& movie_list);
 

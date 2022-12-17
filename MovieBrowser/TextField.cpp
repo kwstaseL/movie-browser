@@ -1,62 +1,58 @@
-#ifndef TEXTFIELD_H
-#define TEXTFIELD_H
+#include "TextField.h"
 
-#include "Widget.h"
-
-/*struct TextBox
+void TextField::draw()
 {
-private:
+	if (!m_visible)
+	{
+		return;
+	}
 
-	float m_positionX{};
-	float m_positionY{};
+	graphics::Brush br;
 
-	bool m_active{ false };
-	bool m_pressed{ false };
+	SETCOLOR(br.fill_color, 0.5f, 0.5f, 0.5f);
+	graphics::drawRect(m_positionX, m_positionY + m_height, 4.0f, 0.5f, br);
 
-public:
+	SETCOLOR(br.fill_color, 0.0f, 0.0f, 0.0f);
+	graphics::drawText(m_positionX - 2.0f, m_positionY + 0.5f, 0.3f, m_text, br);
+}
 
-	float getPosX() const { return m_positionX; }
-	float setPosX(float x) { m_positionX = x; }
-
-	float getPosY() const { return m_positionY; }
-	float setPosY(float y) { m_positionY = y; }
-
-	bool getActive() const { return m_active; }
-	bool setActive(bool active) { m_active = m_active; }
-
-}; */
-
-class TextField final : public Widget
+void TextField::update()
 {
-private:
+	m_height += 0.008f * graphics::getDeltaTime();
 
-	bool m_active{ false };
-	bool m_pressed{ false };
-	const std::string m_text;
-	float m_height{ 0.0f };
+	if (m_height > 4.0f)
+	{
+		m_height = 4.0f;
+	}
 
-public:
+	if (!m_visible)
+	{
+		m_height = 0.0f;
+		return;
+	}
 
-	void draw() override;
-	void update() override;
+	graphics::MouseState ms;
+	graphics::getMouseState(ms);
 
-	void takeAction(const std::vector<Movie*>& movie_list) override;
-
-	bool contains(float x, float y) const;
-
-	float getPosX() const { return m_positionX; }
-	float setPosX(float x) { m_positionX = x; }
-
-	float getPosY() const { return m_positionY; }
-	float setPosY(float y) { m_positionY = y; }
-
-	bool getActive() const { return m_active; }
-	bool setActive(bool active) { m_active = m_active; }
-
-	void deleteText();
-
-	TextField(float posX, float posY, const std::string_view text);
-};
+	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
+	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
 
-#endif
+}
+
+void TextField::takeAction(const std::vector<Movie*>& movie_list)
+{
+}
+
+bool TextField::contains(float x, float y) const 
+{
+	return FunctionsConst::distance(x, y, m_positionX, m_positionY);
+}
+
+void TextField::deleteText() {
+
+}
+
+TextField::TextField(float posX, float posY, const std::string_view text)
+	:Widget(posX, posY)
+{}

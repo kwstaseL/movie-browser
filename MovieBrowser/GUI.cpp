@@ -39,7 +39,7 @@ void GUI::update()	//Updating of all our classes
 void GUI::updateStartedScreen()
 {
 	//For every movie and for our dock, update its state
-	for (const auto& movie : movie_list)
+	for (auto& movie : movie_list)
 	{
 		if (movie)
 		{
@@ -77,7 +77,7 @@ void GUI::updateStartedScreen()
 					lastActiveWidget = nullptr;
 				}
 			}
-			
+
 			if (widget->actionTriggered() && !widget->isOperating())
 			{
 				lastActiveWidget = widget;
@@ -91,7 +91,7 @@ void GUI::updateStartedScreen()
 	{
 		dock->update();
 	}
-	
+
 	for (const auto& widget : widgets)
 	{
 		for (const auto& movie : movie_list) {
@@ -139,7 +139,7 @@ void GUI::drawStartedScreen()
 	}
 
 
-	for (const auto& widget : widgets)	
+	for (const auto& widget : widgets)
 	{
 		if (widget)
 		{
@@ -207,40 +207,40 @@ void GUI::CreateDock()
 
 void GUI::CreateWidgets()
 {
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f-2.0f, "Action"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f-2.0f, "Drama"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f-2.0f, "Horror"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f-2.0f, "Adventure"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f-2.0f, "Fantasy"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f-2.0f, "Sci-Fi"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f-2.0f, "History"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f-2.0f, "Comedy"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f-2.0f, "Crime"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f - 2.0f, "Action"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f - 2.0f, "Drama"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f - 2.0f, "Horror"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Adventure"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Fantasy"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Sci-Fi"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f - 2.0f, "History"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f - 2.0f, "Comedy"));
+	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f - 2.0f, "Crime"));
 
 	widgets.push_back(new Slider(CanvasConst::CANVAS_WIDTH / 15 + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.20 - 12.0f - 2.0f, "From"));
 
 	widgets.push_back(new Slider(CanvasConst::CANVAS_WIDTH / 15 + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.10 - 12.0f - 2.0f, "To"));
 
 
-	widgets.push_back(new ResetFilterButton(CanvasConst::CANVAS_WIDTH / 15 + 18.0f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f-2.0f, "Clear Filter"));
-	
-	widgets.push_back(new TextField(CanvasConst::CANVAS_WIDTH / 15 + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - 12.0f - 2.0f, "Search"));
+	widgets.push_back(new ResetFilterButton(CanvasConst::CANVAS_WIDTH / 15 + 18.0f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Clear Filter"));
+
+	widgets.push_back(new TextField(CanvasConst::CANVAS_WIDTH / 15 + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.17f - 12.0f - 2.0f, "Search"));
 
 }
 
 void GUI::CreateMovies()
 {
 
-	movie_list.push_back(new Movie("Harry Potter and the Goblet Of Fire", "<Description>", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", "Daniel Radcliffe", { "Adventure","Fantasy"}));
-	movie_list.push_back(new Movie("The Godfather", "<Description>", AssetsConst::GODFATHER, "1972", "The director", "The protagonist", { "Crime","Drama"}));
-	movie_list.push_back(new Movie("Terminator", "<Description>", AssetsConst::TERMINATOR, "1984", "The director", "The protagonist", { "Action","Sci-Fi","Drama"}));
-	movie_list.push_back(new Movie("A New Hope", "<Description>", AssetsConst::ANEWHOPE, "1997", "The director", "The protagonist", { "Action","Adventure","Fantasy"}));
-	movie_list.push_back(new Movie("Schindlers List", "<Description>", AssetsConst::SCHINDLERSLIST, "1994", "The director", "The protagonist", { "Drama","History"}));
+	movie_list.push_back(new Movie("Harry Potter and the Goblet Of Fire", "<Description>", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", "Daniel Radcliffe", { "Adventure","Fantasy" }));
+	movie_list.push_back(new Movie("The Godfather", "<Description>", AssetsConst::GODFATHER, "1972", "The director", "The protagonist", { "Crime","Drama" }));
+	movie_list.push_back(new Movie("Terminator", "<Description>", AssetsConst::TERMINATOR, "1984", "The director", "The protagonist", { "Action","Sci-Fi","Drama" }));
+	movie_list.push_back(new Movie("A New Hope", "<Description>", AssetsConst::ANEWHOPE, "1997", "The director", "The protagonist", { "Action","Adventure","Fantasy" }));
+	movie_list.push_back(new Movie("Schindlers List", "<Description>", AssetsConst::SCHINDLERSLIST, "1994", "The director", "The protagonist", { "Drama","History" }));
 	movie_list.push_back(new Movie("The Chronicles Of Narnia", "<Description>", AssetsConst::NARNIA, "1984", "The director", "The protagonist", { "Adventure","Fantasy" }));
-	movie_list.push_back(new Movie("Home Alone 1", "<Description>", AssetsConst::HOMEALONE, "1980", "The director", "The protagonist", { "Comedy" , "Family"}));
-	movie_list.push_back(new Movie("Pulp Fiction", "<Description>", AssetsConst::PULPFICTION, "1995", "The director", "The protagonist", { "Crime", "Drama"}));
-	movie_list.push_back(new Movie("MidSommar", "<Description>", AssetsConst::MIDSOMMAR, "1995", "The director", "The protagonist", { "Horror","Drama"}));
-	movie_list.push_back(new Movie("The Invisible Man", "<Description>", AssetsConst::THEINVISIBLEMAN, "1995", "The director", "The protagonist", { "Horror", "Sci-Fi"}));
+	movie_list.push_back(new Movie("Home Alone 1", "<Description>", AssetsConst::HOMEALONE, "1980", "The director", "The protagonist", { "Comedy" , "Family" }));
+	movie_list.push_back(new Movie("Pulp Fiction", "<Description>", AssetsConst::PULPFICTION, "1995", "The director", "The protagonist", { "Crime", "Drama" }));
+	movie_list.push_back(new Movie("MidSommar", "<Description>", AssetsConst::MIDSOMMAR, "1995", "The director", "The protagonist", { "Horror","Drama" }));
+	movie_list.push_back(new Movie("The Invisible Man", "<Description>", AssetsConst::THEINVISIBLEMAN, "1995", "The director", "The protagonist", { "Horror", "Sci-Fi" }));
 
 	size_t size = movie_list.size();
 	for (size_t i = 0; i < 2; i++)
@@ -248,8 +248,8 @@ void GUI::CreateMovies()
 		for (size_t j = 0; j <= 4; j++)
 		{
 
-			movie_list[j + (i * 3 + i * 1 + i*1)]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - i * 6.3)));
-			movie_list[j + (i * 3 + i * 1 + i*1)]->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + j * 5.5);
+			movie_list[j + (i * 3 + i * 1 + i * 1)]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - i * 6.3)));
+			movie_list[j + (i * 3 + i * 1 + i * 1)]->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + j * 5.5);
 			size--;
 			if (j + (i * 3 + i * 1 + i * 1) == 7)
 			{
@@ -283,7 +283,7 @@ GUI::~GUI()
 	}
 
 	dock = nullptr;
-	movie_list.clear();	
+	movie_list.clear();
 	widgets.clear();
 }
 
@@ -316,4 +316,3 @@ void GUI::drawLoadingScreen()
 void GUI::updateLoadingScreen() const
 {
 }
-

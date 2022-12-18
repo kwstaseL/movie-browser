@@ -39,7 +39,7 @@ void GUI::update()	//Updating of all our classes
 void GUI::updateStartedScreen()
 {
 	//For every movie and for our dock, update its state
-	for (auto& movie : movie_list)
+	for (const auto& movie : movie_list)
 	{
 		if (movie)
 		{

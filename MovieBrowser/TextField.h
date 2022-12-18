@@ -30,10 +30,15 @@ class TextField final : public Widget
 {
 private:
 
+
 	bool m_active{ false };
 	bool m_pressed{ false };
+	bool m_typed{ false };
+	int m_counter{ 0 };
 	const std::string m_text;
 	float m_height{ 0.0f };
+	std::vector<char> characters;
+	int iterator{ 0 };
 
 public:
 
@@ -59,4 +64,4 @@ public:
 };
 
 
-#endif
+#endif		

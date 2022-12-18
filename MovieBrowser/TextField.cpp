@@ -12,8 +12,8 @@ void TextField::draw()
 	SETCOLOR(br.fill_color, 0.5f, 0.5f, 0.5f);
 	graphics::drawRect(m_positionX, m_positionY + m_height, 4.0f, 0.5f, br);
 
-	SETCOLOR(br.fill_color, 0.0f, 0.0f, 0.0f);
-	graphics::drawText(m_positionX - 2.0f, m_positionY + 0.5f, 0.3f, m_text, br);
+	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
+	graphics::drawText(m_positionX - 3.0f, m_positionY + 4.1f, 0.3f, m_text, br);
 }
 
 void TextField::update()
@@ -37,14 +37,43 @@ void TextField::update()
 	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
+	if (graphics::getKeyState(graphics::SCANCODE_A))
+	{
+		if (!m_typed)
+		{
+			m_counter = 0;
+			characters.push_back('a');
+			iterator++;
+			m_typed = true;
+		}
+	}
 
+	if (graphics::getKeyState(graphics::SCANCODE_BACKSPACE))
+	{
+		if (!characters.empty())
+		{
+			m_counter = 0;
+			characters.pop_back();
+			iterator--;
+		}
+	}
+
+	if (!characters.empty())
+	{
+		std::string string(characters.begin(), characters.end());
+		graphics::drawText(m_positionX - 1.9f, m_positionY + 4.1f, 0.3f, string, brush);
+	}
+
+	m_counter++;
+	if (m_counter > 20)
+		m_typed = false;
 }
 
 void TextField::takeAction(const std::vector<Movie*>& movie_list)
 {
 }
 
-bool TextField::contains(float x, float y) const 
+bool TextField::contains(float x, float y) const
 {
 	return FunctionsConst::distance(x, y, m_positionX, m_positionY);
 }
@@ -54,5 +83,5 @@ void TextField::deleteText() {
 }
 
 TextField::TextField(float posX, float posY, const std::string_view text)
-	:Widget(posX, posY)
+	:Widget(posX, posY), m_text{ text }
 {}

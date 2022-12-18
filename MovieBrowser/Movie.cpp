@@ -97,7 +97,6 @@ void Movie::update()
 bool Movie::contains(float x, float y) const
 {
 	return FunctionsConst::distance(x, y, m_pos[0], m_pos[1]) < MovieConst::Movie_Banner_Height*1.05f * MovieConst::Movie_Banner_Width* 0.14f;
-
 }
 
 const std::string& Movie::getName() const

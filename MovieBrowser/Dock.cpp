@@ -66,4 +66,5 @@ bool Dock::contains(float x, float y) const
 	
 	return FunctionsConst::distance(x, y, m_posX+0.7f, m_posY+m_offset) < ((((CanvasConst::CANVAS_WIDTH) / 2) + 5.0f))/2;
 
+
 }

@@ -32,6 +32,7 @@ private:
 public:
 
 	FilterGenreButton(float posX, float posY, const std::string_view text);
+	virtual ~FilterGenreButton() = default;
 
 };
 

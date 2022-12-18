@@ -1,4 +1,6 @@
 #include "TextField.h"
+#include <algorithm>
+
 
 void TextField::draw()
 {
@@ -18,6 +20,11 @@ void TextField::draw()
 
 void TextField::update()
 {
+	if (!m_visible)
+	{
+		return;
+	}
+
 	m_height += 0.008f * graphics::getDeltaTime();
 
 	if (m_height > 4.0f)
@@ -45,9 +52,10 @@ void TextField::update()
 			characters.push_back('a');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
-
 	if (graphics::getKeyState(graphics::SCANCODE_B))
 	{
 		if (!m_typed)
@@ -56,6 +64,8 @@ void TextField::update()
 			characters.push_back('b');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -67,6 +77,8 @@ void TextField::update()
 			characters.push_back('c');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -78,6 +90,8 @@ void TextField::update()
 			characters.push_back('d');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -89,6 +103,8 @@ void TextField::update()
 			characters.push_back('e');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -100,6 +116,8 @@ void TextField::update()
 			characters.push_back('f');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -111,6 +129,8 @@ void TextField::update()
 			characters.push_back('g');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -122,6 +142,8 @@ void TextField::update()
 			characters.push_back('h');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -133,6 +155,8 @@ void TextField::update()
 			characters.push_back('i');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -144,6 +168,8 @@ void TextField::update()
 			characters.push_back('j');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -155,6 +181,8 @@ void TextField::update()
 			characters.push_back('k');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -166,6 +194,8 @@ void TextField::update()
 			characters.push_back('l');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -177,6 +207,8 @@ void TextField::update()
 			characters.push_back('m');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -188,6 +220,8 @@ void TextField::update()
 			characters.push_back('n');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -199,6 +233,8 @@ void TextField::update()
 			characters.push_back('o');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -210,6 +246,8 @@ void TextField::update()
 			characters.push_back('p');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -221,6 +259,8 @@ void TextField::update()
 			characters.push_back('q');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -232,6 +272,8 @@ void TextField::update()
 			characters.push_back('r');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -243,6 +285,8 @@ void TextField::update()
 			characters.push_back('s');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -254,6 +298,8 @@ void TextField::update()
 			characters.push_back('t');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -265,6 +311,8 @@ void TextField::update()
 			characters.push_back('u');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -276,6 +324,8 @@ void TextField::update()
 			characters.push_back('v');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -287,6 +337,8 @@ void TextField::update()
 			characters.push_back('w');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -298,6 +350,8 @@ void TextField::update()
 			characters.push_back('x');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -309,6 +363,8 @@ void TextField::update()
 			characters.push_back('y');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -320,6 +376,8 @@ void TextField::update()
 			characters.push_back('z');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -331,6 +389,8 @@ void TextField::update()
 			characters.push_back(' ');
 			iterator++;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -342,6 +402,8 @@ void TextField::update()
 			characters.pop_back();
 			iterator--;
 			m_typed = true;
+			setActionTriggered(true);
+
 		}
 	}
 
@@ -359,16 +421,29 @@ void TextField::update()
 void TextField::takeAction(const std::vector<Movie*>& movie_list)
 {
 	std::string string(characters.begin(), characters.end());
+	std::transform(string.begin(), string.end(), string.begin(), ::tolower);
+
 	for (const auto& movie : movie_list)
 	{
 		if (graphics::getKeyState(graphics::SCANCODE_BACKSPACE))
 		{
-			movie->setDisabled(false);
+			
+			//Return all the movies that were enabled previo
 		}
-		if (movie->getName().find(string) == std::string::npos)
+
+		std::string movie_name = movie->getName();
+		std::transform(movie_name.begin(), movie_name.end(), movie_name.begin(), ::tolower);
+
+		if (movie_name.find(string) == std::string::npos)
+		{
+			
 			movie->setDisabled(true);
-		
+		}
+
+
 	}
+	m_active = false;
+	operating = false;
 }
 
 bool TextField::contains(float x, float y) const
@@ -376,7 +451,7 @@ bool TextField::contains(float x, float y) const
 	return FunctionsConst::distance(x, y, m_positionX, m_positionY);
 }
 
-void TextField::deleteText() 
+void TextField::deleteText()
 {
 	characters.clear();
 }

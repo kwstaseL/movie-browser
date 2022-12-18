@@ -33,11 +33,6 @@ class Movie
 {
 private:
 
-	/*
-
-	Improvements: Make m_image, name and m_age a char* or char[] for
-
-	*/
 	float m_pos[2];
 
 	Box informationBox;

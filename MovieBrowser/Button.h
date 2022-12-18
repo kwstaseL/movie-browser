@@ -24,8 +24,6 @@ protected:
 
 	static inline std::unordered_set<std::string> s_scanned_genres;
 
-	static inline std::unordered_set<Movie*> scanned_movies;
-
 	float m_height{ 0.0f };
 
 	bool contains(float x, float y) const; 

@@ -19,8 +19,7 @@ private:
 public:
 
 	ResetFilterButton(float posX, float posY, const std::string_view text);
-
-
+	virtual ~ResetFilterButton() = default;
 };
 
 

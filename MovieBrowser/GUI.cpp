@@ -62,7 +62,7 @@ void GUI::updateStartedScreen()
 			widget->update();
 
 			//Checking if the last active widget was a clear "filter" widget, so we can reset the sliders position
-			if (lastActiveWidget)
+		if (lastActiveWidget)
 			{
 				if (lastActiveWidget->getID() == 11)
 				{
@@ -234,7 +234,7 @@ void GUI::CreateMovies()
 	movie_list.push_back(new Movie("The Chronicles Of Narnia", "<Description>", AssetsConst::NARNIA, "1984", "The director", "The protagonist", { "Adventure","Fantasy" }));
 	movie_list.push_back(new Movie("Home Alone 1", "<Description>", AssetsConst::HOMEALONE, "1980", "The director", "The protagonist", { "Comedy" , "Family"}));
 	movie_list.push_back(new Movie("Pulp Fiction", "<Description>", AssetsConst::PULPFICTION, "1995", "The director", "The protagonist", { "Crime", "Drama"}));
-	movie_list.push_back(new Movie("MidSommar", "<Description>", AssetsConst::MIDSOMMAR, "1995", "The director", "The protagonist", { "Horror","Drama"}));
+	movie_list.push_back(new Movie("midsommar", "<Description>", AssetsConst::MIDSOMMAR, "1995", "The director", "The protagonist", { "Horror","Drama"}));
 	movie_list.push_back(new Movie("The Invisible Man", "<Description>", AssetsConst::THEINVISIBLEMAN, "1995", "The director", "The protagonist", { "Horror", "Sci-Fi"}));
 
 	size_t size = movie_list.size();

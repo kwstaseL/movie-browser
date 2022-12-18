@@ -2,12 +2,15 @@
 
 void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 {
+
 	if (!isGenreMapCreated())
 	{
 		createGenreMap(movie_list);
 	}
 
 	s_scanned_genres.insert(m_button_text);
+
+	hasAtLeastOneGenre = false;
 
 	for (const auto& movie : movie_list)
 	{
@@ -20,37 +23,37 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 	{
 		for (const auto& movie : s_genreMap[genre])
 		{
+			if (!movie->isDisabled())
+			{
+				continue;
+			}
 			movie->AddGenreCount(1);
+		}
+	}
 
-			if ((movie->getGenreCount() == (s_scanned_genres.size())) && !movie->isSkipped() && movie->isDisabled())
+	for (const auto& movie : movie_list)
+	{
+		if ((movie->getGenreCount() == (s_scanned_genres.size())) && !movie->isSkipped())
+		{
+			hasAtLeastOneGenre = true;
+			movie->setDisabled(false);
+			movie->sethasFilteredGenre(true);
+		}
+	}
+
+	if (!hasAtLeastOneGenre)
+	{
+
+		for (const auto& movie : s_genreMap[m_button_text])
+		{
+			if (!movie->isSkipped())
 			{
 				movie->setDisabled(false);
 				movie->sethasFilteredGenre(true);
 			}
 		}
 	}
-
-	int movies_without_genre = 0;
-
-	for (const auto& movie : movie_list)
-	{
-		if (movie->getGenreCount() != (s_scanned_genres.size()) && movie->isDisabled())
-		{
-			movies_without_genre++;
-		}
-	}
-
-	if (movies_without_genre == movie_list.size())
-	{
-		for (const auto& movie : s_genreMap[m_button_text])
-		{
-			if (!movie->isSkipped())
-			{
-				movie->setDisabled(false);
-			}
-			movie->sethasFilteredGenre(true);
-		}
-	}
+	releaseFocus();
 }
 
 void FilterGenreButton::createGenreMap(const std::vector<Movie*>& movie_list)
@@ -114,7 +117,6 @@ void FilterGenreButton::update()
 			//filter
 			m_button_state = button_state_t::BUTTON_IDLE;
 			setActionTriggered(false);
-			releaseFocus();
 			setOperating(false);
 		}
 	}

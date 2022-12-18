@@ -154,7 +154,11 @@ bool Slider::contains(float x, float y) const
 
 void Slider::takeAction(const std::vector<Movie*>& movie_list)
 {
+    filterByYear(movie_list);
+}
 
+void Slider::filterByYear(const std::vector<Movie*>& movie_list)
+{
     if (m_uid == 9) //From >= m_year
     {
         for (const auto& movie : movie_list)
@@ -162,12 +166,10 @@ void Slider::takeAction(const std::vector<Movie*>& movie_list)
             if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->getLastYearComparedfromTo()) && movie->gethasFilteredGenre())
             {
                 movie->setDisabled(false);
-                movie->setSkipped(false);
             }
             else
             {
                 movie->setDisabled(true);
-                movie->setSkipped(true);
             }
             movie->setLastYearComparedFrom(m_year);
         }

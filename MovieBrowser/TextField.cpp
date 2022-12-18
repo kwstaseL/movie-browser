@@ -1,4 +1,6 @@
 #include "TextField.h"
+#include <algorithm>
+#include <cctype>
 
 void TextField::draw()
 {
@@ -37,6 +39,7 @@ void TextField::update()
 	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
+
 	if (graphics::getKeyState(graphics::SCANCODE_A))
 	{
 		if (!m_typed)
@@ -45,6 +48,41 @@ void TextField::update()
 			characters.push_back('a');
 			iterator++;
 			m_typed = true;
+			m_action = true;
+		}
+	}
+	if (graphics::getKeyState(graphics::SCANCODE_B))
+	{
+		if (!m_typed)
+		{
+			m_counter = 0;
+			characters.push_back('b');
+			iterator++;
+			m_typed = true;
+			m_action = true;
+		}
+	}
+
+	if (graphics::getKeyState(graphics::SCANCODE_C))
+	{
+		if (!m_typed)
+		{
+			m_counter = 0;
+			characters.push_back('c');
+			iterator++;
+			m_typed = true;
+			m_action = true;
+		}
+	}
+	if (graphics::getKeyState(graphics::SCANCODE_D))
+	{
+		if (!m_typed)
+		{
+			m_counter = 0;
+			characters.push_back('c');
+			iterator++;
+			m_typed = true;
+			m_action = true;
 		}
 	}
 
@@ -71,6 +109,7 @@ void TextField::update()
 
 void TextField::takeAction(const std::vector<Movie*>& movie_list)
 {
+
 }
 
 bool TextField::contains(float x, float y) const
@@ -80,6 +119,7 @@ bool TextField::contains(float x, float y) const
 
 void TextField::deleteText() {
 
+	characters.clear();
 }
 
 TextField::TextField(float posX, float posY, const std::string_view text)

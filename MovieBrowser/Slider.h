@@ -56,6 +56,8 @@ private:
 
 	void takeAction(const std::vector<Movie*>& movie_list) override;
 
+	void filterByYear(const std::vector<Movie*>& movie_list);
+
 
 
 public:

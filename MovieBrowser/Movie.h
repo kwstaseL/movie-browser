@@ -42,7 +42,6 @@ private:
 
 	Box informationBox;
 
-	const std::string m_name{};
 	const std::string m_description{};
 	const std::string m_image{};
 	const std::string m_production_year{};
@@ -54,6 +53,7 @@ private:
 	
 	bool m_highlighted{ false };
 	bool m_PlaySound{ true };
+
 	bool m_active{ true };
 	bool m_disabled{ false };
 	bool m_clickTriggered{ false };
@@ -62,7 +62,6 @@ private:
 
 	int lastYearComparedfromTo{2020};
 	int lastYearComparedFrom{1950};
-
 
 	int m_genreCount{ 0 };
 
@@ -75,6 +74,8 @@ private:
 	class graphics::Brush br;
 
 public:
+
+	std::string m_name{};
 
 	std::vector<std::string> genres;
 

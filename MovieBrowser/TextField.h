@@ -6,24 +6,17 @@
 /*struct TextBox
 {
 private:
-
 	float m_positionX{};
 	float m_positionY{};
-
 	bool m_active{ false };
 	bool m_pressed{ false };
-
 public:
-
 	float getPosX() const { return m_positionX; }
 	float setPosX(float x) { m_positionX = x; }
-
 	float getPosY() const { return m_positionY; }
 	float setPosY(float y) { m_positionY = y; }
-
 	bool getActive() const { return m_active; }
 	bool setActive(bool active) { m_active = m_active; }
-
 }; */
 
 class TextField final : public Widget
@@ -64,4 +57,4 @@ public:
 };
 
 
-#endif		
+#endif

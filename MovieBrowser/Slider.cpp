@@ -16,7 +16,7 @@ void Slider::update()
         m_height = 0.0f;
         return;
     }
- 
+
     graphics::MouseState ms;
     graphics::getMouseState(ms);
 
@@ -30,7 +30,7 @@ void Slider::update()
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
     {
 
-        if (ms.dragging)          
+        if (ms.dragging)          //FIX THIS
         {
             box.setActive(true);
 
@@ -84,9 +84,9 @@ void Slider::update()
             box.setActive(true);
             setActionTriggered(true);
         }
-        
+
     }
-  
+
 }
 
 void Slider::draw()
@@ -118,26 +118,26 @@ void Slider::draw()
     else //To
     {
         br.texture = "";
-        graphics::drawRect(box.getPosX()+0.1f, box.getPosY() + m_height + 0.6f, 0.2f, 0.5f, br);
+        graphics::drawRect(box.getPosX() + 0.1f, box.getPosY() + m_height + 0.6f, 0.2f, 0.5f, br);
 
         graphics::drawText(box.getPosX() - 0.25f, box.getPosY() + m_height + 0.3f, 0.3f, std::to_string((m_year)), br);
     }
-    
+
 
 
 }
 
 bool Slider::contains(float x, float y) const
 {
- 
+
     if (m_uid == 9) //From
     {
-       if (x >= box.getPosX() - 0.1f * 0.21f && x <= box.getPosX() + 0.1f * 0.21f ||
-           y >= box.getPosY() + 4.05f + 0.3f - 0.1f * 0.5f && y <= box.getPosY() + 4.05f + 0.3f + 0.1f * 0.5f)
-       {
-          return true;
-       }
-          return false;
+        if (x >= box.getPosX() - 0.1f * 0.21f && x <= box.getPosX() + 0.1f * 0.21f ||
+            y >= box.getPosY() + 4.05f + 0.3f - 0.1f * 0.5f && y <= box.getPosY() + 4.05f + 0.3f + 0.1f * 0.5f)
+        {
+            return true;
+        }
+        return false;
     }
 
     if (m_uid == 10)    //To
@@ -149,7 +149,7 @@ bool Slider::contains(float x, float y) const
         }
         return false;
     }
-    
+
 }
 
 void Slider::takeAction(const std::vector<Movie*>& movie_list)
@@ -163,7 +163,7 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
     {
         for (const auto& movie : movie_list)
         {
-            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->getLastYearComparedfromTo()) 
+            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->getLastYearComparedfromTo())
                 && hasRequirements(movie))
             {
                 movie->setDisabled(false);
@@ -223,6 +223,7 @@ void Slider::clearSlider()
         box.setPosX(16.0f);
         box.setPosY(m_positionY - 0.56f);
     }
+    m_status_slider = SLIDER_IDLE;
 }
 
 Slider::Slider(float posX, float posY, const std::string_view text)
@@ -230,8 +231,3 @@ Slider::Slider(float posX, float posY, const std::string_view text)
 {
     clearSlider();
 }
-
-
-
-
-

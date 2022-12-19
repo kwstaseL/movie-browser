@@ -7,7 +7,7 @@ bool TextField::hasRequirements(const Movie* movie) const
 {
 	if (movie)
 	{
-		return movie->gethasFilteredGenre() && std::stoi(movie->getDate()) <= movie->getLastYearComparedfromTo();
+		return movie->gethasFilteredGenre() && std::stoi(movie->getDate()) <= movie->getLastYearComparedfromTo() && std::stoi(movie->getDate()) >= movie->getLastYearComparedFrom();
 	}
 	return false;
 }

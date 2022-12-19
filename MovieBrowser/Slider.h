@@ -60,6 +60,7 @@ private:
 
 	bool hasRequirements(const Movie* movie) const;
 
+	bool m_disabled{ false };
 
 public:
 

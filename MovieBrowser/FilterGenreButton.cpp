@@ -162,6 +162,6 @@ void FilterGenreButton::draw()
 }
 
 FilterGenreButton::FilterGenreButton(float posX, float posY, const std::string_view text)
-   : Button(posX, posY, text)
+	: Button(posX, posY, text)
 {
 }

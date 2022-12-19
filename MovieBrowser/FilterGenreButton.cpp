@@ -33,7 +33,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 
 	for (const auto& movie : movie_list)
 	{
-		if ((movie->getGenreCount() == (s_scanned_genres.size())) && !movie->isSkipped())
+		if ((movie->getGenreCount() == (s_scanned_genres.size())) && !movie->isSkipped() && movie->getHasFilteredText())
 		{
 			hasAtLeastOneGenre = true;
 			movie->setDisabled(false);
@@ -46,7 +46,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 
 		for (const auto& movie : s_genreMap[m_button_text])
 		{
-			if (!movie->isSkipped())
+			if (!movie->isSkipped() && movie->getHasFilteredText())
 			{
 				movie->setDisabled(false);
 				movie->sethasFilteredGenre(true);

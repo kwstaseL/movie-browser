@@ -54,6 +54,7 @@ private:
 	bool m_clickTriggered{ false };
 	bool m_skip{ false };
 	bool hasFilteredGenre{ true };
+	bool hasFilteredText{ true };
 
 	int lastYearComparedfromTo{2020};
 	int lastYearComparedFrom{1950};
@@ -111,6 +112,9 @@ public:
 
 	void setLastYearComparedFrom(int y) { lastYearComparedFrom = y; }
 	int getLastYearComparedFrom() const { return lastYearComparedFrom; }
+
+	bool getHasFilteredText() const {return hasFilteredText;}
+	void sethasFilteredText(bool t) { hasFilteredText = t; }
 
 	const std::string& getName() const;
 	const std::string& getDesc() const;

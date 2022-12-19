@@ -163,7 +163,8 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
     {
         for (const auto& movie : movie_list)
         {
-            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->getLastYearComparedfromTo()) && movie->gethasFilteredGenre())
+            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->getLastYearComparedfromTo())
+                && movie->gethasFilteredGenre() && movie->getHasFilteredText())
             {
                 movie->setDisabled(false);
             }
@@ -180,7 +181,7 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
         for (const auto& movie : movie_list)
         {
             if (std::stoi(movie->getDate()) <= m_year && (std::stoi(movie->getDate()) >= movie->getLastYearComparedFrom()) &&
-                !(movie->getLastYearComparedFrom() > m_year) && movie->gethasFilteredGenre())
+                !(movie->getLastYearComparedFrom() > m_year) && movie->gethasFilteredGenre() && movie->getHasFilteredText())
             {
                 movie->setDisabled(false);
                 movie->setSkipped(false);

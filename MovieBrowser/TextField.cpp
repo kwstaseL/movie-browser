@@ -1,5 +1,6 @@
 #include "TextField.h"
 #include <algorithm>
+#include <iostream>
 
 
 void TextField::draw()
@@ -402,9 +403,8 @@ void TextField::update()
 			characters.pop_back();
 			iterator--;
 			m_typed = true;
-			setActionTriggered(true);
-
 		}
+		setActionTriggered(true);
 	}
 
 	if (!characters.empty())
@@ -420,30 +420,44 @@ void TextField::update()
 
 void TextField::takeAction(const std::vector<Movie*>& movie_list)
 {
+	if (!requestFocus())
+	{
+		return;
+	}
+
 	std::string string(characters.begin(), characters.end());
 	std::transform(string.begin(), string.end(), string.begin(), ::tolower);
 
+
 	for (const auto& movie : movie_list)
 	{
-		if (graphics::getKeyState(graphics::SCANCODE_BACKSPACE))
-		{
-			
-			//Return all the movies that were enabled previo
-		}
-
 		std::string movie_name = movie->getName();
 		std::transform(movie_name.begin(), movie_name.end(), movie_name.begin(), ::tolower);
 
-		if (movie_name.find(string) == std::string::npos)
+		if (movie_name.find(string) != std::string::npos && graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty())
 		{
-			
-			movie->setDisabled(true);
+			if (movie->gethasFilteredGenre() && std::stoi(movie->getDate()) <= movie->getLastYearComparedfromTo())
+			{
+				movie->setDisabled(false);
+				movie->sethasFilteredText(true);
+			}
 		}
 
+		if (movie_name.find(string) == std::string::npos)
+		{
+			movie->setDisabled(true);
+			movie->sethasFilteredText(false);
+		}
+		else
+		{
+			movie->sethasFilteredText(true);
+		}
+		
 
 	}
-	m_active = false;
+	setActionTriggered(false);
 	operating = false;
+	releaseFocus();
 }
 
 bool TextField::contains(float x, float y) const

@@ -17,6 +17,8 @@ private:
 
 	bool hasAtLeastOneGenre{ false };
 
+	bool hasRequirements(const Movie* movie) const;
+
 	void filterByGenre(const std::vector<Movie*>& movie_list);
 
 	void createGenreMap(const std::vector<Movie*>& movie_list);

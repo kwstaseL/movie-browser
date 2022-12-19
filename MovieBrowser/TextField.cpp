@@ -3,6 +3,15 @@
 #include <iostream>
 
 
+bool TextField::hasRequirements(const Movie* movie) const
+{
+	if (movie)
+	{
+		return movie->gethasFilteredGenre() && std::stoi(movie->getDate()) <= movie->getLastYearComparedfromTo();
+	}
+	return false;
+}
+
 void TextField::draw()
 {
 	if (!m_visible)
@@ -436,7 +445,7 @@ void TextField::takeAction(const std::vector<Movie*>& movie_list)
 
 		if (movie_name.find(string) != std::string::npos && graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty())
 		{
-			if (movie->gethasFilteredGenre() && std::stoi(movie->getDate()) <= movie->getLastYearComparedfromTo())
+			if (hasRequirements(movie))
 			{
 				movie->setDisabled(false);
 				movie->sethasFilteredText(true);

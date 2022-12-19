@@ -14,6 +14,8 @@ private:
 	bool m_pressed{ false };
 	bool m_typed{ false };
 
+	bool hasRequirements(const Movie* movie) const;
+
 	int m_counter{ 0 };
 
 	const std::string m_text;

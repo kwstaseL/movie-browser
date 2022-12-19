@@ -25,7 +25,7 @@ void Slider::update()
 
 
     //Based on slider id we will filter
-    int temp{ box.getPosX() };
+    float temp{ box.getPosX() };
 
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
     {
@@ -163,8 +163,8 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
     {
         for (const auto& movie : movie_list)
         {
-            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->getLastYearComparedfromTo())
-                && movie->gethasFilteredGenre() && movie->getHasFilteredText())
+            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->getLastYearComparedfromTo()) 
+                && hasRequirements(movie))
             {
                 movie->setDisabled(false);
             }
@@ -181,7 +181,7 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
         for (const auto& movie : movie_list)
         {
             if (std::stoi(movie->getDate()) <= m_year && (std::stoi(movie->getDate()) >= movie->getLastYearComparedFrom()) &&
-                !(movie->getLastYearComparedFrom() > m_year) && movie->gethasFilteredGenre() && movie->getHasFilteredText())
+                !(movie->getLastYearComparedFrom() > m_year) && hasRequirements(movie))
             {
                 movie->setDisabled(false);
                 movie->setSkipped(false);
@@ -198,6 +198,15 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
     setActionTriggered(false);
     setOperating(false);
     m_status_slider = SLIDER_IDLE;
+}
+
+bool Slider::hasRequirements(const Movie* movie) const
+{
+    if (movie)
+    {
+        return movie->gethasFilteredGenre() && movie->getHasFilteredText();
+    }
+    return false;
 }
 
 void Slider::clearSlider()

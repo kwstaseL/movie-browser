@@ -37,8 +37,8 @@ namespace constants
 
     namespace Movie_Sizes
     {
-        inline constexpr float Movie_Banner_Height{4.15};
-        inline constexpr float Movie_Banner_Width{3.5};
+        inline constexpr float Movie_Banner_Height{4.15f};
+        inline constexpr float Movie_Banner_Width{3.5f};
     }
 
     namespace ASSETS

@@ -17,8 +17,8 @@ private:
 public:
 
 	bool isActive() const { return m_active; }
-	int getPosX() const { return m_positionX; }
-	int getPosY() const { return m_positionY; }
+	float getPosX() const { return m_positionX; }
+	float getPosY() const { return m_positionY; }
 	
 	void setPosX(int x) { m_positionX = x; }
 	void setPosY(int y) { m_positionY = y; }
@@ -58,6 +58,7 @@ private:
 
 	void filterByYear(const std::vector<Movie*>& movie_list);
 
+	bool hasRequirements(const Movie* movie) const;
 
 
 public:

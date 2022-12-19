@@ -24,8 +24,8 @@ public:
 	void setPosX(float x) { m_posX = x; }
 	void setPosY(float y) { m_posY = y; }
 
-	int getPosX() const { return m_posX; }
-	int getPosY() const { return m_posY; }
+	float getPosX() const { return m_posX; }
+	float getPosY() const { return m_posY; }
 
 };
 

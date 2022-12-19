@@ -30,7 +30,7 @@ void Slider::update()
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
     {
 
-        if (ms.dragging)          //FIX THIS
+        if (ms.dragging)          
         {
             box.setActive(true);
 

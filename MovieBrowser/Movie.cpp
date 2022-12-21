@@ -1,14 +1,16 @@
 #include "Movie.h"
 
-
-//DONE
-
-Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view image, const std::string_view year, const std::string_view dir, const std::string_view prot, const std::vector<std::string>& genre)
-	: m_name(name), m_description(desc), m_image(image), m_production_year(year), m_director(dir), m_protagonist(prot)
+Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view image, const std::string_view year, const std::string_view dir, const std::vector<std::string>& prot, const std::vector<std::string>& genre)
+	: m_name(name), m_description(desc), m_image(image), m_production_year(year), m_director(dir)
 {
-	for (auto& g : genre)
+	for (const auto& g : genre)
 	{
 		genres.push_back(g);
+	}
+
+	for (const auto& pr : prot)
+	{
+		m_protagonists.push_back(pr);
 	}
 
 	informationBox.setPosX(CanvasConst::CANVAS_WIDTH / 2);
@@ -86,10 +88,9 @@ void Movie::update()
 
 	if (!(informationBox.containsMovie(mx,my)))
 	{
-		if (ms.button_left_pressed)
-		{
-			m_clickTriggered = false;
-		}
+		
+		m_clickTriggered = false;
+		
 	}
 
 }
@@ -119,12 +120,6 @@ const std::string& Movie::getDir() const
 	return m_director;
 }
 
-const std::string& Movie::getProt() const
-{
-	return m_protagonist;
-}
-
-
 
 void Movie::DisplayInfo()
 {
@@ -132,16 +127,27 @@ void Movie::DisplayInfo()
 	graphics::Brush br;
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 
+	graphics::setFont("OpenSans-Semibold.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f - 1.0f, CanvasConst::CANVAS_HEIGHT / 1.35f, 1.0f, getName(), br);
+
+	graphics::setFont("OpenSans-Regular.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f, CanvasConst::CANVAS_HEIGHT / 1.20f, 0.5f, getDate(), br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f, CanvasConst::CANVAS_HEIGHT / 1.15f, 0.5f, getDir(), br);
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f, CanvasConst::CANVAS_HEIGHT / 1.10f, 0.5f, getProt(), br);
 
+
+	graphics::setFont("OpenSans-Regular.ttf");
 	float offset{ 0.0f };
+	for (const auto& protagonist : m_protagonists)
+	{
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f + offset, CanvasConst::CANVAS_HEIGHT / 1.10f, 0.5f, protagonist, br);
+		offset += protagonist.size()/3;
+	}
+
+	offset = 0.0f;
 	for (const auto& g : genres)
 	{
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15+offset, CanvasConst::CANVAS_HEIGHT / 1.28, 0.5f, g, br);
-		offset += 2.5f;
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f+offset, CanvasConst::CANVAS_HEIGHT / 1.28, 0.5f, g, br);
+		offset += g.size()/2.9f;
 	}
 
 }
@@ -160,42 +166,47 @@ void Movie::drawInformation()
 	brush.texture = "";
 	brush.fill_opacity = 0.7f;
 	brush.outline_opacity = 0.3f;
-	graphics::drawRect(informationBox.getPosX(),informationBox.getPosY(), CanvasConst::CANVAS_WIDTH / 1.2, CanvasConst::CANVAS_HEIGHT / 1.2, brush);
+	graphics::drawRect(informationBox.getPosX(), informationBox.getPosY(), CanvasConst::CANVAS_WIDTH / 1.2, CanvasConst::CANVAS_HEIGHT / 1.2, brush);
 
 	//Drawing title
+	graphics::setFont("OpenSans-Semibold.ttf");
 	graphics::Brush br;
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f, CanvasConst::CANVAS_HEIGHT / 6.0f, 1.0f, getName(), br);
 
+
 	//Drawing picture
 	br.outline_opacity = 0.5f;
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
-	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 5.5f, CanvasConst::CANVAS_HEIGHT / 3.8f, MovieConst::Movie_Banner_Width+0.7f, MovieConst::Movie_Banner_Height+0.7f, br);
+	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 5.5f, CanvasConst::CANVAS_HEIGHT / 3.8f, MovieConst::Movie_Banner_Width + 0.7f, MovieConst::Movie_Banner_Height + 0.7f, br);
 
 	//Description
+	graphics::setFont("OpenSans-Regular.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 2.0f,0.5f,"Description: ", br);
-
-	
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.75f, 0.5f, getDesc(), br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f, 0.5f, getDesc(), br);
 
 
-	//Drawing exit cross
-	/*
-	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::CROSS);
-	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 20.0f, CanvasConst::CANVAS_HEIGHT / 2.0f, 1.0f,1.0f, br);
-	*/
 
 	//Drawing info
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, "-Production Year: " + getDate(), br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size()/2.5f + 1.10f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, + "(" + getDate() + ")", br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f, CanvasConst::CANVAS_HEIGHT / 3.3f, 0.5f, "-Directors: " + getDir(), br);
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, "-Protagonists: " + getProt(), br);
 
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f + 7.0f, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, "Genre: ", br);
-	float offset{ 9.0f };
+
+
+	float offset{ 3.5f };
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, "-Protagonists: ", br);
+	for (const auto& protagonist : m_protagonists)
+	{
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + offset, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, protagonist, br);
+		offset += protagonist.size()/3.7f;
+	}
+
+	offset = 3.5f;
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, "Genre: ", br);
 	for (const auto& g : genres)
 	{
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f + offset, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, g, br);
-		offset += 2.3f;
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 4.1f + offset, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, g, br);
+		offset += g.size() / 2.9f;
 	}
 }
 

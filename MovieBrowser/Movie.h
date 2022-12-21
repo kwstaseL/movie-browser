@@ -35,13 +35,16 @@ private:
 
 	float m_pos[2];
 
+	std::string m_name{};
+
 	Box informationBox;
 
 	const std::string m_description{};
 	const std::string m_image{};
 	const std::string m_production_year{};
 	const std::string m_director{};
-	const std::string m_protagonist{};
+
+	std::vector<std::string> m_protagonists;
 
 	float m_glow{};
 	float m_highlight{};
@@ -49,9 +52,7 @@ private:
 	bool m_highlighted{ false };
 	bool m_PlaySound{ true };
 
-	bool m_active{ true };
-	bool m_disabled{ false };
-	bool m_clickTriggered{ false };
+	
 	bool m_skip{ false };
 	bool hasFilteredGenre{ true };
 	bool hasFilteredText{ true };
@@ -60,6 +61,10 @@ private:
 	int lastYearComparedFrom{1950};
 
 	int m_genreCount{ 0 };
+
+	bool m_active{ true };
+	bool m_disabled{ false };
+	bool m_clickTriggered{ false };
 
 	bool contains(float x, float y) const;
 
@@ -71,13 +76,11 @@ private:
 
 public:
 
-	std::string m_name{};
-
 	std::vector<std::string> genres;
 
 	Movie(const std::string_view n, const std::string_view desc, 
 		const std::string_view image, const std::string_view year, const std::string_view dir,
-		const std::string_view prot, const std::vector<std::string>& genre);
+		const std::vector<std::string>& prot, const std::vector<std::string>& genre);
 
 	void draw();
 	void update();

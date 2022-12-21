@@ -1,6 +1,5 @@
 #include "TextField.h"
 #include <algorithm>
-#include <iostream>
 
 
 bool TextField::hasRequirements(const Movie* movie) const
@@ -25,16 +24,16 @@ void TextField::draw()
 	graphics::drawRect(m_positionX, m_positionY + m_height, 4.0f, 0.5f, br);
 
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
-	graphics::drawText(m_positionX - 3.0f, m_positionY + 4.1f, 0.3f, m_text, br);
+
+	if (!textInvisible && characters.empty())
+	{
+		graphics::drawText(m_positionX - 0.8f, m_positionY + m_height + 0.1f, 0.3f, m_text, br);
+	}
+
 }
 
 void TextField::update()
 {
-	if (!m_visible)
-	{
-		return;
-	}
-
 	m_height += 0.008f * graphics::getDeltaTime();
 
 	if (m_height > 4.0f)
@@ -48,11 +47,21 @@ void TextField::update()
 		return;
 	}
 
+
+
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
 	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
+
+	if (contains(mouse_X, mouse_Y))
+	{
+		if (ms.button_left_pressed)
+		{
+			textInvisible = true;
+		}
+	}
 
 	if (graphics::getKeyState(graphics::SCANCODE_A))
 	{
@@ -60,7 +69,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('a');
-			iterator++;
+	
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -72,7 +81,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('b');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -85,7 +94,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('c');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -98,7 +107,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('d');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -111,7 +120,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('e');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -124,7 +133,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('f');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -137,7 +146,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('g');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -150,7 +159,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('h');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -163,7 +172,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('i');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -176,7 +185,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('j');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -189,7 +198,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('k');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -202,7 +211,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('l');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -215,7 +224,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('m');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -228,7 +237,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('n');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -241,7 +250,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('o');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -254,7 +263,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('p');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -267,7 +276,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('q');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -280,7 +289,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('r');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -293,7 +302,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('s');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -306,7 +315,6 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('t');
-			iterator++;
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -319,7 +327,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('u');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -332,7 +340,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('v');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -345,7 +353,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('w');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -358,7 +366,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('x');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -371,7 +379,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('y');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -384,7 +392,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('z');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -397,7 +405,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back(' ');
-			iterator++;
+			 
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -410,7 +418,6 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.pop_back();
-			iterator--;
 			m_typed = true;
 		}
 		setActionTriggered(true);
@@ -419,12 +426,13 @@ void TextField::update()
 	if (!characters.empty())
 	{
 		std::string string(characters.begin(), characters.end());
-		graphics::drawText(m_positionX - 1.9f, m_positionY + 4.1f, 0.3f, string, brush);
+		graphics::drawText(m_positionX - 1.9f, m_positionY + m_height +0.1f, 0.3f, string, brush);
 	}
 
 	m_counter++;
 	if (m_counter > 20)
 		m_typed = false;
+
 }
 
 void TextField::takeAction(const std::vector<Movie*>& movie_list)
@@ -435,13 +443,11 @@ void TextField::takeAction(const std::vector<Movie*>& movie_list)
 	}
 
 	std::string string(characters.begin(), characters.end());
-	std::transform(string.begin(), string.end(), string.begin(), ::tolower);
-
 
 	for (const auto& movie : movie_list)
 	{
 		std::string movie_name = movie->getName();
-		std::transform(movie_name.begin(), movie_name.end(), movie_name.begin(), ::tolower);
+		std::ranges::transform(movie_name.begin(), movie_name.end(), movie_name.begin(), ::tolower);
 
 		if (movie_name.find(string) != std::string::npos && graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty())
 		{
@@ -477,6 +483,7 @@ bool TextField::contains(float x, float y) const
 void TextField::deleteText()
 {
 	characters.clear();
+	textInvisible = false;
 }
 
 TextField::TextField(float posX, float posY, const std::string_view text)

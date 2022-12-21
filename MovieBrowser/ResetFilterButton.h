@@ -2,8 +2,6 @@
 #define RESET_FILTER_BUTTON_H
 
 #include "Button.h"
-#include "Slider.h"
-
 
 class ResetFilterButton final : public Button
 {

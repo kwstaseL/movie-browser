@@ -3,7 +3,6 @@
 
 void Slider::update()
 {
-
     m_height += 0.008f * graphics::getDeltaTime();
 
     if (m_height > 4.0f)

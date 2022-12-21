@@ -2,7 +2,6 @@
 #define WIDGET_H
 
 #include "Movie.h"
-#include <unordered_set>
 
 
 class Widget
@@ -23,7 +22,6 @@ protected:
 	bool operating{ false };
 	bool m_visible{ false };
 	bool m_action{ false };
-	bool m_disabled{ false };
 
 	static inline int s_focus{};
 	int m_uid{};

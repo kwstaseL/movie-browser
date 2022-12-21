@@ -181,8 +181,7 @@ void GUI::updatePressedMovieScreen()
 
 void GUI::init()
 {
-	graphics::setFont("FreeSans.ttf");
-
+	graphics::setFont("OpenSans-Regular.ttf");
 	CreateDock();
 	CreateMovies();
 	CreateWidgets();
@@ -219,23 +218,23 @@ void GUI::CreateWidgets()
 
 	widgets.push_back(new ResetFilterButton(CanvasConst::CANVAS_WIDTH / 15 + 18.0f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f-2.0f, "Clear Filter"));
 
-	widgets.push_back(new TextField(CanvasConst::CANVAS_WIDTH / 15 + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - 12.0f - 2.0f, "Search"));
+	widgets.push_back(new TextField(CanvasConst::CANVAS_WIDTH / 15 + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - 12.0f - 2.0f, "Search  Movie"));
 
 }
 
 void GUI::CreateMovies()
 {
 
-	movie_list.push_back(new Movie("Harry Potter and the Goblet Of Fire", "<Description>", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", "Daniel Radcliffe", { "Adventure","Fantasy"}));
-	movie_list.push_back(new Movie("The Godfather", "<Description>", AssetsConst::GODFATHER, "1972", "The director", "The protagonist", { "Crime","Drama"}));
-	movie_list.push_back(new Movie("Terminator", "<Description>", AssetsConst::TERMINATOR, "1984", "The director", "The protagonist", { "Action","Sci-Fi","Drama"}));
-	movie_list.push_back(new Movie("A New Hope", "<Description>", AssetsConst::ANEWHOPE, "1997", "The director", "The protagonist", { "Action","Adventure","Fantasy"}));
-	movie_list.push_back(new Movie("Schindlers List", "<Description>", AssetsConst::SCHINDLERSLIST, "1994", "The director", "The protagonist", { "Drama","History"}));
-	movie_list.push_back(new Movie("The Chronicles Of Narnia", "<Description>", AssetsConst::NARNIA, "1984", "The director", "The protagonist", { "Adventure","Fantasy" }));
-	movie_list.push_back(new Movie("Home Alone 1", "<Description>", AssetsConst::HOMEALONE, "1980", "The director", "The protagonist", { "Comedy" , "Family"}));
-	movie_list.push_back(new Movie("Pulp Fiction", "<Description>", AssetsConst::PULPFICTION, "1995", "The director", "The protagonist", { "Crime", "Drama"}));
-	movie_list.push_back(new Movie("MidSommar", "<Description>", AssetsConst::MIDSOMMAR, "1995", "The director", "The protagonist", { "Horror","Drama"}));
-	movie_list.push_back(new Movie("The Invisible Man", "<Description>", AssetsConst::THEINVISIBLEMAN, "1995", "The director", "The protagonist", { "Horror", "Sci-Fi"}));
+	movie_list.push_back(new Movie("Harry Potter and the Goblet Of Fire", "<Description>", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", { "Daniel Radcliffe","Rupert Grint","Richard Harris" }, { "Adventure", "Fantasy" }));
+	movie_list.push_back(new Movie("The Godfather", "<Description>", AssetsConst::GODFATHER, "1972", "Francis Ford Coppola", { "Marlon Brando", "Al Pacino", "James Caan" }, {"Crime","Drama"}));
+	movie_list.push_back(new Movie("Terminator", "<Description>", AssetsConst::TERMINATOR, "1984", "James Cameron", { "Arnold Schwarzenegger", "Linda Hamilton", "Michael Biehn" }, { "Action","Sci-Fi","Drama" }));
+	movie_list.push_back(new Movie("Star Wars: Episode IV - A New Hope", "<Description>", AssetsConst::ANEWHOPE, "1997", "George Lucas", { "Mark Hamill", "Harrison Ford", "Carrie Fisher" }, { "Action","Adventure","Fantasy" }));
+	movie_list.push_back(new Movie("Schindlers List", "<Description>", AssetsConst::SCHINDLERSLIST, "1994", "Steven Spielberg", { "Liam Neeson", "Ralph Fiennes", "Ben Kingsley" }, { "Drama","History" }));
+	movie_list.push_back(new Movie("The Chronicles Of Narnia", "<Description>", AssetsConst::NARNIA, "2005", "Andrew Adamson", { "Tilda Swinton","Geiorgie Henley","William Moseley"}, {"Adventure","Fantasy"}));
+	movie_list.push_back(new Movie("Home Alone", "<Description>", AssetsConst::HOMEALONE, "1980", "Chris Columbus", { "Macaulay Culkin", "Joey Pesci", "Danel Stern"}, {"Comedy" , "Family"}));
+	movie_list.push_back(new Movie("Pulp Fiction", "<Description>", AssetsConst::PULPFICTION, "1995", "Quentin Tarantino", { "John Travolta", "Uma Thurman", "Samuel L. Jackson" }, { "Crime", "Drama" }));
+	movie_list.push_back(new Movie("MidSommar", "A couple travels to Northern Europe to visit a rural hometown's fabled Swedish mid-summer festival. What begins as an idyllic retreat quickly devolves into an increasingly violent and bizarre competition at the hands of a pagan cult.", AssetsConst::MIDSOMMAR, "2019", "Ari Ster", { "Florence Pugh","Jack Reynor","Vilhelm Blomgren"}, {"Horror","Drama"}));
+	movie_list.push_back(new Movie("The Invisible Man", "<Description>", AssetsConst::THEINVISIBLEMAN, "1950", "James Whale", { "Claude Rains","Gloria Stuart","William Harrigan" }, { "Horror", "Sci-Fi" }));
 
 	size_t size = movie_list.size();
 	for (size_t i = 0; i < 2; i++)

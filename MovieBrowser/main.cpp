@@ -42,5 +42,6 @@ int main()
 
 
 	GUI::releaseInstance();
+
 	return 0;
 }

@@ -62,7 +62,6 @@ void ResetFilterButton::update()
 		}
 		if (ms.button_left_released) //Button was pressed and now is released
 		{
-			//filter
 			m_button_state = button_state_t::BUTTON_IDLE;
 			setActionTriggered(false);
 			releaseFocus();

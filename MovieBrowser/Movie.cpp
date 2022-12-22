@@ -73,8 +73,9 @@ void Movie::update()
 		if (ms.button_left_pressed && isActive())
 		{
 			m_clickTriggered = true;
+
 		}
-		else if (ms.button_left_released)
+		if (ms.button_left_released)
 		{
 			m_clickTriggered = false;
 		}
@@ -86,7 +87,7 @@ void Movie::update()
 		setHighlight(false);
 	}
 
-	if (!(informationBox.containsMovie(mx,my)))
+	if (ms.button_left_released)
 	{
 		
 		m_clickTriggered = false;
@@ -97,7 +98,7 @@ void Movie::update()
 
 bool Movie::contains(float x, float y) const
 {
-	return FunctionsConst::distance(x, y, m_pos[0], m_pos[1]) < MovieConst::Movie_Banner_Height*1.05f * MovieConst::Movie_Banner_Width* 0.14f;
+	return FunctionsConst::distance(x, y, m_pos[0], m_pos[1]) < MovieConst::Movie_Banner_Height*1.052f * MovieConst::Movie_Banner_Width* 0.14f;
 }
 
 const std::string& Movie::getName() const
@@ -174,7 +175,6 @@ void Movie::drawInformation()
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f, CanvasConst::CANVAS_HEIGHT / 6.0f, 1.0f, getName(), br);
 
-
 	//Drawing picture
 	br.outline_opacity = 0.5f;
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
@@ -185,13 +185,9 @@ void Movie::drawInformation()
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 2.0f,0.5f,"Description: ", br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f, 0.5f, getDesc(), br);
 
-
-
 	//Drawing info
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size()/2.5f + 1.10f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, + "(" + getDate() + ")", br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f, CanvasConst::CANVAS_HEIGHT / 3.3f, 0.5f, "-Directors: " + getDir(), br);
-
-
 
 	float offset{ 3.5f };
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, "-Protagonists: ", br);
@@ -208,10 +204,5 @@ void Movie::drawInformation()
 		graphics::drawText(CanvasConst::CANVAS_WIDTH / 4.1f + offset, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, g, br);
 		offset += g.size() / 2.9f;
 	}
-}
 
-
-bool Box::containsMovie(float x,float y) const
-{
-	return FunctionsConst::distance(x, y, m_posX, m_posY) < (CanvasConst::CANVAS_WIDTH / 1.2 * CanvasConst::CANVAS_HEIGHT / 1.2) * 0.040f;
 }

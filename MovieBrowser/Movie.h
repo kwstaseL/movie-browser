@@ -8,8 +8,6 @@
 #include <vector>
 
 
-//DONE
-
 struct Box
 {
 private:
@@ -18,8 +16,6 @@ private:
 	float m_posY{};
 
 public:
-
-	bool containsMovie(float x,float y) const;
 
 	void setPosX(float x) { m_posX = x; }
 	void setPosY(float y) { m_posY = y; }
@@ -123,7 +119,6 @@ public:
 	const std::string& getDesc() const;
 	const std::string& getDate() const;
 	const std::string& getDir() const;
-	const std::string& getProt() const;
 };
 
 #endif

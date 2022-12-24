@@ -1,12 +1,10 @@
 #include "FilterGenreButton.h"
 
-
-
 bool FilterGenreButton::hasRequirements(const Movie* movie) const
 {
 	if (movie)
 	{
-		return !movie->isSkipped() && movie->getHasFilteredText();
+		return std::stoi(movie->getDate()) <= movie->getLastYearComparedfromTo() && std::stoi(movie->getDate()) >= movie->getLastYearComparedFrom() && movie->getHasFilteredText();
 	}
 	return false;
 }
@@ -96,6 +94,7 @@ void FilterGenreButton::update()
 
 	if (!m_visible)
 	{
+		//reset back to position animation
 		m_height = 0.0f;
 		return;
 	}

@@ -18,6 +18,8 @@ private:
 
 	bool textInvisible{false};
 
+	void searchByTitle(const std::vector<Movie*>& movie_list);
+
 	float m_height{ 0.0f };
 	std::vector<char> characters;
 

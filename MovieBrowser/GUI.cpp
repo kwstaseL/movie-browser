@@ -41,12 +41,10 @@ void GUI::updateStartedScreen()
 	//For every movie and for our dock, update its state
 	for (auto& movie : movie_list)
 	{
-		if (movie)
+		if (movie && !movie->isDisabled())
 		{
-			if (!movie->isDisabled())
-			{
-				movie->update();
-			}
+			movie->update();
+
 			if (movie->isClickTriggered() && movie->isActive())
 			{
 				m_state = STATUS_MOVIE_PRESSED;
@@ -57,39 +55,41 @@ void GUI::updateStartedScreen()
 
 	for (const auto& widget : widgets)
 	{
+
 		if (widget)
 		{
 			widget->update();
 
-			//Checking if the last active widget was a clear "filter" widget, so we can reset the sliders position
-		if (lastActiveWidget)
+		}
+
+		//Checking if the last active widget was a clear "filter" widget, so we can reset the sliders position
+		if (lastActiveWidget && lastActiveWidget->getID() == 11)
+		{
+			for (const auto& w : widgets)
 			{
-				if (lastActiveWidget->getID() == 11)
+				if (w->getID() == 10 || w->getID() == 9)
 				{
-					for (const auto& w : widgets)
-					{
-						if (w->getID() == 10 || w->getID() == 9)
-						{
-							Slider* s = dynamic_cast<Slider*>(w);
-							s->clearSlider();
-						}
-						if (w->getID() == 12)
-						{
-							TextField* t = dynamic_cast<TextField*>(w);
-							t->deleteText();
-						}
-					}
-					lastActiveWidget = nullptr;
+					Slider* const s = dynamic_cast<Slider*>(w);
+					s->clearSlider();
+				}
+				if (w->getID() == 12)
+				{
+					TextField* const t = dynamic_cast<TextField*>(w);
+					t->deleteText();
 				}
 			}
-			
-			if (widget->actionTriggered() && !widget->isOperating())
-			{
-				lastActiveWidget = widget;
-				widget->setOperating(true);
-				widget->takeAction(movie_list);
-			}
+			lastActiveWidget = nullptr;
 		}
+		
+		if (widget->actionTriggered() && !widget->isOperating())
+		{
+			lastActiveWidget = widget;
+			widget->setOperating(true);
+			widget->takeAction(movie_list);
+
+		}
+
+	
 	}
 
 	if (dock)
@@ -120,7 +120,6 @@ void GUI::updateStartedScreen()
 //Actual GUI drawing
 void GUI::drawStartedScreen()
 {
-
 	//Background
 	br.fill_opacity = 0.5f;
 	br.outline_opacity = 0.0f;
@@ -129,12 +128,9 @@ void GUI::drawStartedScreen()
 
 	for (const auto& movie : movie_list)
 	{
-		if (movie)
+		if (movie && !movie->isDisabled())
 		{
-			if (!movie->isDisabled())
-			{
-				movie->draw();
-			}
+			movie->draw();
 		}
 	}
 
@@ -142,7 +138,6 @@ void GUI::drawStartedScreen()
 	{
 		dock->draw();
 	}
-
 
 	for (const auto& widget : widgets)	
 	{
@@ -227,11 +222,11 @@ void GUI::CreateMovies()
 
 	movie_list.push_back(new Movie("Harry Potter and the Goblet Of Fire", "<Description>", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", { "Daniel Radcliffe","Rupert Grint","Richard Harris" }, { "Adventure", "Fantasy" }));
 	movie_list.push_back(new Movie("The Godfather", "<Description>", AssetsConst::GODFATHER, "1972", "Francis Ford Coppola", { "Marlon Brando", "Al Pacino", "James Caan" }, {"Crime","Drama"}));
-	movie_list.push_back(new Movie("Terminator", "<Description>", AssetsConst::TERMINATOR, "1984", "James Cameron", { "Arnold Schwarzenegger", "Linda Hamilton", "Michael Biehn" }, { "Action","Sci-Fi","Drama" }));
+	movie_list.push_back(new Movie("Terminator", "<Description>", AssetsConst::TERMINATOR, "1984", "James Cameron", { "Arnold Schwarzenegger", "Linda Hamilton", "Michael Biehn" }, { "Action","Sci-Fi" }));
 	movie_list.push_back(new Movie("Star Wars: Episode IV - A New Hope", "<Description>", AssetsConst::ANEWHOPE, "1997", "George Lucas", { "Mark Hamill", "Harrison Ford", "Carrie Fisher" }, { "Action","Adventure","Fantasy" }));
 	movie_list.push_back(new Movie("Schindlers List", "<Description>", AssetsConst::SCHINDLERSLIST, "1994", "Steven Spielberg", { "Liam Neeson", "Ralph Fiennes", "Ben Kingsley" }, { "Drama","History" }));
 	movie_list.push_back(new Movie("The Chronicles Of Narnia", "<Description>", AssetsConst::NARNIA, "2005", "Andrew Adamson", { "Tilda Swinton","Geiorgie Henley","William Moseley"}, {"Adventure","Fantasy"}));
-	movie_list.push_back(new Movie("Home Alone", "<Description>", AssetsConst::HOMEALONE, "1980", "Chris Columbus", { "Macaulay Culkin", "Joey Pesci", "Danel Stern"}, {"Comedy" , "Family"}));
+	movie_list.push_back(new Movie("Home Alone", "<Description>", AssetsConst::HOMEALONE, "1980", "Chris Columbus", { "Macaulay Culkin", "Joey Pesci", "Danel Stern"}, {"Comedy" , "Adventure"}));
 	movie_list.push_back(new Movie("Pulp Fiction", "<Description>", AssetsConst::PULPFICTION, "1995", "Quentin Tarantino", { "John Travolta", "Uma Thurman", "Samuel L. Jackson" }, { "Crime", "Drama" }));
 	movie_list.push_back(new Movie("MidSommar", "A couple travels to Northern Europe to visit a rural hometown's fabled Swedish mid-summer festival. What begins as an idyllic retreat quickly devolves into an increasingly violent and bizarre competition at the hands of a pagan cult.", AssetsConst::MIDSOMMAR, "2019", "Ari Ster", { "Florence Pugh","Jack Reynor","Vilhelm Blomgren"}, {"Horror","Drama"}));
 	movie_list.push_back(new Movie("The Invisible Man", "<Description>", AssetsConst::THEINVISIBLEMAN, "1950", "James Whale", { "Claude Rains","Gloria Stuart","William Harrigan" }, { "Horror", "Sci-Fi" }));

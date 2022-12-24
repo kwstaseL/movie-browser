@@ -3,7 +3,6 @@
 
 #include "Movie.h"
 
-
 class Widget
 {
 private:
@@ -30,7 +29,6 @@ protected:
 	void releaseFocus();
 
 	graphics::Brush brush;
-
 
 public:
 

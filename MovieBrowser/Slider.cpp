@@ -183,12 +183,10 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
                 !(movie->getLastYearComparedFrom() > m_year) && hasRequirements(movie))
             {
                 movie->setDisabled(false);
-                movie->setSkipped(false);
             }
             else
             {
                 movie->setDisabled(true);
-                movie->setSkipped(true);
 
             }
             movie->setLastYearComparedfromTo(m_year);

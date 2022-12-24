@@ -47,8 +47,6 @@ void TextField::update()
 		return;
 	}
 
-
-
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
@@ -437,6 +435,12 @@ void TextField::update()
 
 void TextField::takeAction(const std::vector<Movie*>& movie_list)
 {
+	searchByTitle(movie_list);
+}
+
+
+void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
+{
 	if (!requestFocus())
 	{
 		return;
@@ -467,7 +471,7 @@ void TextField::takeAction(const std::vector<Movie*>& movie_list)
 		{
 			movie->sethasFilteredText(true);
 		}
-		
+
 
 	}
 	setActionTriggered(false);

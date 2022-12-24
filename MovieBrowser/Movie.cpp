@@ -15,7 +15,6 @@ Movie::Movie(const std::string_view name, const std::string_view desc, const std
 
 	informationBox.setPosX(CanvasConst::CANVAS_WIDTH / 2);
 	informationBox.setPosY(CanvasConst::CANVAS_HEIGHT / 2);
-
 }
 
 void Movie::draw()

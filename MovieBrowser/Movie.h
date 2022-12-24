@@ -48,8 +48,6 @@ private:
 	bool m_highlighted{ false };
 	bool m_PlaySound{ true };
 
-	
-	bool m_skip{ false };
 	bool hasFilteredGenre{ true };
 	bool hasFilteredText{ true };
 
@@ -83,9 +81,6 @@ public:
 
 	void drawInformation();
 
-	void setSkipped(bool s) { m_skip = s; }
-	bool isSkipped() const { return m_skip; }
-
 	void setPosX(float x) { m_pos[0] = x; }
 	void setPosY(float y) { m_pos[1] = y; }
 
@@ -103,6 +98,8 @@ public:
 	void setActive(bool a) { m_active = a; }
 	bool isActive() const { return m_active; }
 
+	// Control Variables
+
 	void sethasFilteredGenre(bool g) { hasFilteredGenre = g; }
 	bool gethasFilteredGenre() const { return hasFilteredGenre; }
 
@@ -114,6 +111,8 @@ public:
 
 	bool getHasFilteredText() const {return hasFilteredText;}
 	void sethasFilteredText(bool t) { hasFilteredText = t; }
+
+	//Info
 
 	const std::string& getName() const;
 	const std::string& getDesc() const;

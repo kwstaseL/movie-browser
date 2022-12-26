@@ -13,7 +13,7 @@
 class GUI
 {
 private:
-	
+
 	enum gui_state_t
 	{
 		STATUS_LOADING,
@@ -35,13 +35,10 @@ private:
 
 	Movie* clickedMovie{ nullptr };
 
-	Dock* dock{ nullptr };
-
 	std::vector<Movie*> movie_list;
 	std::vector<Widget*> widgets;
 
 	void CreateMovies();
-	void CreateDock();
 	void CreateWidgets();
 
 	~GUI();

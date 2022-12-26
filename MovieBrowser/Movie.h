@@ -44,15 +44,15 @@ private:
 
 	float m_glow{};
 	float m_highlight{};
-	
+
 	bool m_highlighted{ false };
 	bool m_PlaySound{ true };
 
 	bool hasFilteredGenre{ true };
 	bool hasFilteredText{ true };
 
-	int lastYearComparedfromTo{2020};
-	int lastYearComparedFrom{1950};
+	int lastYearComparedfromTo{ 2020 };
+	int lastYearComparedFrom{ 1950 };
 
 	int m_genreCount{ 0 };
 
@@ -72,7 +72,7 @@ public:
 
 	std::vector<std::string> genres;
 
-	Movie(const std::string_view n, const std::string_view desc, 
+	Movie(const std::string_view n, const std::string_view desc,
 		const std::string_view image, const std::string_view year, const std::string_view dir,
 		const std::vector<std::string>& prot, const std::vector<std::string>& genre);
 
@@ -109,7 +109,7 @@ public:
 	void setLastYearComparedFrom(int y) { lastYearComparedFrom = y; }
 	int getLastYearComparedFrom() const { return lastYearComparedFrom; }
 
-	bool getHasFilteredText() const {return hasFilteredText;}
+	bool getHasFilteredText() const { return hasFilteredText; }
 	void sethasFilteredText(bool t) { hasFilteredText = t; }
 
 	//Info

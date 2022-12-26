@@ -143,8 +143,8 @@ void FilterGenreButton::draw()
 		return;
 	}
 
-	SETCOLOR(brush.fill_color, 0.2f * m_highlighted, 0.2f * m_highlighted, 0.2f * m_highlighted);
-	brush.outline_opacity = 0.0f;
+	SETCOLOR(brush.fill_color, 0.8f * m_highlighted, 0.8f * m_highlighted, 0.8f * m_highlighted);
+	brush.outline_opacity = 1.0f;
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_Genrebutton_width + 0.1, m_Genrebutton_height + 0.1, brush);
 
 	brush.fill_opacity = 1.0f;
@@ -156,7 +156,7 @@ void FilterGenreButton::draw()
 	//Draw our button
 	brush.texture = "";
 	brush.fill_opacity = 1.0f;
-	brush.outline_opacity = 0.2f;
+	brush.outline_opacity = 0.5f;
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_Genrebutton_width, m_Genrebutton_height, brush);
 }
 

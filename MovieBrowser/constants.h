@@ -9,13 +9,13 @@
 namespace constants
 {
 
-    namespace WINDOW 
+    namespace WINDOW
     {
 
         inline constexpr const char* const WINDOW_NAME{ "Movie Browser" };
 
     }
-    
+
     namespace CANVAS
     {
         inline constexpr int CANVAS_WIDTH{ 28 };
@@ -24,8 +24,8 @@ namespace constants
 
     namespace Movie_Sizes
     {
-        inline constexpr float Movie_Banner_Height{4.15f};
-        inline constexpr float Movie_Banner_Width{3.5f};
+        inline constexpr float Movie_Banner_Height{ 4.15f };
+        inline constexpr float Movie_Banner_Width{ 3.5f };
     }
 
     namespace ASSETS
@@ -37,15 +37,15 @@ namespace constants
         inline constexpr const char* const TERMINATOR{ "Terminator.png" };
         inline constexpr const char* const BACKGROUND{ "Background.png" };
         inline constexpr const char* const ANEWHOPE{ "ANewHope.png" };
-        inline constexpr const char* const HOMEALONE { "HomeAlone.png" };
+        inline constexpr const char* const HOMEALONE{ "HomeAlone.png" };
         inline constexpr const char* const PULPFICTION{ "PulpFiction.png" };
         inline constexpr const char* const SCHINDLERSLIST{ "SchindlersList.png" };
-        inline constexpr const char* const NARNIA { "Narnia.png" };
+        inline constexpr const char* const NARNIA{ "Narnia.png" };
         inline constexpr const char* const MIDSOMMAR{ "MidSommar.png" };
-        inline constexpr const char* const THEINVISIBLEMAN { "TheInvisibleMan.png" };
+        inline constexpr const char* const THEINVISIBLEMAN{ "TheInvisibleMan.png" };
         inline constexpr const char* const CROSS{ "cross.png" };
 
-        inline constexpr const char* const DOCK         { "dock.png" };
+        inline constexpr const char* const DOCK{ "dock.png" };
 
     }
 
@@ -59,14 +59,14 @@ namespace constants
         }
 
     }
- 
+
 }
 
 
 
 namespace WindowConst = constants::WINDOW;
 namespace CanvasConst = constants::CANVAS;
-namespace MovieConst  = constants::Movie_Sizes;
+namespace MovieConst = constants::Movie_Sizes;
 namespace AssetsConst = constants::ASSETS;
 namespace FunctionsConst = constants::functions;
 

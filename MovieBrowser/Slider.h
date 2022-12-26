@@ -19,7 +19,7 @@ public:
 	bool isActive() const { return m_active; }
 	float getPosX() const { return m_positionX; }
 	float getPosY() const { return m_positionY; }
-	
+
 	void setPosX(int x) { m_positionX = x; }
 	void setPosY(int y) { m_positionY = y; }
 	void setActive(bool a) { m_active = a; }
@@ -37,7 +37,7 @@ private:
 		SLIDER_RELEASED,
 		SLIDER_DRAGGING
 	};
-	
+
 	const std::string m_text;
 
 	float m_height{ 0.0f };

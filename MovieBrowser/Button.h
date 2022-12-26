@@ -28,7 +28,7 @@ protected:
 
 	float m_height{ 0.0f };
 
-	bool contains(float x, float y) const; 
+	bool contains(float x, float y) const;
 
 private:
 
@@ -47,7 +47,6 @@ public:
 
 
 #endif
-
 
 
 

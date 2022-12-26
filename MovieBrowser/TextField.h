@@ -16,7 +16,7 @@ private:
 
 	const std::string m_text;
 
-	bool textInvisible{false};
+	bool textInvisible{ false };
 
 	void searchByTitle(const std::vector<Movie*>& movie_list);
 

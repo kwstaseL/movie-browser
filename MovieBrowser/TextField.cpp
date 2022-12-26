@@ -67,7 +67,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('a');
-	
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -79,7 +79,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('b');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -92,7 +92,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('c');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -105,7 +105,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('d');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -118,7 +118,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('e');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -131,7 +131,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('f');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -144,7 +144,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('g');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -157,7 +157,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('h');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -170,7 +170,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('i');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -183,7 +183,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('j');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -196,7 +196,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('k');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -209,7 +209,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('l');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -222,7 +222,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('m');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -235,7 +235,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('n');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -248,7 +248,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('o');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -261,7 +261,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('p');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -274,7 +274,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('q');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -287,7 +287,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('r');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -300,7 +300,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('s');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -325,7 +325,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('u');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -338,7 +338,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('v');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -351,7 +351,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('w');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -364,7 +364,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('x');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -377,7 +377,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('y');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -390,7 +390,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back('z');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -403,7 +403,7 @@ void TextField::update()
 		{
 			m_counter = 0;
 			characters.push_back(' ');
-			 
+
 			m_typed = true;
 			setActionTriggered(true);
 
@@ -424,7 +424,7 @@ void TextField::update()
 	if (!characters.empty())
 	{
 		std::string string(characters.begin(), characters.end());
-		graphics::drawText(m_positionX - 1.9f, m_positionY + m_height +0.1f, 0.3f, string, brush);
+		graphics::drawText(m_positionX - 1.9f, m_positionY + m_height + 0.1f, 0.3f, string, brush);
 	}
 
 	m_counter++;

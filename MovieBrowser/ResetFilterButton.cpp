@@ -79,17 +79,17 @@ void ResetFilterButton::draw()
 	{
 		return;
 	}
-	float highlight = 0.2f * m_highlighted;
+	float highlight = 0.8f * m_highlighted;
 
-	SETCOLOR(brush.fill_color, highlight, highlight, highlight);
-	brush.outline_opacity = 0.0f;
+	SETCOLOR(brush.fill_color, 0.8f * highlight, 0.8f * highlight, 0.8f * highlight);
+	brush.outline_opacity = 0.5f;
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_Genrebutton_width + 0.1, m_Genrebutton_height + 0.1, brush);
 
 	brush.fill_opacity = 1.0f;
 	SETCOLOR(brush.fill_color, 1.0f, 1.0f, 1.0f);
 	graphics::drawText(m_positionX - 0.75f, m_positionY + 0.125f + m_height, 0.4f, m_button_text, brush);
 
-	SETCOLOR(brush.fill_color, 0.6f, 0.1f, 0.2f);
+	SETCOLOR(brush.fill_color, 1.0f, 0.0f, 0.0f);
 
 	//Draw our button
 	brush.texture = "";
@@ -99,6 +99,6 @@ void ResetFilterButton::draw()
 }
 
 ResetFilterButton::ResetFilterButton(float posX, float posY, const std::string_view text)
-	: Button(posX, posY,text)
+	: Button(posX, posY, text)
 {
 }

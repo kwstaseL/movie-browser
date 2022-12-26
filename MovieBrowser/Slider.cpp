@@ -213,12 +213,14 @@ void Slider::clearSlider()
         m_year = 1950;
         box.setPosX(m_positionX - 2.9f);
         box.setPosY(m_positionY - 0.56f);
+
     }
     else
     {
         m_year = 2020;
         box.setPosX(16.0f);
         box.setPosY(m_positionY - 0.56f);
+
     }
     m_status_slider = SLIDER_IDLE;
 }

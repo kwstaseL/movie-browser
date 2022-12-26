@@ -2,7 +2,7 @@
 #include "GUI.h"
 
 
-void draw()		
+void draw()
 {
 	GUI* gui{ GUI::Get() };
 	gui->draw();
@@ -18,7 +18,7 @@ void update(float ms)
 
 void createProgram()
 {
-	graphics::createWindow(1400, 800, WindowConst::WINDOW_NAME);		
+	graphics::createWindow(1400, 800, WindowConst::WINDOW_NAME);
 
 	GUI* gui{ GUI::Get() };
 	gui->init();
@@ -34,8 +34,8 @@ void createProgram()
 
 int main()
 {
-	
-	
+
+
 	createProgram();
 	graphics::startMessageLoop();
 	graphics::destroyWindow();

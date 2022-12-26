@@ -24,8 +24,8 @@ void Movie::draw()
 		return;
 	}
 
-	m_glow =  0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted;		//This is for our glow when doing mouse over movie
-	m_highlight = 0.2f * m_highlighted + m_glow * 0.5f ;									//If we mouse over a movie, then it gets highlighted
+	m_glow = 0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted;		//This is for our glow when doing mouse over movie
+	m_highlight = 0.2f * m_highlighted + m_glow * 0.5f;									//If we mouse over a movie, then it gets highlighted
 
 	//Drawing our highlight/glow
 
@@ -88,16 +88,16 @@ void Movie::update()
 
 	if (ms.button_left_released)
 	{
-		
+
 		m_clickTriggered = false;
-		
+
 	}
 
 }
 
 bool Movie::contains(float x, float y) const
 {
-	return FunctionsConst::distance(x, y, m_pos[0], m_pos[1]) < MovieConst::Movie_Banner_Height*1.052f * MovieConst::Movie_Banner_Width* 0.14f;
+	return FunctionsConst::distance(x, y, m_pos[0], m_pos[1]) < MovieConst::Movie_Banner_Height * 1.052f * MovieConst::Movie_Banner_Width * 0.14f;
 }
 
 const std::string& Movie::getName() const
@@ -123,7 +123,7 @@ const std::string& Movie::getDir() const
 
 void Movie::DisplayInfo()
 {
-	
+
 	graphics::Brush br;
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 
@@ -140,14 +140,14 @@ void Movie::DisplayInfo()
 	for (const auto& protagonist : m_protagonists)
 	{
 		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f + offset, CanvasConst::CANVAS_HEIGHT / 1.10f, 0.5f, protagonist, br);
-		offset += protagonist.size()/3;
+		offset += protagonist.size() / 3;
 	}
 
 	offset = 0.0f;
 	for (const auto& g : genres)
 	{
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f+offset, CanvasConst::CANVAS_HEIGHT / 1.28, 0.5f, g, br);
-		offset += g.size()/2.9f;
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f + offset, CanvasConst::CANVAS_HEIGHT / 1.28, 0.5f, g, br);
+		offset += g.size() / 2.9f;
 	}
 
 }
@@ -181,11 +181,11 @@ void Movie::drawInformation()
 
 	//Description
 	graphics::setFont("OpenSans-Regular.ttf");
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 2.0f,0.5f,"Description: ", br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 2.0f, 0.5f, "Description: ", br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f, 0.5f, getDesc(), br);
 
 	//Drawing info
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size()/2.5f + 1.10f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, + "(" + getDate() + ")", br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size() / 2.5f + 1.10f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, +"(" + getDate() + ")", br);
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f, CanvasConst::CANVAS_HEIGHT / 3.3f, 0.5f, "-Directors: " + getDir(), br);
 
 	float offset{ 3.5f };
@@ -193,7 +193,7 @@ void Movie::drawInformation()
 	for (const auto& protagonist : m_protagonists)
 	{
 		graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + offset, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, protagonist, br);
-		offset += protagonist.size()/3.7f;
+		offset += protagonist.size() / 3.7f;
 	}
 
 	offset = 3.5f;

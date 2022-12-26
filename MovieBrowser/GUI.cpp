@@ -137,6 +137,7 @@ void GUI::updatePressedMovieScreen()
 		if (!clickedMovie->isClickTriggered())
 		{
 			m_state = STATUS_STARTED;
+			clickedMovie->setActive(true);
 		}
 	}
 
@@ -230,18 +231,16 @@ GUI::~GUI()
 	widgets.clear();
 }
 
-GUI* GUI::Get()		//Here we set it as static so we can use it without the need of an existing object, if there is no instance of gui made yet, make one and return it
-					//So the next time get gets called, it won't make another instance and just return the existing one
+GUI* GUI::Get()
 {
 	if (!s_gui)
 	{
 		s_gui = new GUI();
 	}
 	return s_gui;
-
 }
 
-void GUI::releaseInstance() //Delete object
+void GUI::releaseInstance()
 {
 	if (s_gui)
 	{

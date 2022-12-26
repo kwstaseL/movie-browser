@@ -1,4 +1,5 @@
 #include "Movie.h"
+#include <iostream>
 
 Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view image, const std::string_view year, const std::string_view dir, const std::vector<std::string>& prot, const std::vector<std::string>& genre)
 	: m_name(name), m_description(desc), m_image(image), m_production_year(year), m_director(dir)
@@ -65,14 +66,15 @@ void Movie::update()
 			{
 				graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("browse.wav"), 0.4f);
 			}
+
 			setHighlight(true);
 			DisplayInfo();
 			m_PlaySound = false;
+
 		}
 		if (ms.button_left_pressed && isActive())
 		{
 			m_clickTriggered = true;
-
 		}
 		if (ms.button_left_released)
 		{
@@ -136,6 +138,7 @@ void Movie::DisplayInfo()
 
 
 	graphics::setFont("OpenSans-Regular.ttf");
+
 	float offset{ 0.0f };
 	for (const auto& protagonist : m_protagonists)
 	{

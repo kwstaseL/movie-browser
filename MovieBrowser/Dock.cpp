@@ -2,13 +2,11 @@
 
 void Dock::update()
 {
-
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
 	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
-
 
 	if (contains(mouse_X, mouse_Y))
 	{
@@ -51,31 +49,22 @@ void Dock::update()
 			height = 0.0f;
 		}
 	}
-	else
-	{
-		m_dock_state = m_dock_status::STATE_IDLE;
-	}
-
 
 }
 
 
 void Dock::draw()
 {
-
 	graphics::setOrientation(180);
 	brush.fill_opacity = 0.95f;
 	brush.outline_opacity = 0.0f;
 	brush.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::DOCK);
 	graphics::drawRect((CanvasConst::CANVAS_WIDTH / 2), -3.6f + height, m_positionX, m_positionY, brush);
 	graphics::resetPose();
-
-
 }
 
 Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 	: Widget(x, y)
-
 {
 	for (const auto& widget : widgets_list)
 	{
@@ -101,7 +90,6 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 {
 	if (m_dock_state == m_dock_status::STATE_GOING_DOWN)
 	{
-
 		for (const auto& widget : widgets)
 		{
 			widget->setVisibility(true);

@@ -203,11 +203,11 @@ void Movie::drawInformation()
 		if (count >= 15.0f)
 		{
 			count = 0;
-			height += 1.0f;
+			height += .7f;
 		}
 
 		graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f + count, CanvasConst::CANVAS_HEIGHT / 1.65f + height, 0.5f, tokens, br);
-		count += strlen(tokens)/4.8f + 0.3f;
+		count += strlen(tokens)/4.0f +0.3f;
 		tokens = strtok_s(nullptr, " ",&context);
 
 	}

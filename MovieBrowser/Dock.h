@@ -16,8 +16,6 @@ private:
 
 	m_dock_status m_dock_state{ m_dock_status::STATE_IDLE };
 
-	bool isDockDown{ false };
-
 	float height{ 0.0f };
 	float m_offset{ -15.0f };
 

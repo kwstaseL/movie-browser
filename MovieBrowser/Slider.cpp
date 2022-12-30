@@ -131,8 +131,8 @@ bool Slider::contains(float x, float y) const
 
     if (m_uid == 9) //From
     {
-        if (x >= box.getPosX() - 0.1f * 0.21f && x <= box.getPosX() + 0.1f * 0.21f ||
-            y >= box.getPosY() + 4.05f + 0.3f - 0.1f * 0.5f && y <= box.getPosY() + 4.05f + 0.3f + 0.1f * 0.5f)
+        if (x >= box.getPosX() - 0.1f * 0.21f && x <= box.getPosX() + 0.2f * 0.20f ||
+            y >= box.getPosY() + 4.05f +0.1f * 0.5f && y <= box.getPosY() + 4.05f +0.5f * 0.5f)
         {
             return true;
         }
@@ -141,7 +141,7 @@ bool Slider::contains(float x, float y) const
 
     if (m_uid == 10)    //To
     {
-        if (x >= box.getPosX() - 0.15f * 0.21f && x <= box.getPosX() + 0.1f * 0.21f ||
+        if (x >= box.getPosX() - 0.15f * 0.21f && x <= box.getPosX() + 0.2f * 0.20f ||
             y >= box.getPosY() + 4.05f + 0.6f - 0.1f * 0.5f && y <= box.getPosY() + 4.05f + 0.6f + 0.1f * 0.5f)
         {
             return true;

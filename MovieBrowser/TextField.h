@@ -4,7 +4,7 @@
 #include "Widget.h"
 
 
-class TextField final : public Widget
+class TextField : public Widget
 {
 private:
 

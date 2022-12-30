@@ -164,7 +164,7 @@ void Movie::drawInformation()
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::BACKGROUND);
 	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 2, CanvasConst::CANVAS_HEIGHT / 2, CanvasConst::CANVAS_WIDTH, CanvasConst::CANVAS_HEIGHT, br);
 
-	//Drawing box
+	//Drawing outside box of movie information
 	SETCOLOR(brush.fill_color, 0.0f, 0.0f, 0.0f);
 	brush.texture = "";
 	brush.fill_opacity = 0.7f;
@@ -183,28 +183,33 @@ void Movie::drawInformation()
 	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 5.5f, CanvasConst::CANVAS_HEIGHT / 3.8f, MovieConst::Movie_Banner_Width + 0.7f, MovieConst::Movie_Banner_Height + 0.7f, br);
 
 	//Description
-	graphics::setFont("OpenSans-Regular.ttf");
+	graphics::setFont("OpenSans-Semibold.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 2.0f, 0.5f, "Description: ", br);
+	graphics::setFont("OpenSans-Light.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f, 0.5f, getDesc(), br);
 
 	//Drawing info
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size() / 2.5f + 1.10f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, +"(" + getDate() + ")", br);
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f, CanvasConst::CANVAS_HEIGHT / 3.3f, 0.5f, "-Directors: " + getDir(), br);
+	graphics::setFont("OpenSans-Light.ttf");
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f, CanvasConst::CANVAS_HEIGHT / 3.3f, 0.5f, "-Directors:   " + getDir(), br);
 
 	float offset{ 3.5f };
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, "-Protagonists: ", br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, "-Protagonists: ", br);
+
 	for (const auto& protagonist : m_protagonists)
 	{
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + offset, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, protagonist, br);
-		offset += protagonist.size() / 3.7f;
+		graphics::setFont("OpenSans-Light.ttf");
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f + offset, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, protagonist, br);
+		offset += protagonist.size() / 3.5f;
 	}
 
 	offset = 3.5f;
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, "Genre: ", br);
 	for (const auto& g : genres)
 	{
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 4.1f + offset, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, g, br);
-		offset += g.size() / 2.9f;
+		graphics::setFont("OpenSans-Light.ttf");
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 4.7f + offset, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, g, br);
+		offset += g.size() / 3.5f;
 	}
 
 }

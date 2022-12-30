@@ -8,6 +8,9 @@ class TextField : public Widget
 {
 private:
 
+	const float m_Textfield_height{ 0.5f };
+	const float m_Textfield_width{ 4.0f };
+
 	bool m_typed{ false };
 
 	bool hasRequirements(const Movie* movie) const;
@@ -38,4 +41,4 @@ public:
 };
 
 
-#endif
+#endif	

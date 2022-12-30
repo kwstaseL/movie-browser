@@ -45,6 +45,7 @@ void TextField::update()
 	if (!m_visible)
 	{
 		m_height = 0.0f;
+		m_highlighted = false;
 		return;
 	}
 

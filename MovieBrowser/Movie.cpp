@@ -1,5 +1,6 @@
 #include "Movie.h"
-#include <iostream>
+#include <cstring>
+
 
 Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view image, const std::string_view year, const std::string_view dir, const std::vector<std::string>& prot, const std::vector<std::string>& genre)
 	: m_name(name), m_description(desc), m_image(image), m_production_year(year), m_director(dir)
@@ -182,11 +183,36 @@ void Movie::drawInformation()
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
 	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 5.5f, CanvasConst::CANVAS_HEIGHT / 3.8f, MovieConst::Movie_Banner_Width + 0.7f, MovieConst::Movie_Banner_Height + 0.7f, br);
 
+
 	//Description
 	graphics::setFont("OpenSans-Semibold.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 2.0f, 0.5f, "Description: ", br);
 	graphics::setFont("OpenSans-Light.ttf");
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f, 0.5f, getDesc(), br);
+
+	std::string description = getDesc();
+	char* tokens = &description[0];
+	char* context;
+	tokens = strtok_s(tokens, " " , &context);
+
+	// Use space as the delimiter
+	// Print each token
+	float count{ 0.0f };
+	float height{ 0.0f };
+	while (tokens != nullptr) {
+
+		if (count >= 15.0f)
+		{
+			count = 0;
+			height += 1.0f;
+		}
+
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f + count, CanvasConst::CANVAS_HEIGHT / 1.65f + height, 0.5f, tokens, br);
+		count += strlen(tokens)/4.8f + 0.3f;
+		tokens = strtok_s(nullptr, " ",&context);
+
+	}
+
+	//graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f, 0.5f, getDesc(), br);
 
 	//Drawing info
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size() / 2.5f + 1.10f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, +"(" + getDate() + ")", br);
@@ -211,5 +237,6 @@ void Movie::drawInformation()
 		graphics::drawText(CanvasConst::CANVAS_WIDTH / 4.7f + offset, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, g, br);
 		offset += g.size() / 3.5f;
 	}
+
 
 }

@@ -61,6 +61,7 @@ void Dock::draw()
 	brush.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::DOCK);
 	graphics::drawRect((CanvasConst::CANVAS_WIDTH / 2), -3.6f + height, m_positionX, m_positionY, brush);
 	graphics::resetPose();
+
 }
 
 Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
@@ -79,10 +80,10 @@ Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 	}
 }
 
-bool Dock::contains(float x, float y) const
+bool Dock::contains(float mouse_x, float mouse_y) const
 {
 
-	return FunctionsConst::distance(x, y, m_positionX - 0.8f, m_positionY + m_offset - 1.0f) < ((((CanvasConst::CANVAS_WIDTH) / 2) + 5.0f)) / 2;
+	return (mouse_x > (CanvasConst::CANVAS_WIDTH / 2) - m_positionX / 2 && mouse_x < (CanvasConst::CANVAS_WIDTH / 2) + m_positionX / 2 && mouse_y > -3.6f + height - m_positionY / 2 && mouse_y < -3.6f + height + m_positionY / 2);
 
 }
 

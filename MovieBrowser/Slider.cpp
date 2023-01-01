@@ -1,5 +1,4 @@
 #include "Slider.h"
-#include <iostream>
 
 void Slider::update()
 {
@@ -29,7 +28,7 @@ void Slider::update()
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
     {
 
-        if (ms.dragging)          //FIX THIS
+        if (ms.dragging)         
         {
             box.setActive(true);
 
@@ -132,7 +131,7 @@ bool Slider::contains(float x, float y) const
     if (m_uid == 9) //From
     {
         if (x >= box.getPosX() - 0.1f * 0.21f && x <= box.getPosX() + 0.2f * 0.20f ||
-            y >= box.getPosY() + 4.05f +0.1f * 0.5f && y <= box.getPosY() + 4.05f +0.5f * 0.5f)
+            y >= box.getPosY() + 4.05f +0.1f * 0.5f && y <= box.getPosY() + 4.05f +0.5f * 0.5f)//1o Height apo panw, 2o height apo katw
         {
             return true;
         }
@@ -220,7 +219,6 @@ void Slider::clearSlider()
         m_year = 2020;
         box.setPosX(16.0f);
         box.setPosY(m_positionY - 0.56f);
-
     }
     m_status_slider = SLIDER_IDLE;
 }

@@ -433,7 +433,7 @@ void TextField::update()
 			}
 			setActionTriggered(true);
 		}
-		
+
 		m_counter++;
 		if (m_counter > 20)
 			m_typed = false;
@@ -496,9 +496,11 @@ void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
 	releaseFocus();
 }
 
-bool TextField::contains(float x, float y) const
+bool TextField::contains(float mouse_x, float mouse_y) const
 {
-	return FunctionsConst::distance(x, y, m_positionX, m_positionY + m_height) < m_Textfield_height / 10.0f * m_Textfield_width + 0.25f;
+
+	return (mouse_x > m_positionX - m_Textfield_width / 2 && mouse_x < m_positionX + m_Textfield_width / 2 && mouse_y > m_positionY + m_height - m_Textfield_height / 2 && mouse_y < m_positionY + m_height + m_Textfield_height / 2);
+
 }
 
 void TextField::deleteText()

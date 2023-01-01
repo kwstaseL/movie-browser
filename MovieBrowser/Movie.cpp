@@ -98,9 +98,9 @@ void Movie::update()
 
 }
 
-bool Movie::contains(float x, float y) const
+bool Movie::contains(float mouse_x, float mouse_y) const
 {
-	return FunctionsConst::distance(x, y, m_pos[0], m_pos[1]) < MovieConst::Movie_Banner_Height * 1.052f * MovieConst::Movie_Banner_Width * 0.14f;
+	return (mouse_x > m_pos[0] - MovieConst::Movie_Banner_Width / 2 && mouse_x < m_pos[0] + MovieConst::Movie_Banner_Width / 2 && mouse_y > m_pos[1] - MovieConst::Movie_Banner_Height / 2 && mouse_y < m_pos[1] + MovieConst::Movie_Banner_Height / 2);
 }
 
 const std::string& Movie::getName() const
@@ -207,7 +207,7 @@ void Movie::drawInformation()
 		}
 
 		graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f + count, CanvasConst::CANVAS_HEIGHT / 1.65f + height, 0.5f, tokens, br);
-		count += strlen(tokens)/4.0f +0.3f;
+		count += strlen(tokens)/4.5f +0.35f;
 		tokens = strtok_s(nullptr, " ",&context);
 
 	}
@@ -215,7 +215,7 @@ void Movie::drawInformation()
 	//graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f, 0.5f, getDesc(), br);
 
 	//Drawing info
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size() / 2.5f + 1.10f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, +"(" + getDate() + ")", br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size() / 2.5f + 1.2f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, +"(" + getDate() + ")", br);
 	graphics::setFont("OpenSans-Light.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f, CanvasConst::CANVAS_HEIGHT / 3.3f, 0.5f, "-Directors:   " + getDir(), br);
 

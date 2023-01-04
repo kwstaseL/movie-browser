@@ -1,7 +1,6 @@
 #include "TextField.h"
 #include <algorithm>
 
-
 bool TextField::hasRequirements(const Movie* movie) const
 {
 	if (movie)
@@ -84,6 +83,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 		if (graphics::getKeyState(graphics::SCANCODE_B))
@@ -95,6 +101,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -109,6 +122,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -121,6 +141,14 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -135,6 +163,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -147,6 +182,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -161,6 +203,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -173,6 +222,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -187,6 +243,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -199,6 +262,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -213,6 +283,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -225,6 +302,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -239,6 +323,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -251,6 +342,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -265,6 +363,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -277,6 +382,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -291,6 +403,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -303,6 +422,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -317,6 +443,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -326,8 +459,16 @@ void TextField::update()
 			{
 				m_counter = 0;
 				characters.push_back('t');
+
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -342,6 +483,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -354,6 +502,14 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+
+				}
 
 			}
 		}
@@ -368,6 +524,13 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
+
 			}
 		}
 
@@ -380,6 +543,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -394,6 +564,12 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 			}
 		}
 
@@ -406,6 +582,13 @@ void TextField::update()
 
 				m_typed = true;
 				setActionTriggered(true);
+
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 
 			}
 		}
@@ -420,29 +603,61 @@ void TextField::update()
 				m_typed = true;
 				setActionTriggered(true);
 
+				if (isFull)
+				{
+					outofsight_words.push(characters[0]);
+					characters.erase(characters.begin());
+					extra_words++;
+				}
 			}
 		}
 
 		if (graphics::getKeyState(graphics::SCANCODE_BACKSPACE))
 		{
-			if (!characters.empty() && !m_typed)
+			if (!characters.empty() && (!m_typed))
 			{
-				m_counter = 0;
-				characters.pop_back();
+				if (isFull)
+				{
+					if (!outofsight_words.empty())
+					{
+						characters.push_front(outofsight_words.top());
+						extra_words--;
+						outofsight_words.pop();
+					}
+				}	
+
+				if (!characters.empty())
+				{
+					characters.pop_back();
+				}
+
 				m_typed = true;
+				m_counter = 0;
+
 			}
 			setActionTriggered(true);
 		}
 
 		m_counter++;
+
 		if (m_counter > 5)
 			m_typed = false;
+
+		if (characters.size()+extra_words >= 26)
+		{
+			isFull = true;
+		}
+		else
+		{
+			isFull = false;
+			extra_words = 0;
+		}
 	}
 
 	if (!characters.empty())
 	{
-		std::string string(characters.begin(), characters.end());
-		graphics::drawText(m_positionX - 1.9f, m_positionY + m_height + 0.1f, 0.3f, string, brush);
+		std::string textfield_string(characters.begin(), characters.end());
+		graphics::drawText(m_positionX - 1.9f, m_positionY + m_height + 0.1f, 0.3f, textfield_string, brush);
 	}
 	else
 	{
@@ -502,6 +717,7 @@ void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
 void TextField::clear()
 {
 	characters.clear();
+	extra_words = 0;
 	textInvisible = false;
 }
 

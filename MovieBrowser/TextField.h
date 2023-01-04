@@ -2,6 +2,8 @@
 #define TEXTFIELD_H
 
 #include "Widget.h"
+#include <stack>
+#include <deque>
 
 
 class TextField : public Widget
@@ -16,8 +18,14 @@ private:
 	bool hasRequirements(const Movie* movie) const;
 
 	int m_counter{ -1 };
+	
+	std::stack<char> outofsight_words;
 
 	const std::string m_text;
+
+	int extra_words{ 0 };
+
+	bool isFull{ false };
 
 	bool textInvisible{ false };
 
@@ -29,7 +37,7 @@ private:
 
 
 
-	std::vector<char> characters;
+	std::deque<char> characters;
 
 public:
 

@@ -10,6 +10,7 @@ private:
 	void resetFilter(const std::vector<Movie*>& movie_list) const;
 
 	void takeAction(const std::vector<Movie*>& movie_list) override;
+	void clear() override;
 
 	void update() override;
 	void draw() override;

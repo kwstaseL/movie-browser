@@ -435,7 +435,7 @@ void TextField::update()
 		}
 
 		m_counter++;
-		if (m_counter > 20)
+		if (m_counter > 5)
 			m_typed = false;
 	}
 
@@ -468,15 +468,18 @@ void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
 	for (const auto& movie : movie_list)
 	{
 		std::string movie_name = movie->getName();
+
 		std::transform(movie_name.begin(), movie_name.end(), movie_name.begin(), ::tolower);
 
 		if (movie_name.find(string) != std::string::npos && graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty())
 		{
+
 			if (hasRequirements(movie))
 			{
 				movie->setDisabled(false);
 				movie->sethasFilteredText(true);
 			}
+
 		}
 
 		if (movie_name.find(string) == std::string::npos)
@@ -496,17 +499,17 @@ void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
 	releaseFocus();
 }
 
+void TextField::clear()
+{
+	characters.clear();
+	textInvisible = false;
+}
+
 bool TextField::contains(float mouse_x, float mouse_y) const
 {
 
 	return (mouse_x > m_positionX - m_Textfield_width / 2 && mouse_x < m_positionX + m_Textfield_width / 2 && mouse_y > m_positionY + m_height - m_Textfield_height / 2 && mouse_y < m_positionY + m_height + m_Textfield_height / 2);
 
-}
-
-void TextField::deleteText()
-{
-	characters.clear();
-	textInvisible = false;
 }
 
 TextField::TextField(float posX, float posY, const std::string_view text)

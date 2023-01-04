@@ -1,5 +1,8 @@
 #include "Dock.h"
 
+
+//Updating the dock
+
 void Dock::update()
 {
 	graphics::MouseState ms;
@@ -23,11 +26,11 @@ void Dock::update()
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("minimize.wav"), 0.5f);
 		}
 
-		height += 0.01f * graphics::getDeltaTime();
+		m_height += 0.01f * graphics::getDeltaTime();
 
-		if (height > 6.0f)
+		if (m_height > 6.0f)
 		{
-			height = 6.0f;
+			m_height = 6.0f;
 		}
 
 		PlaySound = false;
@@ -43,15 +46,17 @@ void Dock::update()
 		setOffset(-16.0f);
 
 		PlaySound = true;
-		height -= 0.01f * graphics::getDeltaTime();
-		if (height < 0.5f)
+
+		m_height -= 0.01f * graphics::getDeltaTime();
+		if (m_height < 0.5f)
 		{
-			height = 0.0f;
+			m_height = 0.0f;
 		}
 	}
 
 }
 
+//Drawing the dock
 
 void Dock::draw()
 {
@@ -59,10 +64,11 @@ void Dock::draw()
 	brush.fill_opacity = 0.95f;
 	brush.outline_opacity = 0.0f;
 	brush.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::DOCK);
-	graphics::drawRect((CanvasConst::CANVAS_WIDTH / 2), -3.6f + height, m_positionX, m_positionY, brush);
+	graphics::drawRect((CanvasConst::CANVAS_WIDTH / 2), -3.6f + m_height, m_positionX, m_positionY, brush);
 	graphics::resetPose();
 
 }
+
 
 Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 	: Widget(x, y)
@@ -83,7 +89,7 @@ Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 bool Dock::contains(float mouse_x, float mouse_y) const
 {
 
-	return (mouse_x > (CanvasConst::CANVAS_WIDTH / 2) - m_positionX / 2 && mouse_x < (CanvasConst::CANVAS_WIDTH / 2) + m_positionX / 2 && mouse_y > -3.6f + height - m_positionY / 2 && mouse_y < -3.6f + height + m_positionY / 2);
+	return (mouse_x > (CanvasConst::CANVAS_WIDTH / 2) - m_positionX / 2 && mouse_x < (CanvasConst::CANVAS_WIDTH / 2) + m_positionX / 2 && mouse_y > -3.6f + m_height - m_positionY / 2 && mouse_y < -3.6f + m_height + m_positionY / 2);
 
 }
 
@@ -118,4 +124,8 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 	}
 	setActionTriggered(false);
 	setOperating(false);
+}
+
+void Dock::clear()
+{
 }

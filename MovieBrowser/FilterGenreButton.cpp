@@ -1,5 +1,8 @@
 #include "FilterGenreButton.h"
 
+//Input: a Movie
+//Output: True or False
+//Description: returns if a single movie, has filtered text (from textfield) and is in between the 2 years from the slider
 bool FilterGenreButton::hasRequirements(const Movie* movie) const
 {
 	if (movie)
@@ -9,18 +12,29 @@ bool FilterGenreButton::hasRequirements(const Movie* movie) const
 	return false;
 }
 
+/*
+	Input: movie_list which contains all movies
+	Description: filters all movies by the genre that is pressed or a combination of genres, 
+	if a movie doesnt have that particular genre or genres, it gets disabled (it cant be drawn or updated)
+
+*/
 void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 {
-
+	//If the genre map isn't created, create it 
 	if (!isGenreMapCreated())
 	{
 		createGenreMap(movie_list);
 	}
 
+	//Inserting to the unordered set the button that was pressed
 	s_scanned_genres.insert(m_button_text);
 
 	hasAtLeastOneGenre = false;
 
+	/*
+		For every movie, we disable it and turn hasFilteredGenre to false, we also reset the Genre count which holds
+		all the genres that the movie has
+	*/
 	for (const auto& movie : movie_list)
 	{
 		movie->setDisabled(true);
@@ -28,20 +42,26 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 		movie->resetGenreCount();
 	}
 
+	//For all the genre buttons that where clicked
 	for (const auto& genre : s_scanned_genres)
 	{
+		//For all movies inside the map with that specific genre
 		for (const auto& movie : s_genreMap[genre])
 		{
 			if (!movie->isDisabled())
 			{
 				continue;
 			}
-			movie->AddGenreCount(1);
+
+			movie->AddGenreCount(1);	//Adding +1 since it has the current genre
 		}
 	}
 
+	//For every movie
 	for (const auto& movie : movie_list)
 	{
+		//If it has all genres that were pressed and it has requirements, then dont disable it, and set it that is it has all current genres
+		//We use hasAtLeastOneGenre, just to check if there is a at least 1 movie that has all genres, if there isnt, we just filter by the last genre that was pressed
 		if ((movie->getGenreCount() == (s_scanned_genres.size())) && hasRequirements(movie))
 		{
 			hasAtLeastOneGenre = true;
@@ -50,9 +70,9 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 		}
 	}
 
+	//Because no movie has all genres that were pressed, we just filter based on the last genre that was pressed
 	if (!hasAtLeastOneGenre)
 	{
-
 		for (const auto& movie : s_genreMap[m_button_text])
 		{
 			if (hasRequirements(movie))
@@ -65,6 +85,8 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 	releaseFocus();
 }
 
+
+//Creates the genreMap
 void FilterGenreButton::createGenreMap(const std::vector<Movie*>& movie_list)
 {
 
@@ -78,11 +100,18 @@ void FilterGenreButton::createGenreMap(const std::vector<Movie*>& movie_list)
 	setGenreMapCreated(true);
 }
 
+void FilterGenreButton::clear()
+{
+	s_scanned_genres.clear();
+}
+
 void FilterGenreButton::takeAction(const std::vector<Movie*>& movie_list)
 {
 	filterByGenre(movie_list);
 }
 
+
+//Updating all filter genre buttons
 void FilterGenreButton::update()
 {
 	m_height += 0.01f * graphics::getDeltaTime();
@@ -136,6 +165,8 @@ void FilterGenreButton::update()
 	}
 }
 
+
+//Drawing of all filter genre buttons
 void FilterGenreButton::draw()
 {
 	if (!m_visible)

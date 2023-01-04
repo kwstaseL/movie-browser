@@ -12,13 +12,16 @@ void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
 
 		movie->setLastYearComparedFrom(1950);
 		movie->setLastYearComparedfromTo(2020);
-		s_scanned_genres.clear();
 	}
 }
 
 void ResetFilterButton::takeAction(const std::vector<Movie*>& movie_list)
 {
 	resetFilter(movie_list);
+}
+
+void ResetFilterButton::clear()
+{
 }
 
 void ResetFilterButton::update()

@@ -7,6 +7,8 @@ class Dock final : public Widget
 {
 private:
 
+	//Keeping all states of our dock
+
 	enum class m_dock_status
 	{
 		STATE_IDLE,
@@ -16,26 +18,25 @@ private:
 
 	m_dock_status m_dock_state{ m_dock_status::STATE_IDLE };
 
-	float height{ 0.0f };
-	float m_offset{ -15.0f };
+	float m_offset{ -15.0f };	//Offset used to 
 
 	bool PlaySound{ true };
 
-	std::vector<Widget*> widgets;
+	std::vector<Widget*> widgets;	//Saving all the widgets
 
 private:
 
-	bool contains(float x, float y) const;
+	bool contains(float x, float y) const;		 
 	void setOffset(float off) { m_offset = off; }
 	void takeAction(const std::vector<Movie*>& movie_list) override;
+	void clear() override;
+	void setPosX(float x) { m_positionX = x; }
+	void setPosY(float y) { m_positionY = y; }
 
 public:
 
 	void update() override;
 	void draw() override;
-
-	void setPosX(float x) { m_positionX = x; }
-	void setPosY(float y) { m_positionY = y; }
 
 	Dock(float x, float y, const std::vector<Widget*>& widgets_list);
 };

@@ -22,20 +22,19 @@ private:
 	bool textInvisible{ false };
 
 	void searchByTitle(const std::vector<Movie*>& movie_list);
+	void clear() override;
 
-	float m_height{ 0.0f };
+	bool contains(float x, float y) const;
+	void takeAction(const std::vector<Movie*>& movie_list) override;
+
+
+
 	std::vector<char> characters;
 
 public:
 
 	void draw() override;
 	void update() override;
-
-	void takeAction(const std::vector<Movie*>& movie_list) override;
-
-	bool contains(float x, float y) const;
-
-	void deleteText();
 
 	TextField(float posX, float posY, const std::string_view text);
 };

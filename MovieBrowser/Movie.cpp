@@ -5,29 +5,32 @@
 Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view image, const std::string_view year, const std::string_view dir, const std::vector<std::string>& prot, const std::vector<std::string>& genre)
 	: m_name(name), m_description(desc), m_image(image), m_production_year(year), m_director(dir)
 {
-	for (const auto& g : genre)
+	for (const auto& g : genre)	//Inserting on a vector all genres for a movie
 	{
 		genres.push_back(g);
 	}
 
-	for (const auto& pr : prot)
+	for (const auto& pr : prot)	//Inserting on a vector all protagonists for a movie
 	{
 		m_protagonists.push_back(pr);
 	}
-
+	
+	//Setting informationBox on the center of our canvas
 	informationBox.setPosX(CanvasConst::CANVAS_WIDTH / 2);
 	informationBox.setPosY(CanvasConst::CANVAS_HEIGHT / 2);
 }
 
+
+//Drawing our movie
 void Movie::draw()
 {
-	if (isDisabled())
+	if (isDisabled())	//If movie is Disabled then return
 	{
 		return;
 	}
 
-	m_glow = 0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted;		//This is for our glow when doing mouse over movie
-	m_highlight = 0.2f * m_highlighted + m_glow * 0.5f;									//If we mouse over a movie, then it gets highlighted
+	m_glow = 0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted;		//This is for our glow when doing mouse over movie and it starts glowing
+	m_highlight = 0.2f * m_highlighted + m_glow * 0.5f;									
 
 	//Drawing our highlight/glow
 
@@ -35,33 +38,34 @@ void Movie::draw()
 	brush_update1.outline_opacity = 0.0f;
 	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width + 0.125f, MovieConst::Movie_Banner_Height + 0.125f, brush_update1);
 
-	//Drawing our Movie
-
+	//Drawing our Movie image
 	brush_update2.outline_opacity = 0.1f;
 
 	brush_update2.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
 	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width, MovieConst::Movie_Banner_Height, brush_update2);
-	graphics::resetPose();
 
 }
 
+//Updating movie
 void Movie::update()
 {
 
-	if (isDisabled())
+	if (isDisabled())	//If movie is Disabled then return
 	{
 		return;
 	}
 
+	//Getting Mouse State
 	graphics::MouseState ms;
-	graphics::getMouseState(ms);	//Fills our ms state, ms inside has states of our mouse , button left pressed, button left down..
+	graphics::getMouseState(ms);
 
 	float mx{ graphics::windowToCanvasX(ms.cur_pos_x) };
 	float my{ graphics::windowToCanvasY(ms.cur_pos_y) };
 
+	//If mouse contains -> means is in Movie's borders
 	if (contains(mx, my)) {
 
-		if (m_active && !isDisabled())
+		if (m_active && !isDisabled())	//If movie is not disabled
 		{
 			if (m_PlaySound)
 			{
@@ -73,11 +77,11 @@ void Movie::update()
 			m_PlaySound = false;
 
 		}
-		if (ms.button_left_pressed && isActive())
+		if (ms.button_left_pressed && isActive())	//If mouse contains movie, and mouse button left button is pressed,update its state to pressed
 		{
-			m_clickTriggered = true;
+			m_clickTriggered = true;	
 		}
-		if (ms.button_left_released)
+		if (ms.button_left_released)	//If left button is released , update its state to not pressed
 		{
 			m_clickTriggered = false;
 		}
@@ -89,6 +93,7 @@ void Movie::update()
 		setHighlight(false);
 	}
 
+	//If mouse doesnt contain anymore and mouse is released then again we update its state to not pressed
 	if (ms.button_left_released)
 	{
 
@@ -97,6 +102,8 @@ void Movie::update()
 	}
 
 }
+
+// Function that determines if mouse_x and mouse_y is in borders of our movie frame 
 
 bool Movie::contains(float mouse_x, float mouse_y) const
 {
@@ -124,22 +131,29 @@ const std::string& Movie::getDir() const
 }
 
 
+// Function that displays movie information 
+
 void Movie::DisplayInfo()
 {
 
 	graphics::Brush br;
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 
+	//Drawing the Movies Name
 	graphics::setFont("OpenSans-Semibold.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f - 1.0f, CanvasConst::CANVAS_HEIGHT / 1.35f, 1.0f, getName(), br);
 
+	//Drawing the Movies Date
 	graphics::setFont("OpenSans-Regular.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f, CanvasConst::CANVAS_HEIGHT / 1.20f, 0.5f, getDate(), br);
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f, CanvasConst::CANVAS_HEIGHT / 1.15f, 0.5f, getDir(), br);
 
+	//Drawing the Movies Directors
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f, CanvasConst::CANVAS_HEIGHT / 1.15f, 0.5f, getDir(), br);
 
 	graphics::setFont("OpenSans-Regular.ttf");
 
+
+	//For all protagonists, draw the protagonist
 	float offset{ 0.0f };
 	for (const auto& protagonist : m_protagonists)
 	{
@@ -147,6 +161,8 @@ void Movie::DisplayInfo()
 		offset += protagonist.size() / 3;
 	}
 
+
+	//For all genres, draw the genre
 	offset = 0.0f;
 	for (const auto& g : genres)
 	{
@@ -156,9 +172,13 @@ void Movie::DisplayInfo()
 
 }
 
+//Function used to draw information when we change state to when movie is clicked
+
 void Movie::drawInformation()
 {
 	graphics::Brush brush;
+
+	//Drawing our background
 
 	br.fill_opacity = 0.5f;
 	br.outline_opacity = 0.0f;
@@ -183,8 +203,7 @@ void Movie::drawInformation()
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
 	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 5.5f, CanvasConst::CANVAS_HEIGHT / 3.8f, MovieConst::Movie_Banner_Width + 0.7f, MovieConst::Movie_Banner_Height + 0.7f, br);
 
-
-	//Description
+	//Drawing description
 	graphics::setFont("OpenSans-Semibold.ttf");
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 2.0f, 0.5f, "Description: ", br);
 	graphics::setFont("OpenSans-Light.ttf");
@@ -212,16 +231,17 @@ void Movie::drawInformation()
 
 	}
 
-	//graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f, 0.5f, getDesc(), br);
-
-	//Drawing info
+	//Drawing year of movie
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size() / 2.5f + 1.2f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, +"(" + getDate() + ")", br);
 	graphics::setFont("OpenSans-Light.ttf");
+
+	//Drawing director
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f, CanvasConst::CANVAS_HEIGHT / 3.3f, 0.5f, "-Directors:   " + getDir(), br);
 
+	//Drawing all protagonists
 	float offset{ 3.5f };
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, "-Protagonists: ", br);
-
+	
 	for (const auto& protagonist : m_protagonists)
 	{
 		graphics::setFont("OpenSans-Light.ttf");
@@ -229,6 +249,8 @@ void Movie::drawInformation()
 		offset += protagonist.size() / 3.5f;
 	}
 
+
+	//Drawing all Genres
 	offset = 3.5f;
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, "Genre: ", br);
 	for (const auto& g : genres)

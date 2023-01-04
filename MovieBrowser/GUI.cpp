@@ -1,13 +1,15 @@
 #include "GUI.h"
-//DONE
 
-void GUI::draw()	//Drawing of all our classes
+
+/*
+	Draw is the function that is continuously running and drawing all our objects to the screen.
+	- drawStartedScreen() -> Indicates the scene where all the objects(movies,widgets) appear and are being drawned.
+	- drawPressedMovieScreen() -> Indicates the scene where a movie is pressed, and information is displayed for that movie.
+*/
+
+void GUI::draw()
 {
-	if (m_state == STATUS_LOADING)
-	{
-		drawLoadingScreen();
-	}
-	else if (m_state == STATUS_STARTED)
+	if (m_state == STATUS_STARTED)
 	{
 		drawStartedScreen();
 	}
@@ -16,15 +18,16 @@ void GUI::draw()	//Drawing of all our classes
 		drawPressedMovieScreen();
 	}
 
-}
+} //DONE
+/*
+	Update is the function that is continuously running and updating all our objects to the screen.
+	- updateStartedScreen() -> Indicates the scene where all the objects(movies,widgets) appear and are being updated.
+	- updatePressedMovieScreen() -> Indicates the scene where a movie is pressed, and information is displayed for that movie.
+*/
 
 void GUI::update()	//Updating of all our classes
 {
-	if (m_state == STATUS_LOADING)
-	{
-		updateLoadingScreen();
-	}
-	else if (m_state == STATUS_STARTED)
+	if (m_state == STATUS_STARTED)
 	{
 		updateStartedScreen();
 	}
@@ -33,18 +36,22 @@ void GUI::update()	//Updating of all our classes
 		updatePressedMovieScreen();
 	}
 
-}
+} //DONE
 
-//Updating Start Screen
+/*
+	Function which updates our starting screen
+*/
 void GUI::updateStartedScreen()
 {
-	//For every movie and for our dock, update its state
-	for (auto& movie : movie_list)
+	//For every movie, if the movie is not disabled (from some widget when filtering) , update it.
+	for (const auto& movie : movie_list)
 	{
 		if (movie && !movie->isDisabled())
 		{
 			movie->update();
 
+			//If a particular movie is clicked, and our movie is active (which means that this movie is being updated), 
+			//change the state and start the scene where this movie's info is displayed
 			if (movie->isClickTriggered() && movie->isActive())
 			{
 				m_state = STATUS_MOVIE_PRESSED;
@@ -53,30 +60,16 @@ void GUI::updateStartedScreen()
 		}
 	}
 
+	//For every widget run each update function.
 	for (const auto& widget : widgets)
 	{
 		if (widget)
 		{
 			widget->update();
 
-			//Checking if the last active widget was a clear "filter" widget, so we can reset the sliders position
-			if (lastActiveWidget && lastActiveWidget->getID() == 11)
-			{
-				for (const auto& w : widgets)
-				{
-					if (w->getID() == 9 || w->getID() == 10)
-					{
-						Slider* const s = dynamic_cast<Slider*>(w);
-						s->clearSlider();
-					}
-					if (w->getID() == 12)
-					{
-						TextField* const t = dynamic_cast<TextField*>(w);
-						t->deleteText();
-					}
-				}
-				lastActiveWidget = nullptr;
-			}
+			//If for all widgets an action is triggered (a button is clicked, or text is typed in the textfield, or slider is being dragged) and
+			//The current widget which action is triggered is not operating currently, 
+			//We run a function called takeAction which takes as data all movies, and does something with that , depending on which widget is called (button,textfield..)
 
 			if (widget->actionTriggered() && !widget->isOperating())
 			{
@@ -84,21 +77,36 @@ void GUI::updateStartedScreen()
 				widget->setOperating(true);
 				widget->takeAction(movie_list);
 			}
+
+			/*Checking if the last active widget was a clear "filter" widget(id == 11), so we can reset the sliders position, and the textfield message
+			* We can distinguish every widget based on their id, when a widget is created, it gets an id from 0,1,2... based on when it was created
+			* */
+			if (lastActiveWidget && lastActiveWidget->getID() == 11)
+			{
+				for (const auto& w : widgets)
+				{
+					w->clear();
+				}
+				lastActiveWidget = nullptr;
+			}
+
 		}
 
 	}
 
 }
 
-//Actual GUI drawing
+//Drawing our starting screen
 void GUI::drawStartedScreen()
 {
-	//Background
+	//Drawing our Background
 	br.fill_opacity = 0.5f;
 	br.outline_opacity = 0.0f;
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::BACKGROUND);
 	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 2, CanvasConst::CANVAS_HEIGHT / 2, CanvasConst::CANVAS_WIDTH, CanvasConst::CANVAS_HEIGHT, br);
 
+
+	//For each movie we call Movie's draw function
 	for (const auto& movie : movie_list)
 	{
 		if (movie && !movie->isDisabled())
@@ -107,6 +115,7 @@ void GUI::drawStartedScreen()
 		}
 	}
 
+	//For each widget we call polymorphically its draw function
 	for (const auto& widget : widgets)
 	{
 		if (widget)
@@ -118,22 +127,24 @@ void GUI::drawStartedScreen()
 
 }
 
+//Drawing the scene when a movie is pressed
 void GUI::drawPressedMovieScreen()
 {
 	if (clickedMovie)
 	{
 		clickedMovie->drawInformation();
 	}
-}
+}	  //DONE
 
+//Updating the scene when a movie is pressed
 void GUI::updatePressedMovieScreen()
 {
-
 	if (clickedMovie)
 	{
 		clickedMovie->setActive(false);
 		clickedMovie->update();
 
+		//If user released the mouse, to the previous state
 		if (!clickedMovie->isClickTriggered())
 		{
 			m_state = STATUS_STARTED;
@@ -143,6 +154,7 @@ void GUI::updatePressedMovieScreen()
 
 }
 
+//Initializing all our objects (movies,widgets)
 void GUI::init()
 {
 	graphics::setFont("OpenSans-Regular.ttf");
@@ -191,6 +203,8 @@ void GUI::CreateMovies()
 	movie_list.push_back(new Movie("MidSommar", "A couple travels to Northern Europe to visit a rural hometown's fabled Swedish mid-summer festival. What begins as an idyllic retreat quickly devolves into an increasingly violent and bizarre competition at the hands of a pagan cult.", AssetsConst::MIDSOMMAR, "2019", "Ari Ster", { "Florence Pugh","Jack Reynor","Vilhelm Blomgren" }, { "Horror","Drama" }));
 	movie_list.push_back(new Movie("The Invisible Man", "A scientist finds a way of becoming invisible, but in doing so, he becomes murderously insane.", AssetsConst::THEINVISIBLEMAN, "1950", "James Whale", { "Claude Rains","Gloria Stuart","William Harrigan" }, { "Horror", "Sci-Fi" }));
 
+	// Placing all movies in the right position
+
 	size_t size = movie_list.size();
 	for (size_t i = 0; i < 2; i++)
 	{
@@ -216,6 +230,7 @@ void GUI::CreateMovies()
 
 }
 
+//Destroying our objects
 GUI::~GUI()
 {
 	for (const auto& movie : movie_list)
@@ -247,14 +262,4 @@ void GUI::releaseInstance()
 		delete s_gui;
 	}
 	s_gui = nullptr;
-}
-
-//Drawing Loading Screen
-void GUI::drawLoadingScreen()
-{
-}
-
-//Updating Loading Screen
-void GUI::updateLoadingScreen() const
-{
 }

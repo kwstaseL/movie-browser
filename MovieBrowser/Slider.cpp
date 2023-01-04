@@ -23,7 +23,7 @@ void Slider::update()
 
 
     //Based on slider id we will filter
-    float temp{ box.getPosX() };
+    int temp{ box.getPosX() };
 
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
     {
@@ -112,6 +112,7 @@ void Slider::draw()
         graphics::drawRect(box.getPosX() + 0.1f, box.getPosY() + m_height + 0.3f, 0.2f, 0.5f, br);
 
         graphics::drawText(box.getPosX() - 0.25f, box.getPosY() + m_height, 0.3f, std::to_string((m_year)), br);
+
     }
     else //To
     {
@@ -125,27 +126,20 @@ void Slider::draw()
 
 }
 
-bool Slider::contains(float x, float y) const
+bool Slider::contains(float mouse_x, float mouse_y) const
 {
 
     if (m_uid == 9) //From
     {
-        if (x >= box.getPosX() - 0.1f * 0.21f && x <= box.getPosX() + 0.2f * 0.20f ||
-            y >= box.getPosY() + 4.05f +0.1f * 0.5f && y <= box.getPosY() + 4.05f +0.5f * 0.5f)//1o Height apo panw, 2o height apo katw
-        {
-            return true;
-        }
-        return false;
+
+        return (mouse_x > box.getPosX() + 0.1f - 0.2f / 2 && mouse_x < box.getPosX() + 0.1f + 0.2f / 2 && mouse_y > box.getPosY() + m_height + 0.3f - 0.5f / 2 && mouse_y < box.getPosY() + m_height + 0.3f + 0.5f / 2);
     }
 
     if (m_uid == 10)    //To
     {
-        if (x >= box.getPosX() - 0.15f * 0.21f && x <= box.getPosX() + 0.2f * 0.20f ||
-            y >= box.getPosY() + 4.05f + 0.6f - 0.1f * 0.5f && y <= box.getPosY() + 4.05f + 0.6f + 0.1f * 0.5f)
-        {
-            return true;
-        }
-        return false;
+     
+        return (mouse_x > box.getPosX() + 0.1f - 0.2f / 2 && mouse_x < box.getPosX() + 0.1f + 0.2f / 2 && mouse_y > box.getPosY() + m_height + 0.6f - 0.5f / 2 && mouse_y < box.getPosY() + m_height + 0.6f + 0.5f / 2);
+
     }
 
 }
@@ -153,6 +147,24 @@ bool Slider::contains(float x, float y) const
 void Slider::takeAction(const std::vector<Movie*>& movie_list)
 {
     filterByYear(movie_list);
+}
+
+void Slider::clear()
+{
+    if (m_uid == 9)
+    {
+        m_year = 1950;
+        box.setPosX(m_positionX - 2.9f);
+        box.setPosY(m_positionY - 0.56f);
+
+    }
+    else
+    {
+        m_year = 2020;
+        box.setPosX(16.0f);
+        box.setPosY(m_positionY - 0.56f);
+    }
+    m_status_slider = SLIDER_IDLE;
 }
 
 void Slider::filterByYear(const std::vector<Movie*>& movie_list)
@@ -205,26 +217,9 @@ bool Slider::hasRequirements(const Movie* movie) const
     return false;
 }
 
-void Slider::clearSlider()
-{
-    if (m_uid == 9)
-    {
-        m_year = 1950;
-        box.setPosX(m_positionX - 2.9f);
-        box.setPosY(m_positionY - 0.56f);
-
-    }
-    else
-    {
-        m_year = 2020;
-        box.setPosX(16.0f);
-        box.setPosY(m_positionY - 0.56f);
-    }
-    m_status_slider = SLIDER_IDLE;
-}
 
 Slider::Slider(float posX, float posY, const std::string_view text)
     : Widget(posX, posY), m_text{ text }
 {
-    clearSlider();
+    clear();
 }

@@ -2,85 +2,130 @@
 #define WIDGET_H
 
 #include "Movie.h"
+#include <unordered_set>
 
-/*
-
-	<INSERT INFO ABOUT WIDGET>
-
-*/
-
+/**
+ * A base class for graphical user interface elements.
+ */
 class Widget
 {
 private:
 
-	static inline int s_idGenerator{};	//	ID Generator that inserts ID's when constructing a new Widget 
+    // ID Generator that inserts IDs when constructing a new Widget 
+    static inline int s_idGenerator{}; 
 
 protected:
 
-	//Variables that all widgets have and are using.
+    // Variables that all widgets have and use.
 
-	//Represents the info we get from getMouseState 
-	float mouse_X{};	
-	float mouse_Y{};
+    // Represents the info we get from getMouseState 
+    float mouse_X{};
+    float mouse_Y{};
 
-	//Position X,Y
-	float m_positionX{};
-	float m_positionY{};
+    std::unordered_set<Movie*> m_filteredMovies{};
 
-	bool m_highlighted{ false };	//Highlight
+    // Position X,Y
+    float m_positionX{};
+    float m_positionY{};
 
-	bool operating{ false };	//Variable that tells if our widget is currently operating
+    // Variable that tells if our widget is highlighted
+    bool m_highlighted{ false };
 
-	bool m_visible{ false };	//Variable that tells if our widget is invisible or not (a widget is invisible in our project if the dock is not yet down)
+    // Variable that tells if our widget is currently operating
+    bool operating{ false }; 
 
-	bool m_action{ false };		//Represents the state in which its time for a widget to take action (filter based on genre/year or search a title..)
+    // Variable that tells if our widget is invisible or not (a widget is invisible in our project if the dock is not yet down)
+    bool m_visible{ false };
 
-	static inline int s_focus{}; //Variable that tells who currently has the focus
-	float m_height{ 0.0f };		//Height that every widget gains when dock is down.
-	int m_uid{};			//ID of a widget
+    // Represents the state in which it's time for a widget to take action (filter based on genre/year or search a title..)
+    bool m_action{ false };
 
+    // Variable that tells which widget currently has the focus
+    static inline int s_focus{};
 
-	//Functions that is used to request focus when doing an operation, and release focus when its done operating
-	bool requestFocus();
-	void releaseFocus();
+    // Height that every widget gains when dock is down.
+    float m_height{ 0.0f };   
 
-	graphics::Brush brush;
+    // ID of a widget
+    int m_uid{};     
+
+    /*
+     * Requests focus when doing an operation.
+     * @return true if the focus was successfully requested, false if another widget already has the focus.
+     */
+    bool requestFocus();
+
+    /*
+     * Releases focus when the operation is complete.
+     */
+    void releaseFocus();
+
+    graphics::Brush brush;
 
 public:
 
-	void setActionTriggered(bool action) { m_action = action; }
+    /*
+     * Sets the action triggered state for the widget.
+     * @param action The new action triggered state for the widget.
+     */
+    void setActionTriggered(bool action) { m_action = action; }
 
-	//Every virtual function is called polymorphically for every widget
+    // Every virtual function is called polymorphically for every widget
 
-	virtual void update() = 0;
-	virtual void draw() = 0;
+    
+     // Updates the state of the widget.
+    virtual void update() = 0;
 
-	virtual bool isOperating() const { return operating; }
-	virtual void setOperating(bool o) { operating = o; }
+    
+     //Draws the widget.
+    virtual void draw() = 0;
 
-	//Returns if an action is Triggered
-	virtual bool actionTriggered() const { return m_action; }
+    /*
+     * Gets the operating state of the widget.
+     * @return true if the widget is operating, false otherwise.
+     */
+    virtual bool isOperating() const { return operating; }
 
-	/*
-		Every widget has an action that it can operate on, for example filter by genre, filter by year..
-		This function takes in a movie list which contains all movies with control variables for each one, and does a specific operation based on which class is called
-	*/
-	virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
+    /*
+     * Sets the operating state of the widget.
+     *
+     * @param o The new operating state for the widget
+     */
+    virtual void setOperating(bool o) { operating = o; }
 
-	virtual int getID() const { return m_uid; }
-	virtual void clear() = 0;
+    /*
+     * Gets the action triggered state of the widget.
+     * @return true if an action has been triggered, false otherwise.
+     */
+    virtual bool actionTriggered() const { return m_action; }
 
-	virtual void setVisibility(bool v) { m_visible = v; }
+    /*
+     * Performs a specific operation based on the type of widget being called.
+     * @param movie_list A list of all the movies where we are going to operte on.
+     */
+    virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
 
-	Widget(float posX, float posY);
-	virtual ~Widget();
+   
+     // Gets the ID of the widget.  
+    virtual int getID() const { return m_uid; }
+
+    //Clears the state of the widget.
+    virtual void clear() = 0;
+
+    
+    //Sets the visibility of the widget.
+    virtual void setVisibility(bool v) { m_visible = v; }
+
+    /**
+     * Constructs a new widget at the given position.
+     *
+     * @param posX The x position of the widget.
+     * @param posY The y position of the widget.
+     */
+    Widget(float posX, float posY);
+
+   //Destructs the widget.
+    virtual ~Widget();
 };
 
-
-
 #endif
-
-
-
-
-

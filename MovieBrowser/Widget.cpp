@@ -1,5 +1,8 @@
 #include "Widget.h"
 
+/*
+   * Releases focus when the operation is complete.
+*/
 void Widget::releaseFocus()
 {
 	//If i have the focus, then only me can release it
@@ -9,7 +12,10 @@ void Widget::releaseFocus()
 	}
 }
 
-//Requesting focus in order to do a specific task
+/*
+	* Requests focus when doing an operation.
+	* @return true if the focus was successfully requested, false if another widget already has the focus.
+*/
 bool Widget::requestFocus()
 {	
 	//If no one is operating currently, only then I can operate
@@ -25,6 +31,7 @@ bool Widget::requestFocus()
 Widget::~Widget() = default;
 
 Widget::Widget(float posX, float posY)
+
 	: m_positionX{ posX }, m_positionY{ posY }, m_uid{ s_idGenerator++ }
 {
 }

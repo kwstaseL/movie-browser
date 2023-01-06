@@ -7,75 +7,128 @@
 #include <string_view>
 #include <vector>
 
-//Represents a Box, when a movie is clicked, information is being drawned inside that box
-struct Box
+//=============================================================================================
+//=============================================================================================
+// 
+// Represents a drawable box that has movie information when the movie is clicked.
+struct InfoBox
 {
 private:
 
+	// Position of the box on the screen.
 	float m_posX{};
 	float m_posY{};
 
 public:
-
+	// Setters and getters for the position of the box.
 	void setPosX(float x) { m_posX = x; }
 	void setPosY(float y) { m_posY = y; }
-
 	float getPosX() const { return m_posX; }
 	float getPosY() const { return m_posY; }
+};
+
+//=============================================================================================
+//=============================================================================================
+
+// Struct where we keep all the filtering status for each Movie.
+// Filtering Status like genreFilterApplied, textFilterApplied.. helps us sychronize all filters together, when "triggering" a widget
+
+struct MovieFilteringStatus
+{
+private:
+
+	// filtering status variables
+	// They are used in order to inform other widgets that also do filtering, in order to synchronize all filters together.
+	bool genreFilterApplied{ true };
+	bool textFilterApplied{ true };
+	int lastFilterFromYear{ 1950 };
+	int lastFilterToYear{ 2020 };
+
+	//Variable that stores all current genres (that where pressed) the movie has.
+	int m_genreCount{ 0 };
+
+	//This represents the state where a movie can be and is being updated
+	bool m_isUpdatable{ true };
+
+	//Variable used to see if a movie is disabled, a movie is disabled (not updated or drawen) when it doesn't meet filters requirements
+	bool m_isDisabled{ false };
+
+	//Used to store if a movie is clicked
+	bool m_clickTriggered{ false };
+
+public:
+
+	//Setters and Getters
+	int getGenreCount() const { return m_genreCount; }
+	void resetGenreCount() { m_genreCount = 0; }
+	void AddGenreCount(int g) { m_genreCount += g; }
+
+	void setDisabled(bool d) { m_isDisabled = d; }
+	bool isDisabled() const { return m_isDisabled; }
+
+	bool isClickTriggered() const { return m_clickTriggered; }
+	void setClickTriggered(bool c) { m_clickTriggered = c; }
+
+	void setUpdatable(bool a) { m_isUpdatable = a; }
+	bool isUpdatable() const { return m_isUpdatable; }
+
+	void setGenreFilterApplied(bool g) { genreFilterApplied = g; }
+	bool getGenreFilterApplied() const { return genreFilterApplied; }
+
+	void setLastFilterToYear(int y) { lastFilterToYear = y; }
+	int getLastFilterToYear() const { return lastFilterToYear; }
+
+	void setLastFilterFromYear(int y) { lastFilterFromYear = y; }
+	int getLastFilterFromYear() const { return lastFilterFromYear; }
+
+	bool getTextFilterApplied() const { return textFilterApplied; }
+	void setTextFilterApplied(bool t) { textFilterApplied = t; }
 
 };
 
-/*
-	Represents the Movie class where we keep information about each movie (description,title,year..) and some control variables that 
-	help us maintain all filters together
-*/
+//=============================================================================================
+//=============================================================================================
 
+/*
+	Represents a movie and stores information about it, such as the title, description, year of production, and director.
+	Also includes control variables that are used to synchronize filters.
+*/
 class Movie
 {
 private:
 
-	float m_pos[2];	//Position X and Y of a movie to the canvas
+	// Position of the movie on the screen.
+	float m_pos[2];
 
-	std::string m_name{}; //Movie name
+	std::string m_name{}; // Movie name.
 
-	Box informationBox;	//Information box displayed when pressing a movie
+	// Box that displays movie information when clicked.
+	InfoBox informationBox;
 
-
-	//Information about movies
-
+	// Movie information.
 	const std::string m_description{};
 	const std::string m_image{};
 	const std::string m_production_year{};
 	const std::string m_director{};
-
 	std::vector<std::string> m_protagonists;
 
-	float m_glow{};	//	Glow is a float that we use to highlight
+	// Variables used for "glowing" animation when the mouse hovers the movie frame.
+	float m_glow{};
 	float m_highlight{};
 
 	bool m_highlighted{ false };
 	bool m_PlaySound{ true };
 
+	/*
+	 * Determines if the given point (x, y) is inside the border of the "Movies Frame".
+	 * @param x The x-coordinate of the point to check.
+	 * @param y The y-coordinate of the point to check.
+	 * @return True if the point (x, y) is inside the border of the Movies Frame, false otherwise.
+	 */
+	bool contains(float x, float y) const;
 
-	//Control variables that we use in order to synchronize all filter patterns
-
-	bool hasFilteredGenre{ true };
-	bool hasFilteredText{ true };
-
-	int lastYearComparedfromTo{ 2020 };
-	int lastYearComparedFrom{ 1950 };
-
-	//Variable that stores all genres that the movie has.
-	int m_genreCount{ 0 };
-
-	
-	bool m_active{ true };	//This represents the state where a movie can be and is being updated
-	bool m_disabled{ false };	//Variable used to see if a movie is disabled, a movie is disabled (not updated or drawen) when it doesn't meet filters requirements
-	bool m_clickTriggered{ false };	//Used to store if a movie is clicked
-
-	bool contains(float x, float y) const;	//Takes in mouse_x , and mouse_y from getMouseState and returns if the mouse is in Movies Frame Borders
-
-	void DisplayInfo();	//Function that displays movies information
+	//Function that displays movies information
+	void DisplayInfo();
 
 	class graphics::Brush brush_update1;
 	class graphics::Brush brush_update2;
@@ -83,50 +136,42 @@ private:
 
 public:
 
-	std::vector<std::string> genres;	//Vector that stores all genres for a specific movie
+	// Instance where we keep all the filter states for each Movie.
+	// Filter States like genreFilterApplied, textFilterApplied.. helps us sychronize all filters together, when clicking on a widget.
+	// For Example when clicking "Action" Filter Button ,we want all the movies that have action genre(but not only action) to appear,
+	// but if we also want to search for a movie , while action button is still on, we want to only show those movies that have "Action" as genre.
+	MovieFilteringStatus MovieFilterState;
 
+	//Vector that stores all genres for a specific movie
+	std::vector<std::string> genres;
+
+	// Constructing a new movie
 	Movie(const std::string_view n, const std::string_view desc,
 		const std::string_view image, const std::string_view year, const std::string_view dir,
-		const std::vector<std::string>& prot, const std::vector<std::string>& genre);	//Constructor
+		const std::vector<std::string>& prot, const std::vector<std::string>& genre);	
 
-	void draw();	//Function that draws a movie on the screen
-	void update();	//Function that updates the movie on the screen
+	//Function that draws a movie on the screen
+	void draw();
 
-	void drawInformation();	//Function that draws information on the screen
+	//Function that updates the movie on the screen
+	void update();
 
+	//Function that draws information on the screen box
+	void drawInformation();	
+
+	//Getters and Setters
 	void setPosX(float x) { m_pos[0] = x; }
 	void setPosY(float y) { m_pos[1] = y; }
 
-	int getGenreCount() const { return m_genreCount; }
-	void resetGenreCount() { m_genreCount = 0; }
-	void AddGenreCount(int g) { m_genreCount += g; }
-
-	void setDisabled(bool d) { m_disabled = d; }
-	bool isDisabled() const { return m_disabled; }
-
-	bool isClickTriggered() const { return m_clickTriggered; }
-
 	void setHighlight(bool h) { m_highlighted = h; }
-
-	void setActive(bool a) { m_active = a; }
-	bool isActive() const { return m_active; }
-
-	void sethasFilteredGenre(bool g) { hasFilteredGenre = g; }
-	bool gethasFilteredGenre() const { return hasFilteredGenre; }
-
-	void setLastYearComparedfromTo(int y) { lastYearComparedfromTo = y; }
-	int getLastYearComparedfromTo() const { return lastYearComparedfromTo; }
-
-	void setLastYearComparedFrom(int y) { lastYearComparedFrom = y; }
-	int getLastYearComparedFrom() const { return lastYearComparedFrom; }
-
-	bool getHasFilteredText() const { return hasFilteredText; }
-	void sethasFilteredText(bool t) { hasFilteredText = t; }
 
 	const std::string& getName() const;
 	const std::string& getDesc() const;
 	const std::string& getDate() const;
 	const std::string& getDir() const;
 };
+
+//=============================================================================================
+//=============================================================================================
 
 #endif

@@ -1,8 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <math.h>
-#define SETCOLOR(c,r,g,b) {c[0] = r,c[1] = g; c[2] = b;}
+//Function which takes in graphics::Brush and fills it with color
+#define SETCOLOR(c,r,g,b) {c[0] = r,c[1] = g; c[2] = b;}    
 
 namespace constants
 {
@@ -59,8 +59,6 @@ namespace constants
     }
 
 }
-
-
 
 namespace WindowConst = constants::WINDOW;
 namespace CanvasConst = constants::CANVAS;

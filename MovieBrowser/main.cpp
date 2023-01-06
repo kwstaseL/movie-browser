@@ -1,21 +1,23 @@
 #include "sgg/graphics.h"
 #include "GUI.h"
 
+//COMPLETED
 
+//Function that is continously running and drawing all our objects to the screen
 void draw()
 {
 	GUI* gui{ GUI::Get() };
 	gui->draw();
-
 }
 
+//Function that is continously running and updating all our objects to the screen
 void update(float ms)
 {
 	GUI* gui{ GUI::Get() };
 	gui->update();
-
 }
 
+//Creating Window, getting the instance of GUI, initializing objects, setting canvas sizes
 void createProgram()
 {
 	graphics::createWindow(1400, 800, WindowConst::WINDOW_NAME);
@@ -34,12 +36,9 @@ void createProgram()
 
 int main()
 {
-
-
 	createProgram();
 	graphics::startMessageLoop();
 	graphics::destroyWindow();
-
 
 	GUI::releaseInstance();
 

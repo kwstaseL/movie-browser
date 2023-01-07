@@ -1,9 +1,10 @@
 #include "Button.h"
 
+//COMPLETED
 
-// Constructing our Button
-// @param posX: the x-coordinate of the button's position in the canvas
-// @param posY: the y-coordinate of the button's position in the canvas
+// Constructs a new button
+// @param posX: the x coordinate of the button's position
+// @param posY: the y coordinate of the button's position
 // @param text: the text displayed on the button
 
 Button::Button(float posX, float posY, const std::string_view text)
@@ -12,11 +13,11 @@ Button::Button(float posX, float posY, const std::string_view text)
 }
 
 // Checks if the mouse is within the boundaries of the button
-// @param mouse_x: the x-coordinate of the mouse
-// @param mouse_y: the y-coordinate of the mouse
-// @return: true if the mouse is within the button's boundaries, false otherwise
+// @param mouse_x: the x coordinate of the mouse
+// @param mouse_y: the y coordinate of the mouse
+// @return true if the mouse is within the button's coordinates, false otherwise
 
-//// m_positionX,m_positionY is the Dock's position on the canvas
+/// m_positionX,m_positionY is the Dock's position on the canvas
 
 bool Button::contains(float mouse_x, float mouse_y) const
 {

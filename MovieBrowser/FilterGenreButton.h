@@ -3,6 +3,7 @@
 
 #include "Button.h"
 
+//COMPLETED
 
 /*
 	Represents a FilterGenreButton, which in our program has a text ("Action","Drama"), and when pressed filters movies by that text.
@@ -34,11 +35,10 @@ private:
 	static inline std::unordered_set<std::string> s_scanned_genres;
 
 	/*
-		Checks if the given movie meets the requirements for filtering, including the filtered text
-		(if text was typed in the text field) and the years filtered by the slider.
-
-		@param movie: a pointer to the movie to be checked
-		@return true if the movie meets the requirements, false otherwise
+	Checks if the given movie meets the requirements for filtering (checks it is already filtered by other widgets), 
+	used to sychronize all filters with all widgets that can filter, together.
+	@param movie: a pointer to the movie to be checked
+	@return true if the movie meets the requirements, false otherwise
 	*/
 	bool hasRequirements(const Movie* movie) const;
 

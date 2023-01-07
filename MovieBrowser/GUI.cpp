@@ -1,5 +1,6 @@
 #include "GUI.h"
 
+//COMPLETED
 
 // Draw is the function that is continuously running and drawing all our objects to the screen.
 // - drawStartedScreen() -> Indicates the scene where all the objects(movies,widgets) appear and are being drawned.	(STATUS_STARTED)
@@ -42,7 +43,7 @@ void GUI::updateStartedScreen()
 {
 	//Function which updates our starting screen
 
-	//For every movie, if the movie is not disabled (from some widget when filtering) , update it.
+	//For every movie, update it.
 	for (const auto& movie : movie_list)
 	{
 		if (movie)
@@ -54,7 +55,7 @@ void GUI::updateStartedScreen()
 				change the state and start the scene where this movie's info is displayed
 			*/
 
-			if (movie->MovieFilterState.isClickTriggered() && movie->MovieFilterState.isUpdatable())
+			if (movie->state_info.isClickTriggered() && movie->state_info.isUpdatable())
 			{
 				m_state = STATUS_MOVIE_PRESSED;
 				clickedMovie = movie;
@@ -150,14 +151,14 @@ void GUI::updatePressedMovieScreen()
 
 	if (clickedMovie)
 	{
-		clickedMovie->MovieFilterState.setUpdatable(false);
-		clickedMovie->update();
+		clickedMovie->state_info.setUpdatable(false);	//But we just se it to not updatable so information about this movie doesn't show in the other screen
+		clickedMovie->update();	//This movie needs to be updated so we can also leave this state
 
-		//If user released the mouse, to the previous state
-		if (!clickedMovie->MovieFilterState.isClickTriggered())
+		//If user released the mouse, go to the previous state
+		if (!clickedMovie->state_info.isClickTriggered())
 		{
 			m_state = STATUS_STARTED;
-			clickedMovie->MovieFilterState.setUpdatable(true);
+			clickedMovie->state_info.setUpdatable(true);
 		}
 	}
 

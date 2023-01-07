@@ -11,11 +11,13 @@ void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
     for (const auto& movie : movie_list)
     {
         // Reset movie control variables
-        movie->MovieFilterState.setDisabled(false);
-        movie->MovieFilterState.setGenreFilterApplied(true);
-        movie->MovieFilterState.setTextFilterApplied(true);
-        movie->MovieFilterState.setLastFilterFromYear(1950);
-        movie->MovieFilterState.setLastFilterToYear(2020);
+        movie->state_info.setDisabled(false);
+
+        movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
+        movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
+
+        movie->state_info.setLastFilterFromYear(1950);
+        movie->state_info.setLastFilterToYear(2020);
     }
 }
 

@@ -9,6 +9,8 @@
 #include "Slider.h"
 #include "TextField.h"
 
+//COMPLETED
+
 /*
 *	Represents the class where all our objects get updated and drawen.
 *	This is the main class that knows and runs everything.
@@ -76,7 +78,6 @@ private:
 
 public:
 
-	
 	// Draw is the function that is continuously running and drawing all our objects to the screen.
 	// - drawStartedScreen() -> Indicates the scene where all the objects(movies,widgets) appear and are being drawned.
 	// - drawPressedMovieScreen() -> Indicates the scene where a movie is pressed, and information is displayed for that movie.

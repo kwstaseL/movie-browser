@@ -119,7 +119,7 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 		}
 		for (const auto& movie : movie_list) {
 
-			movie->MovieFilterState.setUpdatable(false); //Setting our to not be active, which means it still can be drawn, but it is not being updated.
+			movie->state_info.setUpdatable(false); //Setting our to not be active, which means it still can be drawn, but it is not being updated.
 
 		}
 
@@ -133,7 +133,7 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 		}
 		for (const auto& movie : movie_list) {
 
-			movie->MovieFilterState.setUpdatable(true); //Setting our to be active, which means it can now be drawn and updated.
+			movie->state_info.setUpdatable(true); //Setting our to be active, which means it can now be drawn and updated.
 
 		}
 

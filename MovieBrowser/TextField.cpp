@@ -13,11 +13,11 @@ bool TextField::hasRequirements(const Movie* movie) const
 		Returns true if movie has a filtered genre("Action","Drama" etc..) and is between the 2 years
 		Returns false otherwise
 	*/
-
 	if (movie)
 	{
-		return movie->MovieFilterState.getGenreFilterApplied() && std::stoi(movie->getDate()) <= movie->MovieFilterState.getLastFilterToYear()
-			&& std::stoi(movie->getDate()) >= movie->MovieFilterState.getLastFilterFromYear();
+		return movie->state_info.getWidgetState(WidgetEnums::WidgetKeys::GenreFilter) == WidgetEnums::WidgetFilterState::ENABLED &&
+			std::stoi(movie->getDate()) <= movie->state_info.getLastFilterToYear()
+			&& std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear();
 	}
 	return false;
 }
@@ -248,8 +248,8 @@ void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
 
 			if (hasRequirements(movie))
 			{
-				movie->MovieFilterState.setDisabled(false);
-				movie->MovieFilterState.setTextFilterApplied(true);
+				movie->state_info.setDisabled(false);
+				movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 			}
 
 		}
@@ -257,12 +257,12 @@ void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
 		//If movie title doesn't have the current textfield title anywhere in their title, disable it, and setTextFilterApplied = False to alert all the other widgets
 		if (movie_name.find(string) == std::string::npos)
 		{
-			movie->MovieFilterState.setDisabled(true);
-			movie->MovieFilterState.setTextFilterApplied(false);
+			movie->state_info.setDisabled(true);
+			movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::DISABLED);
 		}
 		else
 		{
-			movie->MovieFilterState.setTextFilterApplied(true);
+			movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 		}
 
 

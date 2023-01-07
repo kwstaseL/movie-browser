@@ -44,8 +44,6 @@ protected:
     static inline int s_focus{};
 
     // Height that every widget gains when dock is down.
-    float m_height{ 0.0f };   
-
     // ID of a widget
     int m_uid{};     
 
@@ -72,7 +70,8 @@ public:
 
     // Every virtual function is called polymorphically for every widget
 
-    
+    float m_height{ 0.0f };
+
      // Updates the state of the widget.
     virtual void update() = 0;
 

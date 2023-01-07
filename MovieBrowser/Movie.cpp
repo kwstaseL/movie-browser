@@ -1,10 +1,9 @@
 #include "Movie.h"
 #include <cstring>
 
-//COMPLETED FIX THE DRAWING A BIT
+//COMPLETED
 
-
-// Constructor for Movie class. Initializes member variables with the provided parameters and sets the initial position of the information box.
+// Constructor for Movie class. Initializes member variables with the provided parameters and sets the initial position of the state_information box.
 Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view image, const std::string_view year, const std::string_view dir, const std::vector<std::string>& prot, const std::vector<std::string>& genre)
 	: m_name(name), m_description(desc), m_image(image), m_production_year(year), m_director(dir)
 {
@@ -21,18 +20,21 @@ Movie::Movie(const std::string_view name, const std::string_view desc, const std
 		m_protagonists.push_back(pr);
 	}
 
-	// Setting the initial position of the information box to the center of the canvas
+	// Setting the initial position of the state_information box to the center of the canvas
 	informationBox.setPosX(CanvasConst::CANVAS_WIDTH / 2);
 	informationBox.setPosY(CanvasConst::CANVAS_HEIGHT / 2);
+
+	state_info.insertNewWidgetState(WidgetEnums::WidgetKeys::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
+	state_info.insertNewWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
+
 }
 
 //Function that draws a movie on the screen
-
 void Movie::draw()
 {
 
 	// If the movie is disabled, do not draw it.
-	if (MovieFilterState.isDisabled())
+	if (state_info.isDisabled())
 	{
 		return;
 	}
@@ -58,7 +60,7 @@ void Movie::draw()
 void Movie::update()
 {
 	// If the movie is disabled do not update it.
-	if (MovieFilterState.isDisabled())
+	if (state_info.isDisabled())
 	{
 		return;
 	}
@@ -74,8 +76,8 @@ void Movie::update()
 	// If the mouse is within the bounds of the movie, perform necessary actions.
 	if (contains(mx, my)) {
 
-		// If the movie is updatable and not disabled, highlight it and display its information.
-		if (MovieFilterState.isUpdatable() && !MovieFilterState.isDisabled())
+		// If the movie is updatable and not disabled, highlight it and display its state_information.
+		if (state_info.isUpdatable() && !state_info.isDisabled())
 		{
 			if (m_PlaySound)
 			{
@@ -88,14 +90,14 @@ void Movie::update()
 
 		}
 		//If mouse contains movie, and mouse button left button is pressed,update its state to pressed.
-		if (ms.button_left_pressed && MovieFilterState.isUpdatable())
+		if (ms.button_left_pressed && state_info.isUpdatable())
 		{
-			MovieFilterState.setClickTriggered(true);
+			state_info.setClickTriggered(true);
 		}
 		//If left button is released , update its state to not pressed.
 		if (ms.button_left_released)
 		{
-			MovieFilterState.setClickTriggered(false);
+			state_info.setClickTriggered(false);
 		}
 
 	}
@@ -107,18 +109,17 @@ void Movie::update()
 	//If mouse doesnt contain anymore and mouse is released then again we update its state to not pressed
 	if (ms.button_left_released)
 	{
-		MovieFilterState.setClickTriggered(false);
+		state_info.setClickTriggered(false);
 	}
 
 }
 
 /*
  * Determines if the given point (x, y) is inside the border of the "Movies Frame".
- * @param x The x-coordinate of the point to check.
- * @param y The y-coordinate of the point to check.
- * @return True if the point (x, y) is inside the border of the Movies Frame, false otherwise.
+ * @param x The x coordinate of the point to check.
+ * @param y The y coordinate of the point to check.
+ * @return True if the point (x, y) is inside the border of the Movies coordinates, false otherwise.
 */
-
 bool Movie::contains(float mouse_x, float mouse_y) const
 {
 	return (mouse_x > m_pos[0] - MovieConst::Movie_Banner_Width / 2 && mouse_x < m_pos[0] + MovieConst::Movie_Banner_Width / 2 && mouse_y > m_pos[1] - MovieConst::Movie_Banner_Height / 2 && mouse_y < m_pos[1] + MovieConst::Movie_Banner_Height / 2);
@@ -145,7 +146,7 @@ const std::string& Movie::getDir() const
 }
 
 
-// Function that displays movie information on the "starting screen" 
+// Function that displays movie state_information on the "starting screen" 
 void Movie::DisplayInfo()
 {
 
@@ -187,8 +188,7 @@ void Movie::DisplayInfo()
 
 }
 
-// Function used to draw information about a movie on the screen when the movie is clicked
-
+// Function used to draw state_information about a movie on the screen when the movie is clicked
 void Movie::drawInformation()
 {
 	graphics::Brush brush;
@@ -201,7 +201,7 @@ void Movie::drawInformation()
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::BACKGROUND);
 	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 2, CanvasConst::CANVAS_HEIGHT / 2, CanvasConst::CANVAS_WIDTH, CanvasConst::CANVAS_HEIGHT, br);
 
-	//Drawing outside box of movie information
+	//Drawing outside box of movie state_information
 	SETCOLOR(brush.fill_color, 0.0f, 0.0f, 0.0f);
 	brush.texture = "";
 	brush.fill_opacity = 0.7f;

@@ -192,16 +192,16 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
     {
         for (const auto& movie : movie_list)
         {
-            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->MovieFilterState.getLastFilterToYear())
+            if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->state_info.getLastFilterToYear())
                 && hasRequirements(movie))
             {
-                movie->MovieFilterState.setDisabled(false);
+                movie->state_info.setDisabled(false);
             }
             else
             {
-                movie->MovieFilterState.setDisabled(true);
+                movie->state_info.setDisabled(true);
             }
-            movie->MovieFilterState.setLastFilterFromYear(m_year);
+            movie->state_info.setLastFilterFromYear(m_year);
         }
 
     }
@@ -209,17 +209,17 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
     {
         for (const auto& movie : movie_list)
         {
-            if (std::stoi(movie->getDate()) <= m_year && (std::stoi(movie->getDate()) >= movie->MovieFilterState.getLastFilterFromYear()) &&
-                !(movie->MovieFilterState.getLastFilterFromYear() > m_year) && hasRequirements(movie))
+            if (std::stoi(movie->getDate()) <= m_year && (std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear()) &&
+                !(movie->state_info.getLastFilterFromYear() > m_year) && hasRequirements(movie))
             {
-                movie->MovieFilterState.setDisabled(false);
+                movie->state_info.setDisabled(false);
             }
             else
             {
-                movie->MovieFilterState.setDisabled(true);
+                movie->state_info.setDisabled(true);
 
             }
-            movie->MovieFilterState.setLastFilterToYear(m_year);
+            movie->state_info.setLastFilterToYear(m_year);
         }
     }
     setActionTriggered(false);
@@ -233,7 +233,8 @@ bool Slider::hasRequirements(const Movie* movie) const
 {
     if (movie)
     {
-        return movie->MovieFilterState.getGenreFilterApplied() && movie->MovieFilterState.getTextFilterApplied();
+        return movie->state_info.getWidgetState(WidgetEnums::WidgetKeys::GenreFilter) == WidgetEnums::WidgetFilterState::ENABLED &&
+            movie->state_info.getWidgetState(WidgetEnums::WidgetKeys::TitleFilter) == WidgetEnums::WidgetFilterState::ENABLED;
     }
     return false;
 }

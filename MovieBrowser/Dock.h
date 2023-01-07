@@ -3,7 +3,7 @@
 
 #include "Widget.h"
 
-//	This class represents the Dock, which when hovered over with the mouse, slides down to reveal all the widgets.
+//This class represents the Dock, which when hovered over with the mouse, slides down to reveal all the widgets.
 class Dock final : public Widget
 {
 private:

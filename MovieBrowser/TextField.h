@@ -50,6 +50,7 @@ private:
 
     bool textInvisible{ false };
 
+
     /*
      * Searches for movies by title using the given list of movies.
      * @param movie_list The list of movies to search through.
@@ -75,6 +76,9 @@ private:
      */
     void takeAction(const std::vector<Movie*>& movie_list) override;
 
+    float m_height_offset{ 4.0f };
+    float getHeightOffset() override { return m_height_offset; }
+
 public:
 
     /*
@@ -94,6 +98,7 @@ public:
      * @param text The text to display in the text field.
      */
     TextField(float posX, float posY, const std::string_view text);
+
 };
 
 #endif

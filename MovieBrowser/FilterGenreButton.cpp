@@ -124,16 +124,8 @@ void FilterGenreButton::update()
 {
 	//Giving our widget a height so when the dock comes down, our button also comes down
 
-	m_height += 0.01f * graphics::getDeltaTime();
-
-	if (m_height > 2.0f)
-	{
-		m_height = 2.0f;
-	}
-
 	if (!m_visible)	//If the widget is invisible , reset it back to its original height
 	{
-		m_height = 0.0f;
 		return;
 	}
 

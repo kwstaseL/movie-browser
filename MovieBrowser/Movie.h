@@ -40,12 +40,12 @@ class Movie
 {
 private:
 
-	// Position of the movie on the screen.
+	//Position of the movie on the screen.
 	float m_pos[2];
 
 	std::string m_name{}; // Movie name.
 
-	// Box that displays movie information when clicked.
+	//Box that displays movie information when clicked.
 	InfoBox informationBox;
 
 	// Movie information.
@@ -55,7 +55,7 @@ private:
 	const std::string m_director{};
 	std::vector<std::string> m_protagonists;
 
-	// Variables used for "glowing" animation when the mouse hovers the movie frame.
+	//Variables used for "glowing" animation when the mouse hovers the movie frame.
 	float m_glow{};
 	float m_highlight{};
 

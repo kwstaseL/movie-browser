@@ -11,7 +11,6 @@
 	The button has a text label and can be pressed to perform an action (e.g. filter movies, reset filter).
 	The Button class is derived from the Widget class, which provides a common interface for interacting with different types of widgets.
 	When filtering, the Buttons which filters the genres take into consideration all the other widgets that may have filtered the movies.
-
 */
 class Button : public Widget
 {
@@ -34,6 +33,10 @@ protected:
 
 	// Initialize the button state to IDLE
 	button_state_t m_button_state{ button_state_t::BUTTON_IDLE };
+
+	float m_height_offset{ 2.0f };
+
+	float getHeightOffset() override { return m_height_offset; }
 
 	// Checks if the mouse is within the boundaries of the button
 	// @param mouse_x: the x coordinate of the mouse

@@ -2,7 +2,6 @@
 
 
 //DONE
-// JUST TRY TO FIX WHEN GOING UP FIX THE HEIGHT
 
 void Dock::update()
 {
@@ -17,7 +16,7 @@ void Dock::update()
 
 	if (contains(mouse_X, mouse_Y))	//If our mouse contains Dock's coordinates, we want the dock to come down
 	{
-		if (!(m_dock_state == m_dock_status::STATE_GOING_DOWN))
+		if (m_dock_state == m_dock_status::STATE_IDLE)
 		{
 			m_dock_state = m_dock_status::STATE_GOING_DOWN;
 			setActionTriggered(true);	//Alert that the dock is now coming down, so an action must be taken 
@@ -31,33 +30,79 @@ void Dock::update()
 		}
 
 		//Giving our dock a height, basically the animation of it coming down.
-		m_height += 0.01f * graphics::getDeltaTime();
-
-		if (m_height > 6.0f)
+		if (m_height != 6.0f)
 		{
-			m_height = 6.0f;
-		}
+			m_height += 0.012f * graphics::getDeltaTime();
 
+			if (m_height > 6.0f)
+			{
+				m_height = 6.0f;
+			}
+		}
+	
+		for (const auto& widget : widgets)
+		{
+			if (widget->m_height != widget->getHeightOffset())
+			{
+				widget->setVisibility(true);
+
+				widget->m_height += 0.01f * graphics::getDeltaTime();
+
+				if (widget->m_height > widget->getHeightOffset())
+				{
+					widget->m_height = widget->getHeightOffset();
+				}
+			}
+		}
 		PlaySound = false;
 	}
 	else if (!contains(mouse_X, mouse_Y))	//If our mouse doesn't contain Dock's borders, we want it to come up
 	{
+		if (m_dock_state == m_dock_status::STATE_IDLE)
+		{
+			return;
+		}
+
 		if (m_dock_state == m_dock_status::STATE_GOING_DOWN)
 		{
 			m_dock_state = m_dock_status::STATE_GOING_UP;
 			setActionTriggered(true);	//Alert that the dock is now coming up, so an action must be taken
-		}
-		
-		setOffset(-16.0f);	//Restoring the area where are mouse can be on the Dock, since now it's going up. 
 
-		PlaySound = true;
+			setOffset(-16.0f);	//Restoring the area where are mouse can be on the Dock, since now it's going up. 
+			PlaySound = true;
+		}
 
 		//Restoring dock's height 
-		m_height -= 0.01f * graphics::getDeltaTime();
-		if (m_height < 0.5f)
+		if (m_height != 0.0f)
 		{
-			m_height = 0.0f;
+			m_height -= 0.01f * graphics::getDeltaTime();
+			if (m_height < 0.5f)
+			{
+				m_height = 0.0f;
+				m_dock_state = m_dock_status::STATE_IDLE;
+			}
 		}
+	
+		//Restoring widgets's height
+		for (const auto& widget : widgets)
+		{
+			if (widget->m_height == 0)
+			{
+				widget->m_height = 0;
+				widget->setVisibility(false);
+			}
+			else
+			{
+				widget->m_height -= 0.01f * graphics::getDeltaTime();
+
+				if (widget->m_height < 0.0f)
+				{
+					widget->m_height = 0.0f;
+				}
+			}
+
+		}
+
 	}
 
 }
@@ -72,7 +117,6 @@ void Dock::draw()
 	brush.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::DOCK);
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_dock_width, m_dock_height, brush);
 	graphics::resetPose();
-
 }
 
 //Constructs a new Dock
@@ -113,33 +157,23 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 {
 	if (m_dock_state == m_dock_status::STATE_GOING_DOWN)
 	{
-		for (const auto& widget : widgets)
-		{
-			widget->setVisibility(true);	//Set visibility of widgets to true
-		}
 		for (const auto& movie : movie_list) {
 
 			movie->state_info.setUpdatable(false); //Setting our to not be active, which means it still can be drawn, but it is not being updated.
-
 		}
 
 	}
+
 	else if (m_dock_state == m_dock_status::STATE_GOING_UP)
 	{
-
-		for (const auto& widget : widgets)
-		{
-			widget->setVisibility(false);	//Set visibility of widgets to false
-		}
 		for (const auto& movie : movie_list) {
 
 			movie->state_info.setUpdatable(true); //Setting our to be active, which means it can now be drawn and updated.
-
 		}
-
 	}
 	setActionTriggered(false);	//Since we are done with the operation, alerting it.
 	setOperating(false);
+
 }
 // Resets the dock's state
 void Dock::clear()

@@ -11,6 +11,7 @@
 class ResetFilterButton final : public Button
 {
 private:
+
     /**
      * Resets all movie control variables to their default values.
      *
@@ -40,6 +41,8 @@ private:
      * Continuously draws the reset filter button, whenever the dock is down.
      */
     void draw() override;
+ 
+
 
 public:
     /**
@@ -51,6 +54,7 @@ public:
      */
     ResetFilterButton(float posX, float posY, const std::string_view text);
     virtual ~ResetFilterButton() = default;
+
 };
 
 #endif

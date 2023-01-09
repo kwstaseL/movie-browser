@@ -80,11 +80,17 @@ private:
     // Whether the slider is currently disabled or not
     bool m_disabled{ false };
 
+    float m_height_offset{ 4.0f };
+    float getHeightOffset() override { return m_height_offset; }
+
+
 public:
     // Constructs a new slider with the given position and text
     Slider(float posX, float posY, const std::string_view text);
     // Virtual destructor
     virtual ~Slider() = default;
+
+
 };
 
 #endif

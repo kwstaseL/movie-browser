@@ -6,16 +6,8 @@ void Slider::update()
 {
     //Giving our widget a height so when the dock comes down, our slider also comes down
 
-    m_height += 0.008f * graphics::getDeltaTime();
-
-    if (m_height > 4.0f)
-    {
-        m_height = 4.0f;
-    }
-
     if (!m_visible)
     {
-        m_height = 0.0f;
         return;
     }
 

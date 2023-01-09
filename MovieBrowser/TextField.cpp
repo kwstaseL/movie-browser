@@ -57,25 +57,9 @@ void TextField::draw()
 void TextField::update()
 {
 
-	/*
-	*	Updates our textfield, only if the textfield is visible (dock is down)
-	*/
-
-	//Giving our widget a height so when the dock comes down, our textfield also comes down
-	// Animates the text field's height when it becomes visible
-
-	m_height += 0.008f * graphics::getDeltaTime();
-
-	if (m_height > 4.0f)
-	{
-		m_height = 4.0f;
-	}
-
 	// If the TextField is not visible, reset its height and highlighting
-
 	if (!m_visible)
 	{
-		m_height = 0.0f;
 		m_highlighted = false;
 		return;
 	}

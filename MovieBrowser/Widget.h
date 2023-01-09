@@ -47,6 +47,8 @@ protected:
     // ID of a widget
     int m_uid{};     
 
+    float m_height_offset{};
+
     /*
      * Requests focus when doing an operation.
      * @return true if the focus was successfully requested, false if another widget already has the focus.
@@ -111,9 +113,10 @@ public:
     //Clears the state of the widget.
     virtual void clear() = 0;
 
-    
     //Sets the visibility of the widget.
     virtual void setVisibility(bool v) { m_visible = v; }
+
+    virtual float getHeightOffset() { return m_height_offset; }
 
     /**
      * Constructs a new widget at the given position.

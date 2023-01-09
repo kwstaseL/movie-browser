@@ -38,18 +38,11 @@ void ResetFilterButton::takeAction(const std::vector<Movie*>& movie_list)
 void ResetFilterButton::update()
 {
     // Giving our widget a height so when the dock comes down, our button also comes down
-    m_height += 0.01f * graphics::getDeltaTime();
-
-    if (m_height > 2.0f)
-    {
-        m_height = 2.0f;
-    }
 
     // If the reset filter button is invisible, dont update it.
 
     if (!m_visible)
     {
-        m_height = 0.0f;
         return;
     }
 

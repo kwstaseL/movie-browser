@@ -11,7 +11,6 @@ void Widget::releaseFocus()
 		s_focus = 0;
 	}
 }
-
 /*
 	* Requests focus when doing an operation.
 	* @return true if the focus was successfully requested, false if another widget already has the focus.

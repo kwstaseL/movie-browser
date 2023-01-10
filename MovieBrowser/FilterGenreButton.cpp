@@ -12,12 +12,15 @@ bool FilterGenreButton::hasRequirements(const Movie* movie) const
 {
 	if (movie)
 	{
-		return std::stoi(movie->getDate()) <= movie->state_info.getLastFilterToYear()
-			&& std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear() 
-			&& movie->state_info.getWidgetState(WidgetEnums::WidgetKeys::TitleFilter) == WidgetEnums::WidgetFilterState::ENABLED;
+		for (const auto& filter : filterToBeChecked)
+		{
+			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)
+			{
+				return false;
+			}
+		}
+		return std::stoi(movie->getDate()) <= movie->state_info.getLastFilterToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear();
 	}
-
-	return false;
 }
 
 // Filters all movies by genre
@@ -202,4 +205,5 @@ void FilterGenreButton::draw()
 FilterGenreButton::FilterGenreButton(float posX, float posY, const std::string_view text)
 	: Button(posX, posY, text)
 {
+	filterToBeChecked.push_back(WidgetEnums::WidgetKeys::TitleFilter);
 }

@@ -214,6 +214,7 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
             movie->state_info.setLastFilterToYear(m_year);
         }
     }
+
     setActionTriggered(false);
     setOperating(false);
     m_status_slider = SLIDER_IDLE;
@@ -225,10 +226,15 @@ bool Slider::hasRequirements(const Movie* movie) const
 {
     if (movie)
     {
-        return movie->state_info.getWidgetState(WidgetEnums::WidgetKeys::GenreFilter) == WidgetEnums::WidgetFilterState::ENABLED &&
-            movie->state_info.getWidgetState(WidgetEnums::WidgetKeys::TitleFilter) == WidgetEnums::WidgetFilterState::ENABLED;
+        for (const auto& key : filterToBeChecked)
+        {
+            if (movie->state_info.getWidgetState(key) != WidgetEnums::WidgetFilterState::ENABLED)
+            {
+                return false;
+            }
+        }
+        return true;
     }
-    return false;
 }
 
 
@@ -236,4 +242,6 @@ Slider::Slider(float posX, float posY, const std::string_view text)
     : Widget(posX, posY), m_text{ text }
 {
     clear();
+    filterToBeChecked.push_back(WidgetEnums::WidgetKeys::GenreFilter);
+    filterToBeChecked.push_back(WidgetEnums::WidgetKeys::TitleFilter);
 }

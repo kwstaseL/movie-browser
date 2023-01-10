@@ -50,6 +50,8 @@ private:
 
     bool textInvisible{ false };
 
+    std::vector<WidgetEnums::WidgetKeys> filterToBeChecked;
+
 
     /*
      * Searches for movies by title using the given list of movies.

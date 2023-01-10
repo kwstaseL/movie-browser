@@ -2,9 +2,7 @@
 #include <algorithm>
 #include <iostream>
 
-bool TextField::hasRequirements(const Movie* movie) const
-{
-	/*
+/*
 		Function which takes as input a Movie pointer, and checks if this particular movie
 		has the filtered genre (if any filter button was pressed) ,
 		and if it has the 2 years we filter with the slider
@@ -12,14 +10,21 @@ bool TextField::hasRequirements(const Movie* movie) const
 		It helps us filter movies, synchronizing all widgets
 		Returns true if movie has a filtered genre("Action","Drama" etc..) and is between the 2 years
 		Returns false otherwise
-	*/
+*/
+
+bool TextField::hasRequirements(const Movie* movie) const
+{
 	if (movie)
 	{
-		return movie->state_info.getWidgetState(WidgetEnums::WidgetKeys::GenreFilter) == WidgetEnums::WidgetFilterState::ENABLED &&
-			std::stoi(movie->getDate()) <= movie->state_info.getLastFilterToYear()
-			&& std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear();
+		for (const auto& filter : filterToBeChecked)
+		{
+			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)
+			{
+				return false;
+			}
+		}
+		return std::stoi(movie->getDate()) <= movie->state_info.getLastFilterToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear();
 	}
-	return false;
 }
 
 void TextField::draw()
@@ -282,5 +287,6 @@ bool TextField::contains(float mouse_x, float mouse_y) const
 TextField::TextField(float posX, float posY, const std::string_view text)
 	: Widget(posX, posY), m_text{ text }
 {
-
+	filterToBeChecked.push_back(WidgetEnums::WidgetKeys::TitleFilter);
+	filterToBeChecked.push_back(WidgetEnums::WidgetKeys::GenreFilter);
 }

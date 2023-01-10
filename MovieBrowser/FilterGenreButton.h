@@ -35,6 +35,8 @@ private:
 	// filter genre button needs to know about it when filtering.
 	static inline std::unordered_set<std::string> s_scanned_genres;
 
+	std::vector<WidgetEnums::WidgetKeys> filterToBeChecked;
+
 	/*
 	Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets), 
 	used to sychronize all filters with all widgets that can filter, together.

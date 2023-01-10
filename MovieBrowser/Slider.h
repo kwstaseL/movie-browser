@@ -47,6 +47,9 @@ private:
     // The text to display on the slider
     const std::string m_text;
 
+    std::vector<WidgetEnums::WidgetKeys> filterToBeChecked;
+
+
     // The current state of the slider
     m_slider_state m_status_slider{ SLIDER_IDLE };
 

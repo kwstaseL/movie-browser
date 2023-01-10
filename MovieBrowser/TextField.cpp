@@ -75,7 +75,7 @@ void TextField::update()
 	// If our mouse contains textfields coordinates
 	if (contains(mouse_X, mouse_Y))
 	{
-		//If button is pressed, hide the text "Search Movie", and highlight the box
+		//If button is pressed, hide the text "Search Movie/Director", and highlight the box
 		if (ms.button_left_pressed)
 		{
 			textInvisible = true;
@@ -223,23 +223,24 @@ void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
 	for (const auto& movie : movie_list)
 	{
 		std::string movie_name = movie->getName();
+		std::string movie_director = movie->getDir();  // Add this line to get the protagonist
 
-		std::transform(movie_name.begin(), movie_name.end(), movie_name.begin(), ::tolower);	//Transforming movie's title to lowercase
+		std::transform(movie_name.begin(), movie_name.end(), movie_name.begin(), ::tolower);
+		std::transform(movie_director.begin(), movie_director.end(), movie_director.begin(), ::tolower); // Add this line to change protagonist to lower case
 
-		//If keystate was BackSpace or the character is empty, find all the movies that have the current string on their title.
-		if (movie_name.find(string) != std::string::npos && graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty())
+		//If keystate was BackSpace or the character is empty, find all the movies that have the current string on their title or protagonist
+		if ((movie_name.find(string) != std::string::npos || movie_director.find(string) != std::string::npos)
+			&& (graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty()))
 		{
-
 			if (hasRequirements(movie))
 			{
 				movie->state_info.setDisabled(false);
 				movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 			}
-
 		}
 
-		//If movie title doesn't have the current textfield title anywhere in their title, disable it, and setTextFilterApplied = False to alert all the other widgets
-		if (movie_name.find(string) == std::string::npos)
+		//If movie title or protagonist doesn't have the current textfield title anywhere in their title, disable it, and setTextFilterApplied = False to alert all the other widgets
+		if (movie_name.find(string) == std::string::npos && movie_director.find(string) == std::string::npos)
 		{
 			movie->state_info.setDisabled(true);
 			movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::DISABLED);
@@ -248,9 +249,8 @@ void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
 		{
 			movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 		}
-
-
 	}
+
 	setActionTriggered(false);
 	operating = false;
 	releaseFocus();

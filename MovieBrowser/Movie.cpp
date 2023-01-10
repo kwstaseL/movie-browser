@@ -65,11 +65,11 @@ void Movie::update()
 		return;
 	}
 
-	// Get mouse state.
+	//Get mouse state.
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
-	// Convert mouse coordinates to canvas units.
+	//Convert mouse coordinates to canvas units.
 	float mx{ graphics::windowToCanvasX(ms.cur_pos_x) };
 	float my{ graphics::windowToCanvasY(ms.cur_pos_y) };
 
@@ -115,10 +115,10 @@ void Movie::update()
 }
 
 /*
- * Determines if the given point (x, y) is inside the border of the "Movies Frame".
- * @param x The x coordinate of the point to check.
- * @param y The y coordinate of the point to check.
- * @return True if the point (x, y) is inside the border of the Movies coordinates, false otherwise.
+* Determines if the given point (x, y) is inside the coordinates of the Movies Frame.
+* @param mouse_x: the x coordinate of the mouse
+* @param mouse_y: the y coordinate of the mouse
+* @return True if the point (x, y) is inside the border of the Movies Frame, false otherwise.
 */
 bool Movie::contains(float mouse_x, float mouse_y) const
 {
@@ -231,24 +231,33 @@ void Movie::drawInformation()
 	char* tokens = &description[0];
 	char* context;
 	tokens = strtok_s(tokens, " ", &context);
+	std::vector<std::string> words;
 
-	float count{ 0.0f };
-	float height{ 0.0f };
-
-	// Use space as the delimiter and draw each token on its own line
-
-	while (tokens != nullptr) {
-
-		if (count >= 15.0f)
-		{
-			count = 0;
-			height += .7f;
-		}
-
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f + count, CanvasConst::CANVAS_HEIGHT / 1.65f + height, 0.5f, tokens, br);
-		count += strlen(tokens) / 4.5f + 0.35f;
+	while (tokens != NULL) {
+		words.push_back(tokens);
 		tokens = strtok_s(nullptr, " ", &context);
+	}
 
+	const int maxLineLength = 75;
+	std::vector<std::string> lines;
+	std::string currentLine;
+
+	for (const auto& word : words) {
+
+		if (currentLine.length() + word.length() + 1 > maxLineLength) {
+			lines.push_back(currentLine);
+			currentLine.clear();
+		}
+		currentLine += word + "  ";
+	}
+
+	lines.push_back(currentLine);
+
+	float text_height{ 0.0f };
+	for (const auto& line : lines)
+	{
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f+text_height, 0.5f, line, br);
+		text_height += .7f;
 	}
 
 	//Drawing year of movie

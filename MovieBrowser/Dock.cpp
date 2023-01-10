@@ -1,7 +1,7 @@
 #include "Dock.h"
 
 
-//DONE
+//COMPLETED
 
 void Dock::update()
 {
@@ -39,7 +39,8 @@ void Dock::update()
 				m_height = 6.0f;
 			}
 		}
-	
+		
+		//Giving all our widgets a height, depending on their position on the dock , and setting them as visible
 		for (const auto& widget : widgets)
 		{
 			if (widget->m_height != widget->getHeightOffset())
@@ -83,7 +84,7 @@ void Dock::update()
 			}
 		}
 	
-		//Restoring widgets's height
+		//Restoring widgets's height and setting them as invisible
 		for (const auto& widget : widgets)
 		{
 			if (widget->m_height == 0)
@@ -108,7 +109,6 @@ void Dock::update()
 }
 
 //Function that continuously draws our dock
-
 void Dock::draw()
 {
 	graphics::setOrientation(180);
@@ -123,7 +123,6 @@ void Dock::draw()
 //   @param float x: The x-coordinate of the dock's position.
 //   @param float y: The y-coordinate of the dock's position.
 //   @param const std::vector<Widget*>& widgets_list: A reference to a vector of pointers to Widget objects.
-
 Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 	: Widget(x, y)
 {
@@ -150,9 +149,8 @@ bool Dock::contains(float mouse_x, float mouse_y) const
 	return (mouse_x > m_positionX - m_dock_width / 2 && mouse_x < m_positionX + m_dock_width / 2 && mouse_y > m_positionY + m_height - m_dock_height / 2 && mouse_y < m_positionY + m_height + m_dock_height / 2);
 }
 
-// Filters the movies using the `movie_list` when the dock is hovered or sliding up or down, also sets visibility true/false whether the dock is going down/up
-	// @param movie_list: a vector of all the movies to be filtered
-
+//Sets all movies as not updatable or updatable using the `movie_list` depending if the dock is going down or it's going up, 
+//@param movie_list: a vector of all the movies to be checked
 void Dock::takeAction(const std::vector<Movie*>& movie_list)
 {
 	if (m_dock_state == m_dock_status::STATE_GOING_DOWN)
@@ -161,9 +159,7 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 
 			movie->state_info.setUpdatable(false); //Setting our to not be active, which means it still can be drawn, but it is not being updated.
 		}
-
 	}
-
 	else if (m_dock_state == m_dock_status::STATE_GOING_UP)
 	{
 		for (const auto& movie : movie_list) {
@@ -171,9 +167,8 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 			movie->state_info.setUpdatable(true); //Setting our to be active, which means it can now be drawn and updated.
 		}
 	}
-	setActionTriggered(false);	//Since we are done with the operation, alerting it.
+	setActionTriggered(false);	//Since we are done with the operation, alert it.
 	setOperating(false);
-
 }
 // Resets the dock's state
 void Dock::clear()

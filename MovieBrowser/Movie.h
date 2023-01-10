@@ -55,6 +55,13 @@ private:
 	const std::string m_director{};
 	std::vector<std::string> m_protagonists;
 
+	//Function that displays movies information
+	void DisplayInfo();
+
+	class graphics::Brush brush_update1;
+	class graphics::Brush brush_update2;
+	class graphics::Brush br;
+
 	//Variables used for "glowing" animation when the mouse hovers the movie frame.
 	float m_glow{};
 	float m_highlight{};
@@ -63,24 +70,17 @@ private:
 	bool m_PlaySound{ true };
 
 	/*
-	 * Determines if the given point (x, y) is inside the border of the "Movies Frame".
-	 * @param x The x-coordinate of the point to check.
-	 * @param y The y-coordinate of the point to check.
+	 * Determines if the given point (x, y) is inside the coordinates of the Movies Frame.
+	 * @param mouse_x: the x coordinate of the mouse
+	 * @param mouse_y: the y coordinate of the mouse
 	 * @return True if the point (x, y) is inside the border of the Movies Frame, false otherwise.
 	 */
 	bool contains(float x, float y) const;
 
-	//Function that displays movies information
-	void DisplayInfo();
-
-	class graphics::Brush brush_update1;
-	class graphics::Brush brush_update2;
-	class graphics::Brush br;
-
 public:
 
-	// Instance where we keep all the filter states for each Movie.
-	// For Example when clicking "Action" Filter Button ,we want all the movies that have action genre(but not only action) to appear,
+	// Instance where we keep all the filtering states for each Movie.
+	// For Example when clicking "Action" Filter Button ,we want all the movies that have action genre in their genres, to appear,
 	// but if we also want to search for a movie , while action button is still on, we want to only show those movies that have "Action" as genre.
 	MovieState state_info;
 

@@ -23,7 +23,6 @@ private:
 	* 
 	* - STATUS_STARTED indicates the starting screen where all movies are shown
 	* - STATUS_MOVIE_PRESSED indicates the scene where a movie is pressed and all information is displayed about that specific movie
-	* 
 	*/
 	enum gui_state_t
 	{
@@ -62,8 +61,9 @@ private:
 	//A function that creates all the widgets
 	void CreateWidgets();
 
-
+	//Destroys all our objects
 	~GUI();
+
 	// Updates the started screen (the screen with all movies and widgets are shown)
 	void updateStartedScreen();
 

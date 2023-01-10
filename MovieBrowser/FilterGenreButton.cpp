@@ -3,10 +3,10 @@
 //COMPLETED
 
 /*
-Checks if the given movie meets the requirements for filtering (checks it is already filtered by other widgets),
-used to sychronize all filters with all widgets that can filter, together.
-@param movie: a pointer to the movie to be checked
-@return true if the movie meets the requirements, false otherwise
+	Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets),
+	used to sychronize all filters with all widgets that can filter, together.
+	@param movie: a pointer to the movie to be checked
+	@return true if the movie meets the requirements, false otherwise
 */
 bool FilterGenreButton::hasRequirements(const Movie* movie) const
 {
@@ -35,8 +35,8 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 
 	atLeastOneMovieHasGenres = false;
 	/*
-		For every movie, we disable it and turn hasFilteredGenre to false, we also reset the Genre count which holds
-		all the genres that the movie has
+		For every movie, we disable it and turn genre filter state to false, we also reset the Genre count which holds
+		all the current genres that are pressed by the user the movie has
 	*/
 	for (const auto& movie : movie_list)
 	{
@@ -84,15 +84,14 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 			}
 		}
 	}
-	releaseFocus();
+	releaseFocus();	//Releasing focus since operation is done
 }
 
 
-// Creates the genre map
-	// @param movie_list: a vector of all the movies to be included in the genre map
-	// The genre map is a mapping from genre names to sets of movies with that genre. It is used to
-	// quickly filter movies by genre.
-
+/* Creates the genre map
+@param movie_list: a vector of all the movies to be included in the genre map
+The genre map is a mapping from genre names to unordered sets of movies with that genre. It is used to quickly filter movies by genre.
+*/
 void FilterGenreButton::createGenreMap(const std::vector<Movie*>& movie_list)
 {
 
@@ -122,9 +121,8 @@ void FilterGenreButton::takeAction(const std::vector<Movie*>& movie_list)
 //Updating all filter genre buttons
 void FilterGenreButton::update()
 {
-	//Giving our widget a height so when the dock comes down, our button also comes down
 
-	if (!m_visible)	//If the widget is invisible , reset it back to its original height
+	if (!m_visible)	//If the widget is invisible , return
 	{
 		return;
 	}
@@ -136,16 +134,16 @@ void FilterGenreButton::update()
 	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
-	//Checking if our mouse is in bounds of buttons borders
+	//Checking if our mouse is in bounds of buttons coordinates
 	if (contains(mouse_X, mouse_Y))
 	{
 		m_button_state = button_state_t::BUTTON_HIGHLIGHTED;
 
 		m_highlighted = true;
 
-		if (ms.button_left_pressed)
+		if (ms.button_left_pressed)	//Mouse is pressed
 		{
-			if (!requestFocus())
+			if (!requestFocus())	//If someone else is operating, return
 			{
 				return;
 			}
@@ -171,15 +169,17 @@ void FilterGenreButton::update()
 //Drawing our filter genre button
 void FilterGenreButton::draw()
 {
-	if (!m_visible)
+	if (!m_visible)	//If the widget is invisible , return
 	{
 		return;
 	}
 
+	//Drawing highlight
 	SETCOLOR(brush.fill_color, 0.8f * m_highlighted, 0.8f * m_highlighted, 0.8f * m_highlighted);
 	brush.outline_opacity = 1.0f;
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_Genrebutton_width + 0.1, m_Genrebutton_height + 0.1, brush);
 
+	//Drawing m_button_text which represents the buttons name ("Action","Drama"..)
 	brush.fill_opacity = 1.0f;
 	SETCOLOR(brush.fill_color, 1.0f, 1.0f, 1.0f);
 	graphics::drawText(m_positionX - 0.45f, m_positionY + 0.125f + m_height, 0.4f, m_button_text, brush);
@@ -193,6 +193,12 @@ void FilterGenreButton::draw()
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_Genrebutton_width, m_Genrebutton_height, brush);
 }
 
+
+/* Constructs a new filter genre button
+@param posX: the x coordinate of the button's position
+@param posY: the y coordinate of the button's position
+@param text: the text displayed on the button
+*/
 FilterGenreButton::FilterGenreButton(float posX, float posY, const std::string_view text)
 	: Button(posX, posY, text)
 {

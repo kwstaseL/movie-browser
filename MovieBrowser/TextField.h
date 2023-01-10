@@ -77,7 +77,7 @@ private:
     void takeAction(const std::vector<Movie*>& movie_list) override;
 
     float m_height_offset{ 4.0f };
-    float getHeightOffset() override { return m_height_offset; }
+    float getHeightOffset() const  override { return m_height_offset; }
 
 public:
 

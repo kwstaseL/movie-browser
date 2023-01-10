@@ -37,13 +37,12 @@ namespace constants
         inline constexpr const char* const TERMINATOR{ "Terminator.png" };
         inline constexpr const char* const BACKGROUND{ "Background.png" };
         inline constexpr const char* const ANEWHOPE{ "ANewHope.png" };
-        inline constexpr const char* const HOMEALONE{ "HomeAlone.png" };
+        inline constexpr const char* const MYNEIGHBORTOTORO{ "MyNeighborTotoro.png" };
         inline constexpr const char* const PULPFICTION{ "PulpFiction.png" };
         inline constexpr const char* const SCHINDLERSLIST{ "SchindlersList.png" };
-        inline constexpr const char* const NARNIA{ "Narnia.png" };
+        inline constexpr const char* const SPIRITEDAWAY{ "SpiritedAway.png" };
         inline constexpr const char* const MIDSOMMAR{ "MidSommar.png" };
-        inline constexpr const char* const THEINVISIBLEMAN{ "TheInvisibleMan.png" };
-        inline constexpr const char* const CROSS{ "cross.png" };
+        inline constexpr const char* const LORDOFTHERINGS{ "LordOfTheRings.png" };
 
         inline constexpr const char* const DOCK{ "dock.png" };
 

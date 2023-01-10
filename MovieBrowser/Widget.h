@@ -116,7 +116,7 @@ public:
     //Sets the visibility of the widget.
     virtual void setVisibility(bool v) { m_visible = v; }
 
-    virtual float getHeightOffset() { return m_height_offset; }
+    virtual float getHeightOffset() const { return m_height_offset; }
 
     /**
      * Constructs a new widget at the given position.

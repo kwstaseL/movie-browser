@@ -1,7 +1,7 @@
 #include "Dock.h"
 
 
-//COMPLETED
+//COMPLETEDD
 
 void Dock::update()
 {
@@ -59,10 +59,6 @@ void Dock::update()
 	}
 	else if (!contains(mouse_X, mouse_Y))	//If our mouse doesn't contain Dock's borders, we want it to come up
 	{
-		if (m_dock_state == m_dock_status::STATE_IDLE)
-		{
-			return;
-		}
 
 		if (m_dock_state == m_dock_status::STATE_GOING_DOWN)
 		{
@@ -80,7 +76,6 @@ void Dock::update()
 			if (m_height < 0.5f)
 			{
 				m_height = 0.0f;
-				m_dock_state = m_dock_status::STATE_IDLE;
 			}
 		}
 	
@@ -91,6 +86,7 @@ void Dock::update()
 			{
 				widget->m_height = 0;
 				widget->setVisibility(false);
+				m_dock_state = m_dock_status::STATE_IDLE;
 			}
 			else
 			{
@@ -101,12 +97,12 @@ void Dock::update()
 					widget->m_height = 0.0f;
 				}
 			}
-
 		}
 
 	}
 
 }
+
 
 //Function that continuously draws our dock
 void Dock::draw()
@@ -119,10 +115,12 @@ void Dock::draw()
 	graphics::resetPose();
 }
 
+
+
 //Constructs a new Dock
-//   @param float x: The x-coordinate of the dock's position.
-//   @param float y: The y-coordinate of the dock's position.
-//   @param const std::vector<Widget*>& widgets_list: A reference to a vector of pointers to Widget objects.
+//  @param float x: The x coordinate of the dock's position.
+//  @param float y: The y coordinate of the dock's position.
+//  @param const std::vector<Widget*>& widgets_list: a vector of our Widget objects.
 Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 	: Widget(x, y)
 {
@@ -139,15 +137,18 @@ Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 	}
 }
 
-// Checks if the mouse is within the boundaries of the dock
-	// @param mouse_x: the x-coordinate of the mouse
-	// @param mouse_y: the y-coordinate of the mouse
-	// @return: true if the mouse is within the dock's boundaries, false otherwise
 
+
+//Checks if the mouse is within the boundaries of the dock
+// @param mouse_x: the x coordinate of the mouse
+// @param mouse_y: the y coordinate of the mouse
+// @return: true if the mouse is within the dock's boundaries, false otherwise
 bool Dock::contains(float mouse_x, float mouse_y) const
 {
 	return (mouse_x > m_positionX - m_dock_width / 2 && mouse_x < m_positionX + m_dock_width / 2 && mouse_y > m_positionY + m_height - m_dock_height / 2 && mouse_y < m_positionY + m_height + m_dock_height / 2);
 }
+
+
 
 //Sets all movies as not updatable or updatable using the `movie_list` depending if the dock is going down or it's going up, 
 //@param movie_list: a vector of all the movies to be checked
@@ -167,10 +168,15 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 			movie->state_info.setUpdatable(true); //Setting our to be active, which means it can now be drawn and updated.
 		}
 	}
+
 	setActionTriggered(false);	//Since we are done with the operation, alert it.
 	setOperating(false);
+
 }
+
+
 // Resets the dock's state
 void Dock::clear()
 {
+	m_dock_state = m_dock_status::STATE_IDLE;
 }

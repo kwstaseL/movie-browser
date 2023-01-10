@@ -131,8 +131,10 @@ void Slider::draw()
 
 
 }
-// Returns whether the given point (x, y) is within the bounds of the slider.
-
+//Checks if the mouse is within the coordinates of the slider
+// @param mouse_x: the x-coordinate of the mouse
+// @param mouse_y: the y-coordinate of the mouse
+// @return true if the mouse is within the slider's coordinates, false otherwise
 bool Slider::contains(float mouse_x, float mouse_y) const
 {
 
@@ -220,8 +222,12 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
     m_status_slider = SLIDER_IDLE;
 }
 
-// Returns whether the given movie should be taken into consideration based on the previous filters that might have happend.
-
+/*
+Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets),
+used to sychronize all filters with all widgets that can filter, together.
+@param movie: a pointer to the movie to be checked
+@return true if the movie meets the requirements, false otherwise
+*/
 bool Slider::hasRequirements(const Movie* movie) const
 {
     if (movie)
@@ -242,6 +248,8 @@ Slider::Slider(float posX, float posY, const std::string_view text)
     : Widget(posX, posY), m_text{ text }
 {
     clear();
-    filterToBeChecked.push_back(WidgetEnums::WidgetKeys::GenreFilter);
-    filterToBeChecked.push_back(WidgetEnums::WidgetKeys::TitleFilter);
+
+    //Inserting all the widgetfilters slider needs to check
+    filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);
+    filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);
 }

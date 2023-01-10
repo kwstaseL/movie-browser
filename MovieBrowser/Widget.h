@@ -22,9 +22,7 @@ protected:
     float mouse_X{};
     float mouse_Y{};
 
-    std::unordered_set<Movie*> m_filteredMovies{};
-
-    // Position X,Y
+    // Position X,Y of every widget on the canvas
     float m_positionX{};
     float m_positionY{};
 
@@ -32,7 +30,7 @@ protected:
     bool m_highlighted{ false };
 
     // Variable that tells if our widget is currently operating
-    bool operating{ false }; 
+    bool m_operating{ false }; 
 
     // Variable that tells if our widget is invisible or not (a widget is invisible in our project if the dock is not yet down)
     bool m_visible{ false };
@@ -40,13 +38,13 @@ protected:
     // Represents the state in which it's time for a widget to take action (filter based on genre/year or search a title..)
     bool m_action{ false };
 
-    // Variable that tells which widget currently has the focus
+    // Variable that tells which widget currently has the focus while operating
     static inline int s_focus{};
 
-    // Height that every widget gains when dock is down.
     // ID of a widget
     int m_uid{};     
 
+    // Height that every widget gains when dock is down.
     float m_height_offset{};
 
     /*
@@ -54,7 +52,6 @@ protected:
      * @return true if the focus was successfully requested, false if another widget already has the focus.
      */
     bool requestFocus();
-
     /*
      * Releases focus when the operation is complete.
      */
@@ -70,50 +67,49 @@ public:
      */
     void setActionTriggered(bool action) { m_action = action; }
 
-    // Every virtual function is called polymorphically for every widget
-
+    //Original height of the widget
     float m_height{ 0.0f };
 
-     // Updates the state of the widget.
+     // Updates the state of a widget, it is called polymorphically for every widget.
     virtual void update() = 0;
 
     
-     //Draws the widget.
+    // Draws the widget, it is called polymorphically for every widget.
     virtual void draw() = 0;
 
     /*
-     * Gets the operating state of the widget.
+     * Gets the operating state of the widget. It is called polymorphically for every widget.
      * @return true if the widget is operating, false otherwise.
      */
-    virtual bool isOperating() const { return operating; }
+    virtual bool isOperating() const { return m_operating; }
 
     /*
-     * Sets the operating state of the widget.
+     * Sets the operating state of the widget. It is called polymorphically for every widget.
      *
      * @param o The new operating state for the widget
      */
-    virtual void setOperating(bool o) { operating = o; }
+    virtual void setOperating(bool o) { m_operating = o; }
 
     /*
-     * Gets the action triggered state of the widget.
+     * Returns if an action is triggered (a button is pressed, text has been inputted by the user..). It is called polymorphically for every widget.
      * @return true if an action has been triggered, false otherwise.
      */
     virtual bool actionTriggered() const { return m_action; }
 
     /*
-     * Performs a specific operation based on the type of widget being called.
+     * Performs a specific operation based on the type of widget being called.  It is called polymorphically for every widget.
      * @param movie_list A list of all the movies where we are going to operte on.
      */
     virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
 
    
-     // Gets the ID of the widget.  
+     // Gets the ID of the widget.  It is called polymorphically for every widget.
     virtual int getID() const { return m_uid; }
 
-    //Clears the state of the widget.
+    //Clears the state of the widget.  It is called polymorphically for every widget.
     virtual void clear() = 0;
 
-    //Sets the visibility of the widget.
+    //Sets the visibility of the widget. It is called polymorphically for every widget.
     virtual void setVisibility(bool v) { m_visible = v; }
 
     virtual float getHeightOffset() const { return m_height_offset; }
@@ -126,7 +122,6 @@ public:
      */
     Widget(float posX, float posY);
 
-   //Destructs the widget.
     virtual ~Widget();
 };
 

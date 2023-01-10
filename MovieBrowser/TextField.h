@@ -50,14 +50,15 @@ private:
 
     bool textInvisible{ false };
 
-    std::vector<WidgetEnums::WidgetKeys> filterToBeChecked;
-
+    // A vector indicating all widgets this class needs to check, if they have filtered the movies previously.
+    // This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
+    std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
 
     /*
-     * Searches for movies by title using the given list of movies.
+     * Searches for movies by title or director using the given list of movies.
      * @param movie_list The list of movies to search through.
      */
-    void searchByTitle(const std::vector<Movie*>& movie_list);
+    void search(const std::vector<Movie*>& movie_list);
 
     /*
      * Clears the state of the text field.

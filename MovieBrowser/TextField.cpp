@@ -206,7 +206,7 @@ void TextField::update()
 */
 void TextField::takeAction(const std::vector<Movie*>& movie_list)
 {
-	searchByTitle(movie_list);
+	search(movie_list);
 }
 
 /*
@@ -216,7 +216,7 @@ void TextField::takeAction(const std::vector<Movie*>& movie_list)
 * If the key state is Backspace or the character string is empty, all movies that have the current title are marked as enabled and have the text filter applied.
 * @param movie_list The list of movies to search through.
 */
-void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
+void TextField::search(const std::vector<Movie*>& movie_list)
 {
 	if (!requestFocus())	//If someone else is operating currently, return
 	{
@@ -228,36 +228,36 @@ void TextField::searchByTitle(const std::vector<Movie*>& movie_list)
 	for (const auto& movie : movie_list)
 	{
 		std::string movie_name = movie->getName();
-		std::string movie_director = movie->getDir();  // Add this line to get the protagonist
+		std::string movie_director = movie->getDir();  // Add this line to get the director
 
 		std::transform(movie_name.begin(), movie_name.end(), movie_name.begin(), ::tolower);
-		std::transform(movie_director.begin(), movie_director.end(), movie_director.begin(), ::tolower); // Add this line to change protagonist to lower case
+		std::transform(movie_director.begin(), movie_director.end(), movie_director.begin(), ::tolower); // Add this line to change director to lower case
 
-		//If keystate was BackSpace or the character is empty, find all the movies that have the current string on their title or protagonist
+		//If keystate was BackSpace or the character is empty, find all the movies that have the current string on their title or director
 		if ((movie_name.find(string) != std::string::npos || movie_director.find(string) != std::string::npos)
 			&& (graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty()))
 		{
 			if (hasRequirements(movie))
 			{
 				movie->state_info.setDisabled(false);
-				movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
+				movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 			}
 		}
 
-		//If movie title or protagonist doesn't have the current textfield title anywhere in their title, disable it, and setTextFilterApplied = False to alert all the other widgets
+		//If movie title or director doesn't have the current textfield title anywhere in their title, disable it, and setTextFilterApplied = False to alert all the other widgets
 		if (movie_name.find(string) == std::string::npos && movie_director.find(string) == std::string::npos)
 		{
 			movie->state_info.setDisabled(true);
-			movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::DISABLED);
+			movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::DISABLED);
 		}
 		else
 		{
-			movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
+			movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 		}
 	}
 
 	setActionTriggered(false);
-	operating = false;
+	m_operating = false;
 	releaseFocus();
 }
 
@@ -287,6 +287,6 @@ bool TextField::contains(float mouse_x, float mouse_y) const
 TextField::TextField(float posX, float posY, const std::string_view text)
 	: Widget(posX, posY), m_text{ text }
 {
-	filterToBeChecked.push_back(WidgetEnums::WidgetKeys::TitleFilter);
-	filterToBeChecked.push_back(WidgetEnums::WidgetKeys::GenreFilter);
+	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);
+	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);
 }

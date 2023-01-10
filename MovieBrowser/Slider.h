@@ -18,6 +18,7 @@ private:
     bool m_active{ false };
 
 public:
+
     // Returns whether the box is active or not
     bool isActive() const { return m_active; }
     // Returns the x position of the box
@@ -47,8 +48,9 @@ private:
     // The text to display on the slider
     const std::string m_text;
 
-    std::vector<WidgetEnums::WidgetKeys> filterToBeChecked;
-
+    // A vector indicating all widgets this class needs to check, if they have filtered the movies previously.
+    // This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
+    std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
 
     // The current state of the slider
     m_slider_state m_status_slider{ SLIDER_IDLE };
@@ -65,19 +67,28 @@ private:
     // Draws the slider on the screen
     void draw() override;
 
-    // Returns whether the given point (x, y) is within the bounds of the slider
+    //Checks if the mouse is within the coordinates of the slider
+    // @param mouse_x: the x-coordinate of the mouse
+    // @param mouse_y: the y-coordinate of the mouse
+    // @return true if the mouse is within the slider's coordinates, false otherwise
     bool contains(float x, float y) const;
 
-    // Filters the given list of movies by the year set on the slider
+    // Filters the given list of movies by the year on the slider (filters by calling filterByYear)
+    // @param movie_list : A vector of movies to be filtered by their year
     void takeAction(const std::vector<Movie*>& movie_list) override;
+
     // Clears any applied filters
     void clear() override;
 
     // Filters the given list of movies by the year set on the slider
     void filterByYear(const std::vector<Movie*>& movie_list);
 
-    // @param movie: A specific movie
-    // @return returns whether the given movie should be taken into consideration based on the previous filters that might have happend.
+    /*
+    Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets),
+    used to sychronize all filters with all widgets that can filter, together.
+    @param movie: a pointer to the movie to be checked
+    @return true if the movie meets the requirements, false otherwise
+    */
     bool hasRequirements(const Movie* movie) const;
 
     // Whether the slider is currently disabled or not
@@ -88,9 +99,9 @@ private:
 
 
 public:
-    // Constructs a new slider with the given position and text
+
+
     Slider(float posX, float posY, const std::string_view text);
-    // Virtual destructor
     virtual ~Slider() = default;
 
 

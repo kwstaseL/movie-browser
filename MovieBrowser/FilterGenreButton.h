@@ -3,13 +3,12 @@
 
 #include "Button.h"
 
-//COMPLETED
+//COMPLETEDD
 
-/*
-	Represents a FilterGenreButton, which in our program has a text ("Action","Drama"), and when pressed filters movies by that genre.
-	The FilterGenreButton class is derived from the Button class, which provides a we use for all our buttons.
-	When filtering, we also take as consideration all the other widgets that may have filtered the movies.
-*/
+
+// Represents a FilterGenreButton, which in our program has a text ("Action","Drama"), and when pressed filters movies by that genre.
+// The FilterGenreButton class is derived from the Button class, which provides an interface we use for all our buttons.
+// When filtering, we also take as consideration all the other widgets that may have filtered the movies.
 
 class FilterGenreButton final : public Button
 {
@@ -35,7 +34,9 @@ private:
 	// filter genre button needs to know about it when filtering.
 	static inline std::unordered_set<std::string> s_scanned_genres;
 
-	std::vector<WidgetEnums::WidgetKeys> filterToBeChecked;
+	// A vector indicating all widgets this class needs to check, if they have filtered the movies previously.
+	// This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
+	std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
 
 	/*
 	Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets), 
@@ -65,7 +66,7 @@ private:
 	void clear() override;
 
 	//Performs the filtering action when the button is pressed
-	// @param movie_list: a vector of all the movies to be filtered
+	//@param movie_list: a vector of all the movies to be filtered
 	void takeAction(const std::vector<Movie*>& movie_list) override;
 
 	// Updates the state of the filter genre button

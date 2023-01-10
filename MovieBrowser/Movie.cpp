@@ -3,6 +3,8 @@
 
 //COMPLETED
 
+// ADD SOME LINES OF COMMENT ON THE DESC PROCESS
+
 // Constructor for Movie class. Initializes member variables with the provided parameters and sets the initial position of the state_information box.
 Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view image, const std::string_view year, const std::string_view dir, const std::vector<std::string>& prot, const std::vector<std::string>& genre)
 	: m_name(name), m_description(desc), m_image(image), m_production_year(year), m_director(dir)
@@ -24,15 +26,14 @@ Movie::Movie(const std::string_view name, const std::string_view desc, const std
 	informationBox.setPosX(CanvasConst::CANVAS_WIDTH / 2);
 	informationBox.setPosY(CanvasConst::CANVAS_HEIGHT / 2);
 
-	state_info.insertNewWidgetState(WidgetEnums::WidgetKeys::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
-	state_info.insertNewWidgetState(WidgetEnums::WidgetKeys::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
+	state_info.insertNewWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
+	state_info.insertNewWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 
 }
 
 //Function that draws a movie on the screen
 void Movie::draw()
 {
-
 	// If the movie is disabled, do not draw it.
 	if (state_info.isDisabled())
 	{
@@ -77,7 +78,7 @@ void Movie::update()
 	if (contains(mx, my)) {
 
 		// If the movie is updatable and not disabled, highlight it and display its state_information.
-		if (state_info.isUpdatable() && !state_info.isDisabled())
+		if (state_info.isUpdatable())
 		{
 			if (m_PlaySound)
 			{

@@ -2,15 +2,9 @@
 #define BUTTON_H
 
 #include "Widget.h"
-#include <unordered_set>
 
-//COMPLETED
+//COMPLETEDD
 
-/*
-	 A class representing a button widget in a user interface.
-	The button has a text label and can be pressed to perform an action (e.g. filter movies, reset filter).
-	The Button class is derived from the Widget class, which provides a common interface.
-*/
 class Button : public Widget
 {
 protected:
@@ -50,12 +44,12 @@ private:
 	//Continuously draws the button on the screen.
 	virtual void draw() = 0;
 
-	//Resets the button's states
+	//Resets the button's state
 	virtual void clear() = 0;
 
 	//Performs an action(e.g.filter movies) when the button is pressed.
 	//This function is being called when the button is pressed to perform the action depending on the button.
-	//When filtering, the Buttons which filters the genres take into consideration all the other widgets that may have filtered the movies.
+	//(When filtering, the Buttons which filters the genres take into consideration all the other widgets that may have filtered the movies.)
 	//@param movie_list: a vector of all the movies to be filtered/cleared
 	virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
 

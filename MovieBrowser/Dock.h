@@ -3,9 +3,9 @@
 
 #include "Widget.h"
 
-//COMPLETED
+//COMPLETEDD
 
-//This class represents the Dock, which when hovered over with the mouse, slides down to reveal all the widgets.
+//This class represents the Dock, which when hovered over with the mouse, comes down to reveal all the widgets we use.
 
 class Dock final : public Widget
 {
@@ -54,19 +54,20 @@ private:
 
 	void setOffset(float off) { m_offset = off; }
 
-public:
-
 	//Function that continuously updates our dock
 	void update() override;
 
 	//Function that continuously draws our dock
 	void draw() override;
 
+public:
+
 	//Constructs a new Dock
 	//  @param float x: The x coordinate of the dock's position.
 	//  @param float y: The y coordinate of the dock's position.
 	//  @param const std::vector<Widget*>& widgets_list: a vector of pointers to Widget objects.
 	Dock(float x, float y, const std::vector<Widget*>& widgets_list);
+	virtual ~Dock() = default;
 
 };
 

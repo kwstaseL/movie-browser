@@ -1,6 +1,6 @@
 #include "FilterGenreButton.h"
 
-//COMPLETED
+//COMPLETEDD
 
 /*
 	Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets),
@@ -44,7 +44,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 	for (const auto& movie : movie_list)
 	{
 		movie->state_info.setDisabled(true);
-		movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::GenreFilter, WidgetEnums::WidgetFilterState::DISABLED);
+		movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::DISABLED);
 		movie->state_info.resetGenreCount();
 	}
 
@@ -71,7 +71,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 		{
 			atLeastOneMovieHasGenres = true;
 			movie->state_info.setDisabled(false);
-			movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
+			movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
 		}
 	}
 
@@ -83,7 +83,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 			if (hasRequirements(movie))
 			{
 				movie->state_info.setDisabled(false);
-				movie->state_info.updateWidgetState(WidgetEnums::WidgetKeys::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
+				movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
 			}
 		}
 	}
@@ -205,5 +205,5 @@ void FilterGenreButton::draw()
 FilterGenreButton::FilterGenreButton(float posX, float posY, const std::string_view text)
 	: Button(posX, posY, text)
 {
-	filterToBeChecked.push_back(WidgetEnums::WidgetKeys::TitleFilter);
+	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);
 }

@@ -1,15 +1,14 @@
 #include "TextField.h"
 #include <algorithm>
-#include <iostream>
 
 /*
-		Function which takes as input a Movie pointer, and checks if this particular movie
-		has the filtered genre (if any filter button was pressed) ,
-		and if it has the 2 years we filter with the slider
+Function which takes as input a Movie pointer, and checks if this particular movie
+has the filtered genre (if any filter button was pressed) ,
+and if it has the 2 years we filter with the slider
 
-		It helps us filter movies, synchronizing all widgets
-		Returns true if movie has a filtered genre("Action","Drama" etc..) and is between the 2 years
-		Returns false otherwise
+It helps us filter movies, synchronizing all widgets
+Returns true if movie has a filtered genre("Action","Drama" etc..) and is between the 2 years
+Returns false otherwise
 */
 
 bool TextField::hasRequirements(const Movie* movie) const
@@ -41,7 +40,6 @@ void TextField::draw()
 	graphics::Brush br;
 
 	// Set the color of the brush based on whether the TextField is highlighted or not
-
 	SETCOLOR(br.fill_color, 0.5f * m_highlighted, 0.5f * m_highlighted, 0.5f * m_highlighted);
 	brush.outline_opacity = 1.0f;
 
@@ -51,7 +49,6 @@ void TextField::draw()
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 
 	// If the TextField is highlighted and there is no text in it, draw some text inside the TextField
-
 	if (!textInvisible && characters.empty())
 	{
 		graphics::drawText(m_positionX - 0.8f, m_positionY + m_height + 0.1f, 0.3f, m_text, br);
@@ -194,7 +191,7 @@ void TextField::update()
 		std::string textfield_string(characters.begin(), characters.end());
 		graphics::drawText(m_positionX - 1.9f, m_positionY + m_height + 0.1f, 0.3f, textfield_string, brush);
 	}
-	else //else just draw the "Search Movie" text
+	else //else just draw the "Search Movie/Director/Protagonist" text
 	{
 		graphics::drawText(m_positionX - 0.8f, m_positionY + m_height + 0.1f, 0.3f, m_text, brush);
 	}
@@ -218,23 +215,36 @@ void TextField::takeAction(const std::vector<Movie*>& movie_list)
 */
 void TextField::search(const std::vector<Movie*>& movie_list)
 {
-	if (!requestFocus())	//If someone else is operating currently, return
+	if (!requestFocus())   //If someone else is operating currently, return
 	{
 		return;
 	}
 
-	std::string string(characters.begin(), characters.end());	//Making a string out of the deque characters
+	std::string search_string(characters.begin(), characters.end());   //Making a string out of the deque characters
 
 	for (const auto& movie : movie_list)
 	{
 		std::string movie_name = movie->getName();
-		std::string movie_director = movie->getDir();  // Add this line to get the director
+		std::string movie_director = movie->getDir();
 
 		std::transform(movie_name.begin(), movie_name.end(), movie_name.begin(), ::tolower);
-		std::transform(movie_director.begin(), movie_director.end(), movie_director.begin(), ::tolower); // Add this line to change director to lower case
+		std::transform(movie_director.begin(), movie_director.end(), movie_director.begin(), ::tolower);
 
-		//If keystate was BackSpace or the character is empty, find all the movies that have the current string on their title or director
-		if ((movie_name.find(string) != std::string::npos || movie_director.find(string) != std::string::npos)
+		// check if the search string is present in the m_protagonists vector
+		bool is_protagonist_match = false;
+		for (const auto& protagonist : movie->m_protagonists)
+		{
+			std::string protagonist_name = protagonist;
+			std::transform(protagonist_name.begin(), protagonist_name.end(), protagonist_name.begin(), ::tolower);
+			if (protagonist_name.find(search_string) != std::string::npos)
+			{
+				is_protagonist_match = true;
+				break;
+			}
+		}
+
+		//If keystate was BackSpace or the character is empty, find all the movies that have the current string on their title, director or protagonist
+		if ((movie_name.find(search_string) != std::string::npos || movie_director.find(search_string) != std::string::npos || is_protagonist_match)
 			&& (graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty()))
 		{
 			if (hasRequirements(movie))
@@ -244,8 +254,8 @@ void TextField::search(const std::vector<Movie*>& movie_list)
 			}
 		}
 
-		//If movie title or director doesn't have the current textfield title anywhere in their title, disable it, and setTextFilterApplied = False to alert all the other widgets
-		if (movie_name.find(string) == std::string::npos && movie_director.find(string) == std::string::npos)
+		//If movie title,director or protagonist doesn't have the current textfield title anywhere in their name, disable it, and setTextFilterApplied = False to alert all the other widgets
+		if (movie_name.find(search_string) == std::string::npos && movie_director.find(search_string) == std::string::npos && !is_protagonist_match)
 		{
 			movie->state_info.setDisabled(true);
 			movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::DISABLED);
@@ -254,6 +264,7 @@ void TextField::search(const std::vector<Movie*>& movie_list)
 		{
 			movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 		}
+
 	}
 
 	setActionTriggered(false);

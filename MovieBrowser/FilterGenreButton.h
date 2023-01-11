@@ -3,8 +3,6 @@
 
 #include "Button.h"
 
-//COMPLETEDD
-
 
 // Represents a FilterGenreButton, which in our program has a text ("Action","Drama"), and when pressed filters movies by that genre.
 // The FilterGenreButton class is derived from the Button class, which provides an interface we use for all our buttons.

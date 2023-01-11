@@ -9,8 +9,6 @@
 #include "Slider.h"
 #include "TextField.h"
 
-//COMPLETED
-
 /*
 *	Represents the class where all our objects get updated and drawen.
 *	This is the main class that knows and runs everything.

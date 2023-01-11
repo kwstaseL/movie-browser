@@ -3,8 +3,6 @@
 
 #include "Widget.h"
 
-//COMPLETEDD
-
 class Button : public Widget
 {
 protected:

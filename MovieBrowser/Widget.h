@@ -114,9 +114,8 @@ public:
 
     virtual float getHeightOffset() const { return m_height_offset; }
 
-    /**
+    /*
      * Constructs a new widget at the given position.
-     *
      * @param posX The x position of the widget.
      * @param posY The y position of the widget.
      */

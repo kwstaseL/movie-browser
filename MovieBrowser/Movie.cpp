@@ -1,8 +1,6 @@
 #include "Movie.h"
 #include <cstring>
 
-//COMPLETED
-
 // ADD SOME LINES OF COMMENT ON THE DESC PROCESS
 
 // Constructor for Movie class. Initializes member variables with the provided parameters and sets the initial position of the state_information box.

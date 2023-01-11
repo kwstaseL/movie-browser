@@ -8,11 +8,7 @@
 #include <vector>
 #include "MovieState.h"
 
-//COMPLETED
 
-//=============================================================================================
-//=============================================================================================
-// 
 // Represents a drawable box that has movie information when the movie is clicked.
 struct InfoBox
 {
@@ -29,9 +25,6 @@ public:
 	float getPosX() const { return m_posX; }
 	float getPosY() const { return m_posY; }
 };
-
-//=============================================================================================
-//=============================================================================================
 
 /*
 	Represents a movie and stores information about it, such as the title, description, year of production, and director.
@@ -53,7 +46,6 @@ private:
 	const std::string m_image{};
 	const std::string m_production_year{};
 	const std::string m_director{};
-	std::vector<std::string> m_protagonists;
 
 	//Function that displays movies information
 	void DisplayInfo();
@@ -86,6 +78,8 @@ public:
 
 	//Vector that stores all genres for a specific movie
 	std::vector<std::string> genres;
+	std::vector<std::string> m_protagonists;
+
 
 	// Constructing a new movie
 	Movie(const std::string_view n, const std::string_view desc,
@@ -112,8 +106,5 @@ public:
 	const std::string& getDate() const;
 	const std::string& getDir() const;
 };
-
-//=============================================================================================
-//=============================================================================================
 
 #endif

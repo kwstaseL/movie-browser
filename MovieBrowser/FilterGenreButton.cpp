@@ -1,7 +1,5 @@
 #include "FilterGenreButton.h"
 
-//COMPLETEDD
-
 /*
 	Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets),
 	used to sychronize all filters with all widgets that can filter, together.

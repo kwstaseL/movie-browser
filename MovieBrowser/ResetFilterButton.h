@@ -12,45 +12,39 @@ class ResetFilterButton final : public Button
 {
 private:
 
-    /**
+    /*
      * Resets all movie control variables to their default values.
      *
-     * @param movie_list A list of movies to apply the reset to.
+     * \param movie_list A list of movies to apply the reset to.
      */
     void resetFilter(const std::vector<Movie*>& movie_list) const;
 
-    /**
+    /*
      * Called when the reset filter button is clicked.
      * Resets all applied filters.
      *
-     * @param movie_list A list of movies to apply the reset to.
+     * \param movie_list A list of movies to apply the reset to.
      */
     void takeAction(const std::vector<Movie*>& movie_list) override;
 
-    /**
-     * Clears any state associated with the button.
-     */
     void clear() override;
-
-    /**
-     * Continuously updates the reset filter button, whenever the dock is down.
-     */
+    
+    //Continuously updates the reset filter button.
     void update() override;
-
-    /**
-     * Continuously draws the reset filter button, whenever the dock is down.
-     */
+    
+    // Continuously draws the reset filter button.
     void draw() override;
  
 
 
 public:
-    /**
+
+
+    /*
      * Constructs a new ResetFilterButton at the given position with the given text.
-     *
-     * @param posX The x-coordinate of the button's position.
-     * @param posY The y-coordinate of the button's position.
-     * @param text The text to display on the button.
+     * \param posX The x-coordinate of the button's position.
+     * \param posY The y-coordinate of the button's position.
+     * \param text The text to display on the button.
      */
     ResetFilterButton(float posX, float posY, const std::string_view text);
     virtual ~ResetFilterButton() = default;

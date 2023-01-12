@@ -86,10 +86,10 @@ public:
 	// - updatePressedMovieScreen() -> Indicates the scene where a movie is pressed, and information is displayed for that movie.
 	void update();	
 
-	//Function which initializes every object
+	// Function which initializes every object
 	void init();
 
-	//This method returns the instance of the GUI class. If an instance does not already exist, it creates a new one.
+	// This method returns the instance of the GUI class. If an instance does not already exist, it creates a new one.
 	static GUI* Get();
 
 	//This method destroys the instance of the GUI class if it exists and sets the instance to nullptr.

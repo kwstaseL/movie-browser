@@ -5,7 +5,7 @@
 #include <unordered_set>
 
 /**
- * A base class for graphical user interface elements.
+ * A base class for our graphical user interface elements.
  */
 class Widget
 {
@@ -15,8 +15,6 @@ private:
     static inline int s_idGenerator{}; 
 
 protected:
-
-    // Variables that all widgets have and use.
 
     // Represents the info we get from getMouseState 
     float mouse_X{};
@@ -49,7 +47,7 @@ protected:
 
     /*
      * Requests focus when doing an operation.
-     * @return true if the focus was successfully requested, false if another widget already has the focus.
+     * \return true if the focus was successfully requested, false if another widget already has the focus.
      */
     bool requestFocus();
     /*
@@ -61,63 +59,46 @@ protected:
 
 public:
 
-    /*
-     * Sets the action triggered state for the widget.
-     * @param action The new action triggered state for the widget.
-     */
-    void setActionTriggered(bool action) { m_action = action; }
-
     //Original height of the widget
     float m_height{ 0.0f };
 
+public:
+
      // Updates the state of a widget, it is called polymorphically for every widget.
     virtual void update() = 0;
-
     
     // Draws the widget, it is called polymorphically for every widget.
     virtual void draw() = 0;
 
     /*
-     * Gets the operating state of the widget. It is called polymorphically for every widget.
-     * @return true if the widget is operating, false otherwise.
-     */
-    virtual bool isOperating() const { return m_operating; }
-
-    /*
-     * Sets the operating state of the widget. It is called polymorphically for every widget.
-     *
-     * @param o The new operating state for the widget
-     */
-    virtual void setOperating(bool o) { m_operating = o; }
-
-    /*
      * Returns if an action is triggered (a button is pressed, text has been inputted by the user..). It is called polymorphically for every widget.
-     * @return true if an action has been triggered, false otherwise.
+     * \return true if an action has been triggered, false otherwise.
      */
     virtual bool actionTriggered() const { return m_action; }
+    void setActionTriggered(bool action) { m_action = action; }
 
     /*
      * Performs a specific operation based on the type of widget being called.  It is called polymorphically for every widget.
-     * @param movie_list A list of all the movies where we are going to operte on.
+     * \param movie_list A list of all the movies where we are going to operte on.
      */
     virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
 
-   
      // Gets the ID of the widget.  It is called polymorphically for every widget.
     virtual int getID() const { return m_uid; }
 
-    //Clears the state of the widget.  It is called polymorphically for every widget.
+    //Clears the state of the widget. It is called polymorphically for every widget.
     virtual void clear() = 0;
-
-    //Sets the visibility of the widget. It is called polymorphically for every widget.
+    //Sets the visibility of the widget.
     virtual void setVisibility(bool v) { m_visible = v; }
-
     virtual float getHeightOffset() const { return m_height_offset; }
 
+    virtual bool isOperating() const { return m_operating; }
+    virtual void setOperating(bool o) { m_operating = o; }
+
     /*
-     * Constructs a new widget at the given position.
-     * @param posX The x position of the widget.
-     * @param posY The y position of the widget.
+     * Constructs a new widget.
+     * \param posX The x position of the widget.
+     * \param posY The y position of the widget.
      */
     Widget(float posX, float posY);
 

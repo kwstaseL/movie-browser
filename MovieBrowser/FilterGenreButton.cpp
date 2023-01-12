@@ -1,10 +1,10 @@
 #include "FilterGenreButton.h"
 
 /*
-	Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets),
+	Checks if the given movie meets the requirements for filtering (checks if is already filtered or not by other widgets),
 	used to sychronize all filters with all widgets that can filter, together.
 	@param movie: a pointer to the movie to be checked
-	@return true if the movie meets the requirements, false otherwise
+	@return true if the movie meets the requirements, else false
 */
 bool FilterGenreButton::hasRequirements(const Movie* movie) const
 {
@@ -12,17 +12,17 @@ bool FilterGenreButton::hasRequirements(const Movie* movie) const
 	{
 		for (const auto& filter : filterToBeChecked)
 		{
-			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)
+			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)	//If getWidgeState return disabled, return false since this movie doesnt meet the requirementes filter all widgets together
 			{
 				return false;
 			}
 		}
-		return std::stoi(movie->getDate()) <= movie->state_info.getLastFilterToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear();
+		return std::stoi(movie->getDate()) <= movie->state_info.getLastFilterToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear();	// Otherwise, if all the other widgets are enabled, check if it between the sliders years.
 	}
 }
 
-// Filters all movies by genre
-// @param movie_list: a vector of all the movies to be filtered
+//Filters all movies by genre
+//@param movie_list: a vector of all the movies
 void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 {
 	//If the genre map isn't created, create it 
@@ -89,10 +89,8 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 }
 
 
-/* Creates the genre map
-@param movie_list: a vector of all the movies to be included in the genre map
-The genre map is a mapping from genre names to unordered sets of movies with that genre. It is used to quickly filter movies by genre.
-*/
+// Creates A map in which the key is a genre text ("Action","Drama"...) and the value is an unordered set of all the movies that have that specific genre.
+// Its used map quickly filter movies by genre. 
 void FilterGenreButton::createGenreMap(const std::vector<Movie*>& movie_list)
 {
 
@@ -112,8 +110,8 @@ void FilterGenreButton::clear()
 	s_scanned_genres.clear();
 }
 
-// Performs the filtering action when the button is pressed
-// @param movie_list: a vector of all the movies to be filtered
+//Performs the filtering action when the button is pressed
+//@param movie_list: a vector of all the movies
 void FilterGenreButton::takeAction(const std::vector<Movie*>& movie_list)
 {
 	filterByGenre(movie_list);
@@ -196,12 +194,12 @@ void FilterGenreButton::draw()
 
 
 /* Constructs a new filter genre button
-@param posX: the x coordinate of the button's position
-@param posY: the y coordinate of the button's position
-@param text: the text displayed on the button
-*/
+	 @param posX: the x coordinate of the filtergenrebutton's position
+	 @param posY: the y coordinate of the filtergenrebutton's position
+	 @param text: the text displayed on the button
+	*/
 FilterGenreButton::FilterGenreButton(float posX, float posY, const std::string_view text)
 	: Button(posX, posY, text)
 {
-	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);
+	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);	//Push back the widgets this class needs to check before filtering the movies
 }

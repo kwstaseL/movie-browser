@@ -1,8 +1,6 @@
 #include "Dock.h"
 
 
-//COMPLETEDD
-
 void Dock::update()
 {
 	//Function that continuously updates our dock
@@ -111,16 +109,16 @@ void Dock::draw()
 	brush.fill_opacity = 0.95f;
 	brush.outline_opacity = 0.0f;
 	brush.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::DOCK);
-	graphics::drawRect(m_positionX, m_positionY + m_height, m_dock_width, m_dock_height, brush);
+	graphics::drawRect(m_positionX, m_positionY + m_height, m_dock_width, m_dock_height, brush);	//Drawing the Dock.
 	graphics::resetPose();
 }
 
 
 
 //Constructs a new Dock
-//  @param float x: The x coordinate of the dock's position.
-//  @param float y: The y coordinate of the dock's position.
-//  @param const std::vector<Widget*>& widgets_list: a vector of our Widget objects.
+//  \param float x: The x coordinate of the dock's position.
+//  \param float y: The y coordinate of the docks position.
+//  \param const std::vector<Widget*>& widgets_list: a vector of pointers to Widget objects.
 Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 	: Widget(x, y)
 {
@@ -139,10 +137,10 @@ Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 
 
 
-//Checks if the mouse is within the boundaries of the dock
-// @param mouse_x: the x coordinate of the mouse
-// @param mouse_y: the y coordinate of the mouse
-// @return: true if the mouse is within the dock's boundaries, false otherwise
+//Checks if the mouse is within the coordinates of the dock
+// \param mouse_x: the x coordinate of the mouse
+// \param mouse_y: the y coordinate of the mouse
+// \return: true if the mouse is within the dock's boundaries,else false
 bool Dock::contains(float mouse_x, float mouse_y) const
 {
 	return (mouse_x > m_positionX - m_dock_width / 2 && mouse_x < m_positionX + m_dock_width / 2 && mouse_y > m_positionY + m_height - m_dock_height / 2 && mouse_y < m_positionY + m_height + m_dock_height / 2);
@@ -151,7 +149,7 @@ bool Dock::contains(float mouse_x, float mouse_y) const
 
 
 //Sets all movies as not updatable or updatable using the `movie_list` depending if the dock is going down or it's going up, 
-//@param movie_list: a vector of all the movies to be checked
+// \param movie_list: a vector of all the movies
 void Dock::takeAction(const std::vector<Movie*>& movie_list)
 {
 	if (m_dock_state == m_dock_status::STATE_GOING_DOWN)
@@ -173,7 +171,6 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 	setOperating(false);
 
 }
-
 
 // Resets the dock's state
 void Dock::clear()

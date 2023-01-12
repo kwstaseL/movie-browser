@@ -1,16 +1,15 @@
 #include "ResetFilterButton.h"
 
 
-/**
- * Resets all movie control variables to their default values.
- *
- * @param movie_list A list of movies to apply the reset to.
- */
+/*
+* Resets all movie control variables to their default values.
+*
+* \param movie_list A list of movies to apply the reset to.
+*/
 void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
 {
     for (const auto& movie : movie_list)
     {
-        // Reset movie control variables
         movie->state_info.setDisabled(false);
 
         movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
@@ -21,20 +20,18 @@ void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
     }
 }
 
-/**
- * Called when the reset filter button is clicked.
- * Resets all applied filters.
- *
- * @param movie_list A list of movies to apply the reset to.
- */
+/*
+* Called when the reset filter button is clicked.
+* Resets all applied filters.
+*
+* \param movie_list A list of movies to apply the reset to.
+*/
 void ResetFilterButton::takeAction(const std::vector<Movie*>& movie_list)
 {
     resetFilter(movie_list);
 }
 
-/**
- * Continuously updates the reset filter button, whenever the dock is down.
- */
+//Continuously updates the reset filter button.
 void ResetFilterButton::update()
 {
     // Giving our widget a height so when the dock comes down, our button also comes down
@@ -90,8 +87,7 @@ void ResetFilterButton::update()
 	}
 }
 
-//Continously draws the reset filter button, whenever the dock is down
-
+// Continuously draws the reset filter button.
 void ResetFilterButton::draw()
 {
 
@@ -121,13 +117,17 @@ void ResetFilterButton::draw()
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_Genrebutton_width, m_Genrebutton_height, brush);
 }
 
-/**
- * Clears any state associated with this button.
- */
+
 void ResetFilterButton::clear()
 {
 }
 
+/*
+* Constructs a new ResetFilterButton at the given position with the given text.
+* \param posX The x-coordinate of the button's position.
+* \param posY The y-coordinate of the button's position.
+* \param text The text to display on the button.
+*/
 ResetFilterButton::ResetFilterButton(float posX, float posY, const std::string_view text)
 	: Button(posX, posY, text)
 {}

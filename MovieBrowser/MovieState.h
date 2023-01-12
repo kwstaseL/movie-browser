@@ -4,7 +4,7 @@
 
 namespace WidgetEnums {
 
-    //Enum represents if the widget filter state is enabled or disabled being used
+    //Enum represents if the widget filter is enabled or disabled. 
     enum class WidgetFilterState
     {
         ENABLED,
@@ -13,7 +13,6 @@ namespace WidgetEnums {
 
     //Enum that represents all the widget filters being used
     enum class WidgetFilters {
-
         GenreFilter,
         TitleFilter
     };
@@ -26,10 +25,8 @@ namespace WidgetEnums {
 class MovieState
 {
 private:
-
-
     //We use a map here, so that is easy if we ever want to insert a new widget that also needs sychronizing, to just insert a new widgetFilterState in the map
-    //This map represents different widget filters (GenreFilter,TitleFilter) and the correct output ENABLED,DISABLED depending if it is ENABLED,DISABLED for a specific movie
+    //This map represents different widget filters (GenreFilter,TitleFilter) and the correct output ENABLED,DISABLED depending if that filter it is ENABLED or DISABLED for a specific movie
     std::unordered_map<WidgetEnums::WidgetFilters, WidgetEnums::WidgetFilterState> widgetFilterStates;
 
     //This represents the state where a movie can't be highlighted/glown or information is can be drawen about it.
@@ -56,17 +53,21 @@ public:
         widgetFilterStates[WidgetKey] = WidgetState;
     }
 
-    //Retrieves the state of a widget
+    //Gets the state of a widget
     const WidgetEnums::WidgetFilterState& getWidgetState(const WidgetEnums::WidgetFilters& WidgetKey) const
     {
         return widgetFilterStates.at(WidgetKey);
     }
 
-    //Inserts a state of a new widget
+    //Inserts a state of a new widget filter
     void insertNewWidgetState(const WidgetEnums::WidgetFilters& WidgetKey, const WidgetEnums::WidgetFilterState& WidgetState)
     {
         widgetFilterStates[WidgetKey] = WidgetState;
     }
+
+
+    //Returns if this a movie can be highlighted/glown or information can drawen about it (if mouse if hovered on them).
+    bool isUpdatable() const { return m_isUpdatable; }
 
     //Setters and Getters
 
@@ -87,8 +88,5 @@ public:
 
     void setLastFilterToYear(int y) { lastFilterToYear = y; }
     int getLastFilterToYear() const { return lastFilterToYear; }
-
-    //Returns if this a movie can be highlighted/glown or information can drawen about it (if mouse if hovered on them).
-    bool isUpdatable() const { return m_isUpdatable; }
 
 };

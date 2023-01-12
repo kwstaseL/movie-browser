@@ -4,12 +4,13 @@
 #include "Widget.h"
 
 // This file defines a Slider class, which is a widget that can be used to filter a list of movies by year.
-// The Slider class is derived from the Widget class, which provides a common interface for interacting with different types of widgets.
-// The Slider class has a clickable box that can be dragged to set the year, and provides functions for filtering.
+// The Slider class is derived from the Widget class, which provides a common interface.
+// The Slider class has a clickable box that can be dragged to set the year based on the movement of the mouse of the user.
 
 struct ClickableBox
 {
 private:
+
     // The x and y position of the box
     int m_positionX{};
     int m_positionY{};
@@ -37,12 +38,12 @@ public:
 class Slider : public Widget
 {
 private:
-    // The possible states of the slider
+
     enum m_slider_state
     {
-        SLIDER_IDLE,
-        SLIDER_RELEASED,
-        SLIDER_DRAGGING
+        SLIDER_IDLE,        // Slider is not being dragged.
+        SLIDER_RELEASED,    // Slider was previously being draggedn and now is released
+        SLIDER_DRAGGING     // Slider is now being dragged.
     };
 
     // The text to display on the slider
@@ -61,33 +62,34 @@ private:
     // The year that the slider is currently set to
     int m_year{};
 
-    // Updates the state of the slider
+    // Continously Updates the state of the slider
     void update() override;
 
-    // Draws the slider on the screen
+    // Continuously draws the slider on the canvas.
     void draw() override;
 
-    //Checks if the mouse is within the coordinates of the slider
-    // @param mouse_x: the x-coordinate of the mouse
-    // @param mouse_y: the y-coordinate of the mouse
-    // @return true if the mouse is within the slider's coordinates, false otherwise
+    //Checks if the mouse is within the coordinates of the boxes slider
+    // \param mouse_x: the x coordinate of the mouse
+    // \param mouse_y: the y coordinate of the mouse
+    // \return true if the mouse is within the boxes slider coordinates
     bool contains(float x, float y) const;
 
     // Filters the given list of movies by the year on the slider (filters by calling filterByYear)
-    // @param movie_list : A vector of movies to be filtered by their year
+    // \param movie_list : A vector of movies to be filtered by their year
     void takeAction(const std::vector<Movie*>& movie_list) override;
 
-    // Clears any applied filters
+    // Clears the slider (coordinates of the box and the year present on each box)
     void clear() override;
 
-    // Filters the given list of movies by the year set on the slider
+    // Filter the list of movies based on the year on the slider, 
+    // and taking into consideration all the other filters that might be active for a specfic movie.
     void filterByYear(const std::vector<Movie*>& movie_list);
 
     /*
     Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets),
     used to sychronize all filters with all widgets that can filter, together.
-    @param movie: a pointer to the movie to be checked
-    @return true if the movie meets the requirements, false otherwise
+    \param movie: a pointer to the movie to be checked
+    \return true if the movie meets the requirements, false otherwise
     */
     bool hasRequirements(const Movie* movie) const;
 
@@ -100,10 +102,12 @@ private:
 
 public:
 
-
+    //Constructs a new Slider
+    //  \param float x: The x coordinate of the slider's position.
+    //  \param float y: The y coordinate of the slider's position.
+    //  \param const std::string_view text: It's the text to be displayed near the slider ("From","To")
     Slider(float posX, float posY, const std::string_view text);
     virtual ~Slider() = default;
-
 
 };
 

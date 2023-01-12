@@ -4,14 +4,13 @@
 // Updates the state of the slider. This includes handling user input for dragging the slider and setting the year based on the slider position.
 void Slider::update()
 {
-    //Giving our widget a height so when the dock comes down, our slider also comes down
-
+    //If the slider is invisible, we just return we don't want to update it.
     if (!m_visible)
     {
         return;
     }
 
-    // Get the current mouse state and convert the mouse position to canvas coordinates.
+    //Gettng the current mouse state and convert the mouse position to canvas coordinates.
 
     graphics::MouseState ms;
     graphics::getMouseState(ms);
@@ -20,7 +19,7 @@ void Slider::update()
     mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
 
-    // Save the current position of the box.
+    //Saves the current position of the box to temp variable.
     int temp{ box.getPosX() };
 
     // Check if the mouse is within the bounds of the slider or if the slider is being dragged.
@@ -28,7 +27,6 @@ void Slider::update()
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
     {
         // If the mouse is being dragged, update the position of the box and the year based on the change in position.
-
         if (ms.dragging)         
         {
             box.setActive(true);
@@ -91,8 +89,7 @@ void Slider::update()
     }
 
 }
-// Draws the slider on the screen. This includes the text, line, and box for the slider.
-
+// Continuously draws the slider on the canvas.
 void Slider::draw()
 {
     // Don't draw the slider if it is not visible.
@@ -111,7 +108,7 @@ void Slider::draw()
     brush.outline_opacity = .5f;
     graphics::drawRect(m_positionX, m_positionY + m_height, 7.0f, .0001f, brush);
 
-    // Draw the box for the slider.
+    // Draw the 2 boxes for the sliders.
     if (m_uid == 9) //From
     {
         br.texture = "";
@@ -131,10 +128,10 @@ void Slider::draw()
 
 
 }
-//Checks if the mouse is within the coordinates of the slider
-// @param mouse_x: the x-coordinate of the mouse
-// @param mouse_y: the y-coordinate of the mouse
-// @return true if the mouse is within the slider's coordinates, false otherwise
+//Checks if the mouse is within the coordinates of the boxes slider
+// \param mouse_x: the x coordinate of the mouse
+// \param mouse_y: the y coordinate of the mouse
+// \return true if the mouse is within the boxes slider coordinates
 bool Slider::contains(float mouse_x, float mouse_y) const
 {
 
@@ -159,7 +156,7 @@ void Slider::takeAction(const std::vector<Movie*>& movie_list)
     filterByYear(movie_list);
 }
 
-// Clears any applied filters.
+// Clears the slider
 void Slider::clear()
 {
     if (m_uid == 9)
@@ -178,7 +175,8 @@ void Slider::clear()
     m_status_slider = SLIDER_IDLE;
 }
 
-// Filter the list of movies based on the year on the slider, and taking into consideration all the other filters that might be active.
+// Filter the list of movies based on the year on the slider, 
+// and taking into consideration all the other filters that might be active for a specfic movie.
 
 void Slider::filterByYear(const std::vector<Movie*>& movie_list)
 {
@@ -225,8 +223,8 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
 /*
 Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets),
 used to sychronize all filters with all widgets that can filter, together.
-@param movie: a pointer to the movie to be checked
-@return true if the movie meets the requirements, false otherwise
+\param movie: a pointer to the movie to be checked
+\return true if the movie meets the requirements, false otherwise
 */
 bool Slider::hasRequirements(const Movie* movie) const
 {
@@ -249,7 +247,7 @@ Slider::Slider(float posX, float posY, const std::string_view text)
 {
     clear();
 
-    //Inserting all the widgetfilters slider needs to check
+    //Inserting all the widgetfilters slider needs to check before filtering
     filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);
     filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);
 }

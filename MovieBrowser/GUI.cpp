@@ -132,11 +132,9 @@ void GUI::drawStartedScreen()
 }
 
 // Draws the pressed movie screen (where information about 1 movie is shown)
-
 void GUI::drawPressedMovieScreen()
 {
 	//Drawing the scene when a movie is pressed
-
 	if (clickedMovie)
 	{
 		clickedMovie->drawInformation();

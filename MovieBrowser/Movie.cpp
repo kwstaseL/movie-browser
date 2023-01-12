@@ -1,29 +1,29 @@
 #include "Movie.h"
 #include <cstring>
 
-// ADD SOME LINES OF COMMENT ON THE DESC PROCESS
 
-// Constructor for Movie class. Initializes member variables with the provided parameters and sets the initial position of the state_information box.
+// Constructor for Movie class. Initializes member variables (desc,name,year..), sets the position of the information box, and also creates the filterstates of all the widgets needed.
 Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view image, const std::string_view year, const std::string_view dir, const std::vector<std::string>& prot, const std::vector<std::string>& genre)
 	: m_name(name), m_description(desc), m_image(image), m_production_year(year), m_director(dir)
 {
 
-	// Inserting genres for the movie into the 'genres' vector
+	//Inserting genres for the movie into the'genres vector
 	for (const auto& g : genre)
 	{
 		genres.push_back(g);
 	}
 
-	// Inserting protagonists for the movie into the 'm_protagonists' vector
+	//Inserting protagonists for the movie into the m_protagonists vector
 	for (const auto& pr : prot)
 	{
 		m_protagonists.push_back(pr);
 	}
 
-	// Setting the initial position of the state_information box to the center of the canvas
+	//Setting the position of the information box to the center of the canvas
 	informationBox.setPosX(CanvasConst::CANVAS_WIDTH / 2);
 	informationBox.setPosY(CanvasConst::CANVAS_HEIGHT / 2);
 
+	//Creates the WidgetStates
 	state_info.insertNewWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
 	state_info.insertNewWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 
@@ -113,15 +113,56 @@ void Movie::update()
 
 }
 
+
 /*
-* Determines if the given point (x, y) is inside the coordinates of the Movies Frame.
-* @param mouse_x: the x coordinate of the mouse
-* @param mouse_y: the y coordinate of the mouse
-* @return True if the point (x, y) is inside the border of the Movies Frame, false otherwise.
-*/
+ * Determines if the given coordinates of mouse x,y are insde the coordinates of the Movies Frame.
+ * \param mouse_x: the x coordinate of the mouse.
+ * \param mouse_y: the y coordinate of the mouse.
+ * \return True if the given coordinates of mouse x,y is inside the border of the Movies Frame.
+ */
 bool Movie::contains(float mouse_x, float mouse_y) const
 {
 	return (mouse_x > m_pos[0] - MovieConst::Movie_Banner_Width / 2 && mouse_x < m_pos[0] + MovieConst::Movie_Banner_Width / 2 && mouse_y > m_pos[1] - MovieConst::Movie_Banner_Height / 2 && mouse_y < m_pos[1] + MovieConst::Movie_Banner_Height / 2);
+}
+
+
+// Function that returns a new "lines" vector which represents all the lines that should be drawen to the canvas.
+// Based on the whole description of the movie
+
+const std::vector<std::string> Movie::createDescription()
+{
+	std::string description = getDesc();	//Getting the description of this particular movie
+	char* tokens = &description[0];
+	char* context;
+	tokens = strtok_s(tokens, " ", &context);
+	std::vector<std::string> words;	//Creating vector which stores all the words separated
+
+	while (tokens != NULL) {
+		words.push_back(tokens);
+		tokens = strtok_s(nullptr, " ", &context);
+	}
+
+	const int maxLineLength = 75;	//Presetting a default value for the maximum length of 1 line of our description
+	std::vector<std::string> lines;	//This vector has all the lines of the description
+	std::string currentLine;
+
+	for (const auto& word : words) {	// For all the words in our words vector
+
+		//Here we check if adding a word would exceed the maxline we have presetted
+		if (currentLine.length() + word.length() + 1 > maxLineLength) {
+
+			//Adds the current line to the lines vector
+			lines.push_back(currentLine);
+			//and clears the line so a new line can start
+			currentLine.clear();
+		}
+		// Here, it adds the current word we are iterating allong with a space
+		currentLine += word + "  ";
+	}
+	//Pushes back the last current line
+	lines.push_back(currentLine);
+
+	return lines;
 }
 
 const std::string& Movie::getName() const
@@ -188,6 +229,7 @@ void Movie::DisplayInfo()
 }
 
 // Function used to draw state_information about a movie on the screen when the movie is clicked
+
 void Movie::drawInformation()
 {
 	graphics::Brush brush;
@@ -224,40 +266,22 @@ void Movie::drawInformation()
 	graphics::setFont("OpenSans-Light.ttf");
 
 
-	// Split the description into multiple lines if it is too long to fit on a single line
-
-	std::string description = getDesc();
-	char* tokens = &description[0];
-	char* context;
-	tokens = strtok_s(tokens, " ", &context);
-	std::vector<std::string> words;
-
-	while (tokens != NULL) {
-		words.push_back(tokens);
-		tokens = strtok_s(nullptr, " ", &context);
+	// In this process, we split the description into multiple lines if it is too long to fit on a single line
+	//------------------------------------------------------------------------------------------------
+	if (!descriptionCreated)
+	{
+		lines = createDescription();
 	}
 
-	const int maxLineLength = 75;
-	std::vector<std::string> lines;
-	std::string currentLine;
-
-	for (const auto& word : words) {
-
-		if (currentLine.length() + word.length() + 1 > maxLineLength) {
-			lines.push_back(currentLine);
-			currentLine.clear();
-		}
-		currentLine += word + "  ";
-	}
-
-	lines.push_back(currentLine);
-
+	//For all lines in the lines vector we have made, draws the lines. Every time a line is drawn, we add a height so the next line can go under the previous line drawen.
 	float text_height{ 0.0f };
 	for (const auto& line : lines)
 	{
 		graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f+text_height, 0.5f, line, br);
 		text_height += .7f;
 	}
+
+	//------------------------------------------------------------------------------------------------
 
 	//Drawing year of movie
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.4f + getName().size() / 2.5f + 1.2f, CanvasConst::CANVAS_HEIGHT / 6.25f, 0.7f, +"(" + getDate() + ")", br);

@@ -1,7 +1,7 @@
 #include "Widget.h"
 
 /*
-   * Releases focus when the operation is complete.
+* Releases focus when the operation is complete.
 */
 void Widget::releaseFocus()
 {
@@ -13,7 +13,7 @@ void Widget::releaseFocus()
 }
 /*
 	* Requests focus when doing an operation.
-	* @return true if the focus was successfully requested, false if another widget already has the focus.
+	* \return true if the focus was successfully requested, false if another widget already has the focus.
 */
 bool Widget::requestFocus()
 {	
@@ -33,4 +33,5 @@ Widget::Widget(float posX, float posY)
 
 	: m_positionX{ posX }, m_positionY{ posY }, m_uid{ s_idGenerator++ }
 {
+	
 }

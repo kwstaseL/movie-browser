@@ -1,12 +1,12 @@
 #include "TextField.h"
 #include <algorithm>
-#include <string_view>
+
+
 
 /*
 Function which takes as input a Movie pointer, and checks if this particular movie
 has the filtered genre (if any filter button was pressed) ,
 and if it has the 2 years we filter with the slider
-
 It helps us filter movies, synchronizing all widgets
 Returns true if movie has a filtered genre("Action","Drama" etc..) and is between the 2 years
 Returns false otherwise
@@ -26,12 +26,10 @@ bool TextField::hasRequirements(const Movie* movie) const
 	}
 }
 
+// Continuously draws our textfield.
 void TextField::draw()
 {
-	/*
-	*	Draws our textfield, only if the textfield is visible (dock is down)
-	*/
-
+	//If the textfield is invisible return.
 	if (!m_visible)
 	{
 		return;
@@ -56,10 +54,12 @@ void TextField::draw()
 
 }
 
+// Continously updates our TextField.
+
 void TextField::update()
 {
 
-	// If the TextField is not visible, reset its height and highlighting
+	//If the textfield is invisible , reset the highlighting and return.
 	if (!m_visible)
 	{
 		m_highlighted = false;
@@ -114,7 +114,7 @@ void TextField::update()
 					m_timer = 0;	//Reset Timer
 					characters.push_back(ascii);	//Pushing back to the deque the character the user pressed
 					m_typed = true;
-					setActionTriggered(true);	// Since user typed a key trigger a signal so takeAction is called and action is taken.
+					m_action = true;	//Takes the action (filtering) since we need to find the movies with this parcticular string that the user gave.
 
 					if (isFull)	//If the text field is full, store the first character in a stack and remove it from the text field
 					{
@@ -132,10 +132,10 @@ void TextField::update()
 					characters.push_back(' ');
 
 					m_typed = true;
-					setActionTriggered(true);
+					m_action = true; //Takes the action (filtering) since we need to find the movies with this parcticular string
 
-					//If the text field is full, store the first character in a stack and remove it from the text field
-
+					//If the text field is full, store the first character in a stack and remove it from the text field, also we keep how many extra words are
+					// inserted in tto the stack.
 					if (isFull)
 					{
 						outofsight_words.push(characters[0]);
@@ -154,20 +154,20 @@ void TextField::update()
 						{
 							characters.push_front(outofsight_words.top());	//Starting putting back to the beginning of the textfield the words of the stack
 							extra_words--;
-							outofsight_words.pop();
+							outofsight_words.pop();	//Removing the world we have already inserted to the front of the word from the stack.
 						}
 					}
 
 					if (!characters.empty())
 					{
-						characters.pop_back();
+						characters.pop_back();	//Removing from the end of the characters deque, since the keyState was BACKSPACE
 					}
 
-					m_typed = true;
-					m_timer = 0;
+					m_typed = true; //set the flag to true since the user has typed
+					m_timer = 0; //Resetting the timer 
 
 				}
-				setActionTriggered(true);
+				m_action = true;	//Takes the action (filtering) since we need to find the movies with this parcticular string where the character was removed from the end
 			}
 		}
 		m_timer++;	//Increments the timer
@@ -208,9 +208,6 @@ void TextField::takeAction(const std::vector<Movie*>& movie_list)
 
 /*
 * Searches for movies by title/director/protagonist using the given list of movies.
-* If the current string in the textfield is a substring of a movie's title, the movie is marked as enabled and has the text filter applied.
-* If the current string in the textfield is not a substring of a movie's title, the movie is marked as disabled and does not have the text filter applied.
-* If the key state is Backspace or the character string is empty, all movies that have the current title are marked as enabled and have the text filter applied.
 * \param movie_list The list of movies to search through.
 */
 void TextField::search(const std::vector<Movie*>& movie_list)
@@ -232,14 +229,14 @@ void TextField::search(const std::vector<Movie*>& movie_list)
 		std::transform(movie_director.begin(), movie_director.end(), movie_director.begin(), ::tolower); // This process,takes the the name of the director and converts it to lowercase
 
 		//Checking if the searching word that was given is referring to a protagonist.
-		bool hasProtagonist = false;
+		bool hasProtagonist{ false };
 
 		//We are using find() method to see if the inputted string is present in the dir/title of protagonist name, if it isn't it returns the std::string::npos
 		for (const auto& protagonist : movie->m_protagonists)
 		{
 			std::string protagonist_name = protagonist;
 			std::transform(protagonist_name.begin(), protagonist_name.end(), protagonist_name.begin(), ::tolower);
-			if (protagonist_name.find(search_string) != std::string::npos)
+			if (protagonist_name.find(search_string) != std::string::npos)	//If the textfield finds a protagonist name for a movie, then set hasProtagonist ot true
 			{
 				hasProtagonist = true;
 				break;
@@ -247,7 +244,10 @@ void TextField::search(const std::vector<Movie*>& movie_list)
 
 		}
 
-		//If keystate was BackSpace or the character is empty, find all the movies that have the current string on their title, director or protagonist
+		//If keystate was BackSpace or the character is empty, it finds
+		// all the movies that have the current string on their title, director or protagonist (with the backspace applied or if the character is empty (empty string)))
+		// and have all other widgets applied
+
 		if ((movie_name.find(search_string) != std::string::npos || movie_director.find(search_string) != std::string::npos || hasProtagonist)
 			&& ((graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty())))
 		{
@@ -255,6 +255,7 @@ void TextField::search(const std::vector<Movie*>& movie_list)
 			{
 				movie->state_info.setDisabled(false);
 				movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
+				continue;	//If this movie has either title,director,protagonist continue with the next movie
 			}
 		}
 
@@ -268,16 +269,13 @@ void TextField::search(const std::vector<Movie*>& movie_list)
 		{
 			movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
 		}
-
 	}
-
-	setActionTriggered(false);
+	m_action = false;
 	m_operating = false;
 	releaseFocus();
 }
 
 // Clears all variables of the textfield
-
 void TextField::clear()
 {
 	characters.clear();
@@ -287,15 +285,16 @@ void TextField::clear()
 }
 
 /*
-	* Check if the mouse is inside the coordinates of the text field.
-	* \param x The x coordinate of the mouse.
-	* \param y The y coordinate of the mouse.
-	* \return true if the mouse is in the coordinates of textfield
+* Check if the mouse is inside the coordinates of the text field.
+* \param x The x coordinate of the mouse.
+* \param y The y coordinate of the mouse.
+* \return true if the mouse is in the coordinates of textfield
 */
 bool TextField::contains(float mouse_x, float mouse_y) const
 {
 
-	return (mouse_x > m_positionX - m_Textfield_width / 2 && mouse_x < m_positionX + m_Textfield_width / 2 && mouse_y > m_positionY + m_height - m_Textfield_height / 2 && mouse_y < m_positionY + m_height + m_Textfield_height / 2);
+	return (mouse_x > m_positionX - m_Textfield_width / 2 && mouse_x < m_positionX + m_Textfield_width / 2 
+		&& mouse_y > m_positionY + m_height - m_Textfield_height / 2 && mouse_y < m_positionY + m_height + m_Textfield_height / 2);
 
 }
 

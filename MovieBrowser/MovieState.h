@@ -1,6 +1,6 @@
 #pragma once
-
 #include <unordered_map>
+
 
 namespace WidgetEnums {
 
@@ -13,8 +13,10 @@ namespace WidgetEnums {
 
     //Enum that represents all the widget filters being used
     enum class WidgetFilters {
+
         GenreFilter,
         TitleFilter
+
     };
 
 }
@@ -25,11 +27,12 @@ namespace WidgetEnums {
 class MovieState
 {
 private:
+
     //We use a map here, so that is easy if we ever want to insert a new widget that also needs sychronizing, to just insert a new widgetFilterState in the map
     //This map represents different widget filters (GenreFilter,TitleFilter) and the correct output ENABLED,DISABLED depending if that filter it is ENABLED or DISABLED for a specific movie
     std::unordered_map<WidgetEnums::WidgetFilters, WidgetEnums::WidgetFilterState> widgetFilterStates;
 
-    //This represents the state where a movie can't be highlighted/glown or information is can be drawen about it.
+    //This represents the state where a movie can't be highlighted/glown or information is can be drawen about it, but the image of the movie is still drawen.
     bool m_isUpdatable{ true };
 
     //Variable used to see if a movie is disabled, a movie is disabled (not updated or drawen) when it doesn't meet filters requirements.
@@ -65,8 +68,7 @@ public:
         widgetFilterStates[WidgetKey] = WidgetState;
     }
 
-
-    //Returns if this a movie can be highlighted/glown or information can drawen about it (if mouse if hovered on them).
+    //Returns if this a movie can be highlighted/glown and information can drawen about it (if mouse if hovered on the movie).
     bool isUpdatable() const { return m_isUpdatable; }
 
     //Setters and Getters

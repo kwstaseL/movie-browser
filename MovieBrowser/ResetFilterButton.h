@@ -4,27 +4,27 @@
 #include "Button.h"
 
 /*
-    Represents a ResetFilterButton, which in our program has a text ("Reset Filters"), and when pressed resets all movies to be enabled.
-    The FilterGenreButton class is derived from the Button class, which provides a common interface for interacting with different types of Buttons.
-    When resetting all the movies, we also clear each widget's states.
+   Represents a ResetFilterButton, which in our program has a text ("Reset Filters"), and when pressed resets all movies to be enabled.
+    When resetting all the movies by this button, all of the other widgets clear() function will be called polymorphically to clear their own states.
 */
 class ResetFilterButton final : public Button
 {
 private:
 
     /*
-     * Resets all movie control variables to their default values.
-     *
-     * \param movie_list A list of movies to apply the reset to.
+     * Resets all movie filter widgets to their default values and enables all movies.
+     * When this function gets called, each widget will "clear" all their states automatically.
+     * 
+     * \param movie_list A list of our movies
      */
     void resetFilter(const std::vector<Movie*>& movie_list) const;
 
     /*
-     * Called when the reset filter button is clicked.
-     * Resets all applied filters.
-     *
-     * \param movie_list A list of movies to apply the reset to.
-     */
+    *  Called when the reset filter button is clicked.
+    *  Resets all applied filters and all other widgets clear their own state.
+    *
+    * \param movie_list A list of our movies.
+    */
     void takeAction(const std::vector<Movie*>& movie_list) override;
 
     void clear() override;
@@ -34,16 +34,13 @@ private:
     
     // Continuously draws the reset filter button.
     void draw() override;
- 
-
 
 public:
 
-
-    /*
-     * Constructs a new ResetFilterButton at the given position with the given text.
-     * \param posX The x-coordinate of the button's position.
-     * \param posY The y-coordinate of the button's position.
+      /*
+     * Constructs a new ResetFilterButton.
+     * \param posX The x coordinate of the button's position.
+     * \param posY The y coordinate of the button's position.
      * \param text The text to display on the button.
      */
     ResetFilterButton(float posX, float posY, const std::string_view text);

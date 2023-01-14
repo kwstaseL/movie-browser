@@ -1,9 +1,8 @@
 #include "Dock.h"
 
-
+//Function that continuously updates our dock
 void Dock::update()
 {
-	//Function that continuously updates our dock
 
 	// Get the current mouse state and convert the mouse position to canvas coordinates.
 	graphics::MouseState ms;
@@ -14,13 +13,17 @@ void Dock::update()
 
 	if (contains(mouse_X, mouse_Y))	//If our mouse contains Dock's coordinates, we want the dock to come down
 	{
-		if (m_dock_state == m_dock_status::STATE_IDLE)
+		if (m_dock_state == m_dock_status::STATE_IDLE || m_dock_state == m_dock_status::STATE_GOING_UP)	//If the state previously was IDLE, or the Dock was Previously going up
 		{
 			m_dock_state = m_dock_status::STATE_GOING_DOWN;
-			setActionTriggered(true);	//Alert that the dock is now coming down, so an action must be taken 
+
+			if (m_height != 6.0f)
+			{
+				m_action = true;	//Alert the GUI that the dock is now coming down, so an action must be taken 
+			}
 		}
 		
-		setOffset(-9.0f);	//Extending the area of the dock where our mouse can be.
+		m_offset = -9.0f;	//Extending the area of the dock where our mouse can be.
 
 		if (PlaySound)
 		{
@@ -30,6 +33,8 @@ void Dock::update()
 		//Giving our dock a height, basically the animation of it coming down.
 		if (m_height != 6.0f)
 		{
+			//On each update, we increase dock's height multiplied by getDeltaTime which
+			//is the time passed from the previous state update
 			m_height += 0.012f * graphics::getDeltaTime();
 
 			if (m_height > 6.0f)
@@ -45,9 +50,11 @@ void Dock::update()
 			{
 				widget->setVisibility(true);
 
-				widget->m_height += 0.01f * graphics::getDeltaTime();
+				//On each update, we increase all widget's height multiplied by getDeltaTime which
+				//is the time passed from the previous state update
+				widget->m_height += 0.008f * graphics::getDeltaTime();
 
-				if (widget->m_height > widget->getHeightOffset())
+				if (widget->m_height > widget->getHeightOffset())	//If the height of a particular widget is where it should be then set it to be there.
 				{
 					widget->m_height = widget->getHeightOffset();
 				}
@@ -55,21 +62,28 @@ void Dock::update()
 		}
 		PlaySound = false;
 	}
-	else if (!contains(mouse_X, mouse_Y))	//If our mouse doesn't contain Dock's borders, we want it to come up
+	else if (!contains(mouse_X, mouse_Y))	// If our mouse doesn't contain Dock's coordinates, we want it to come up
 	{
+
+		if (m_dock_state == m_dock_status::STATE_IDLE)	// If mouse doesnt contain Dock's coordinates and the state is IDLE , return.
+		{
+			return;
+		}
 
 		if (m_dock_state == m_dock_status::STATE_GOING_DOWN)
 		{
 			m_dock_state = m_dock_status::STATE_GOING_UP;
-			setActionTriggered(true);	//Alert that the dock is now coming up, so an action must be taken
+			m_action = true;	// Alert that the dock is now coming up, so an action must be taken
 
-			setOffset(-16.0f);	//Restoring the area where are mouse can be on the Dock, since now it's going up. 
+			m_offset = -16.0f;	//Restoring the area where are mouse can be on the Dock, since now it's going up. 
 			PlaySound = true;
 		}
 
 		//Restoring dock's height 
 		if (m_height != 0.0f)
 		{
+			//On each update, we decrease dock's height multiplied by getDeltaTime which
+			//is the time passed from the previous state update
 			m_height -= 0.01f * graphics::getDeltaTime();
 			if (m_height < 0.5f)
 			{
@@ -84,19 +98,29 @@ void Dock::update()
 			{
 				widget->m_height = 0;
 				widget->setVisibility(false);
-				m_dock_state = m_dock_status::STATE_IDLE;
+				allWidgetsUp = true;
 			}
 			else
 			{
-				widget->m_height -= 0.01f * graphics::getDeltaTime();
+				allWidgetsUp = false;
+				//On each update, we decrease all widget's height multiplied by getDeltaTime which
+				//is the time passed from the previous state update
+				widget->m_height -= 0.01f * graphics::getDeltaTime();	 
 
-				if (widget->m_height < 0.0f)
+				if (widget->m_height < 0.0f)	//If the height of a particular widget is where it should be (0) then set it to be there.
 				{
 					widget->m_height = 0.0f;
 				}
 			}
 		}
 
+		//If the action is already done (set all movies to updatable) and the dock and the widgets are restored
+		// to their default height, then set the state as idle.
+		if (!m_action && m_height == 0 && allWidgetsUp)
+		{
+			m_dock_state = m_dock_status::STATE_IDLE;
+		}
+		
 	}
 
 }
@@ -118,7 +142,7 @@ void Dock::draw()
 //Constructs a new Dock
 //  \param float x: The x coordinate of the dock's position.
 //  \param float y: The y coordinate of the docks position.
-//  \param const std::vector<Widget*>& widgets_list: a vector of pointers to Widget objects.
+//  \param const std::vector<Widget*>& widgets_list: a vector of our Widgets.
 Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 	: Widget(x, y)
 {
@@ -126,10 +150,6 @@ Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 	{
 		if (widget)
 		{
-			if (widget == this)
-			{
-				continue;
-			}
 			widgets.push_back(widget);
 		}
 	}
@@ -137,19 +157,22 @@ Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 
 
 
-//Checks if the mouse is within the coordinates of the dock
+
+//Checks if the mouse is within the coordinates of the dock.
 // \param mouse_x: the x coordinate of the mouse
 // \param mouse_y: the y coordinate of the mouse
-// \return: true if the mouse is within the dock's boundaries,else false
+// \return true if the mouse is within the dock's coordinates
 bool Dock::contains(float mouse_x, float mouse_y) const
 {
-	return (mouse_x > m_positionX - m_dock_width / 2 && mouse_x < m_positionX + m_dock_width / 2 && mouse_y > m_positionY + m_height - m_dock_height / 2 && mouse_y < m_positionY + m_height + m_dock_height / 2);
+	return (mouse_x > m_positionX - m_dock_width / 2 && mouse_x < m_positionX + m_dock_width / 2
+		&& mouse_y > m_positionY + m_height - m_dock_height / 2 && mouse_y < m_positionY + m_height + m_dock_height / 2);
 }
 
 
 
 //Sets all movies as not updatable or updatable using the `movie_list` depending if the dock is going down or it's going up, 
-// \param movie_list: a vector of all the movies
+// Not Updatable:  which means it still can be drawn, but information is not being updated or drawn about this movie, the movie can't be hovered over in general.
+//\param movie_list: a vector of all our movies
 void Dock::takeAction(const std::vector<Movie*>& movie_list)
 {
 	if (m_dock_state == m_dock_status::STATE_GOING_DOWN)
@@ -167,8 +190,8 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 		}
 	}
 
-	setActionTriggered(false);	//Since we are done with the operation, alert it.
-	setOperating(false);
+	m_action = false;	//Since we are donef with the operation, alert it.
+	m_operating = false;
 
 }
 

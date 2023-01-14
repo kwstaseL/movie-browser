@@ -9,6 +9,7 @@
 #include "Slider.h"
 #include "TextField.h"
 
+
 /*
 *	Represents the class where all our objects get updated and drawen.
 *	This is the main class that knows and runs everything.
@@ -30,37 +31,30 @@ private:
 
 	gui_state_t m_state{ STATUS_STARTED };
 
-	graphics::Brush br;
-
-	//Indicates the last Widget being pressed/active
-	Widget* lastActiveWidget;
-
-	GUI() {};
-
-	//Because we use are using a Singleton we don't want to instantiate/copy another GUI instance
-	GUI(const GUI& other) = delete;
-	GUI& operator=(const GUI&) = delete;
-
-	//Singleton instance of GUI
-	static inline GUI* s_gui{};
-
-	//Indicates which movie was "clicked"
-	Movie* clickedMovie{ nullptr };
-
-	//A vector which contains all movie pointers
+	// A vector which contains all movie pointers
 	std::vector<Movie*> movie_list;
 
-	//A vector which contains all widget pointers
+	// A vector which contains all widget pointers
 	std::vector<Widget*> widgets;
+
+	// Singleton instance of GUI
+	static inline GUI* s_gui{};
+
+	// Indicates which movie was "clicked"
+	Movie* clickedMovie{ nullptr };
+
+	//Indicates the last Widget being pressed/active
+	Widget* lastActiveWidget{ nullptr };
+
+	graphics::Brush br;
+
+private:
 
 	//A function that creates all the movies
 	void CreateMovies();
 
-	//A function that creates all the widgets
+	// A function that creates all the widgets
 	void CreateWidgets();
-
-	//Destroys all our objects
-	~GUI();
 
 	// Updates the started screen (the screen with all movies and widgets are shown)
 	void updateStartedScreen();
@@ -73,6 +67,15 @@ private:
 
 	// Draws the pressed movie screen (where information about 1 movie is shown)
 	void drawPressedMovieScreen();
+
+	GUI() {};
+
+	// Destroys all our objects
+	~GUI();
+
+	//Because we use are using a Singleton we don't want to instantiate/copy another GUI instance
+	GUI(const GUI& other) = delete;
+	GUI& operator=(const GUI&) = delete;
 
 public:
 
@@ -92,8 +95,7 @@ public:
 	// This method returns the instance of the GUI class. If an instance does not already exist, it creates a new one.
 	static GUI* Get();
 
-	//This method destroys the instance of the GUI class if it exists and sets the instance to nullptr.
-	// This is useful for cleaning up resources when the GUI is no longer needed.
+	// Destroys the instance of GUI.
 	static void releaseInstance();
 
 };

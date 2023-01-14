@@ -20,13 +20,6 @@ private:
     // Variable that stores whether the user has typed in the text field.
     bool m_typed{ false };
 
-    /*
-     * Checks if the given movie meets the specified requirements for filtering.
-     * \param movie The movie to check.
-     * \return true if the movie has the filtered genre and is between the 2 years specified by the slider, false otherwise.
-     */
-    bool hasRequirements(const Movie* movie) const;
-
     // This variable acts like a "timer", when the timer surpasses a default value, we want to set m_typed to false, so user can type again
     int m_timer{ -1 };
 
@@ -52,8 +45,30 @@ private:
     bool textInvisible{ false };
 
     // A vector indicating all widgets this class needs to check, if they have filtered the movies previously.
-    // This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
+   // This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
     std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
+
+    //This represents how much height will the textfield need in order to appear when the dock comes down
+    float m_height_offset{ 4.0f };
+
+private:
+
+    /*
+    * Continuously draws the text field.
+    */
+    void draw() override;
+
+    /*
+     * Continuously updates the text field.
+     */
+    void update() override;
+
+    /*
+   * Checks if the given movie meets the specified requirements for filtering.
+   * \param movie The movie to check.
+   * \return true if the movie has the filtered genre and is between the 2 years specified by the slider, false otherwise.
+   */
+    bool hasRequirements(const Movie* movie) const;
 
     /*
      * Searches for movies by title or director using the given list of movies.
@@ -78,20 +93,7 @@ private:
      */
     void takeAction(const std::vector<Movie*>& movie_list) override;
 
-    //This represents how much height will the textfield need in order to appear when the dock comes down
-    float m_height_offset{ 4.0f };
     float getHeightOffset() const  override { return m_height_offset; }
-
-    /*
-    * Continuously draws the text field.
-    */
-    void draw() override;
-
-    /*
-     * Continuously updates the text field.
-     */
-    void update() override;
-
 
 public:
     /*

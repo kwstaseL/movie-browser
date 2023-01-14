@@ -1,11 +1,11 @@
 #include "ResetFilterButton.h"
 
-
 /*
-* Resets all movie control variables to their default values.
-*
-* \param movie_list A list of movies to apply the reset to.
-*/
+ * Resets all movie filter widgets to their default values and enables all movies.
+ * When this function gets called, each widget will "clear" all their own states automatically.
+ *
+ * \param movie_list A list of our movies
+ */
 void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
 {
     for (const auto& movie : movie_list)
@@ -21,10 +21,9 @@ void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
 }
 
 /*
-* Called when the reset filter button is clicked.
-* Resets all applied filters.
-*
-* \param movie_list A list of movies to apply the reset to.
+*  Called when the reset filter button is clicked.
+*  Resets all applied filters and all other widgets clear their own state.
+*  \param movie_list A list of our movies.
 */
 void ResetFilterButton::takeAction(const std::vector<Movie*>& movie_list)
 {
@@ -37,6 +36,7 @@ void ResetFilterButton::update()
     // Giving our widget a height so when the dock comes down, our button also comes down
 
     // If the reset filter button is invisible, dont update it.
+    //(+ if button is IDLE can also be added here, if we have a button that might not be invisible)
 
     if (!m_visible)
     {
@@ -68,7 +68,7 @@ void ResetFilterButton::update()
 
             m_button_state = button_state_t::BUTTON_PRESSED;
             graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("button.wav"), 0.5f);
-            setActionTriggered(true);
+            m_action = true;
         }
 
         // Check if mouse button was released
@@ -76,9 +76,9 @@ void ResetFilterButton::update()
         {
             // Button was pressed and now is released
             m_button_state = button_state_t::BUTTON_IDLE;
-            setActionTriggered(false);
+            m_action = false;
             releaseFocus();     //Releasing request for operation
-            setOperating(false);
+            m_operating = false;
         }
     }
     else
@@ -123,9 +123,9 @@ void ResetFilterButton::clear()
 }
 
 /*
-* Constructs a new ResetFilterButton at the given position with the given text.
-* \param posX The x-coordinate of the button's position.
-* \param posY The y-coordinate of the button's position.
+* Constructs a new ResetFilterButton.
+* \param posX The x coordinate of the button's position.
+* \param posY The y coordinate of the button's position.
 * \param text The text to display on the button.
 */
 ResetFilterButton::ResetFilterButton(float posX, float posY, const std::string_view text)

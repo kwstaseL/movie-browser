@@ -1,7 +1,5 @@
 #include "GUI.h"
 
-//COMPLETED
-
 // Draw is the function that is continuously running and drawing all our objects to the screen.
 // - drawStartedScreen() -> Indicates the scene where all the objects(movies,widgets) appear and are being drawned.	(STATUS_STARTED)
 // - drawPressedMovieScreen() -> Indicates the scene where a movie is pressed, and information is displayed for that movie.	(STATUS_MOVIE_PRESSED)
@@ -51,10 +49,9 @@ void GUI::updateStartedScreen()
 			movie->update();
 
 			/*
-				If a particular movie is clicked, and our movie is active(which means that this movie is being updated),
+				If a particular movie is clicked, and our movie is updatable (which means that this movie can be highlighted/glown and information can drawen about it (if mouse if hovered on the movie)..),
 				change the state and start the scene where this movie's info is displayed
 			*/
-
 			if (movie->state_info.isClickTriggered() && movie->state_info.isUpdatable())
 			{
 				m_state = STATUS_MOVIE_PRESSED;
@@ -72,7 +69,8 @@ void GUI::updateStartedScreen()
 
 			//If for all widgets an action is triggered (a button is clicked, or text is typed in the textfield, or slider is being dragged..) and
 			//The current widget which action is triggered is not operating currently, 
-			//We run a function called takeAction which takes as data all movies, and does some filtering depending on which widget is called (button,textfield..)
+			//We run a function called takeAction which takes as data all movies, and does some filtering/cleaning (depending on which widget is called (button,textfield..))
+			// or any particular other action needed upon the movies.
 
 			if (widget->actionTriggered() && !widget->isOperating())
 			{
@@ -82,7 +80,7 @@ void GUI::updateStartedScreen()
 			}
 
 			/*
-			* Checking if the last active widget was a clear "filter" widget(id == 11), so we can reset the other widgets.
+			* Checking if the last active widget was a clear "filter" widget(id == 11), so we can call clear on all the other widgets polymorphically.
 			* We can distinguish every widget based on their id, when a widget is created, it gets an id from 0,1,2... based on when it was created
 			* */
 			if (lastActiveWidget && lastActiveWidget->getID() == 11)
@@ -101,7 +99,6 @@ void GUI::updateStartedScreen()
 }
 
 // Draws the started screen (the screen where all movies and widgets are shown)
-
 void GUI::drawStartedScreen()
 {
 	//Drawing our Background
@@ -139,18 +136,21 @@ void GUI::drawPressedMovieScreen()
 	{
 		clickedMovie->drawInformation();
 	}
+	else
+	{
+		return;
+	}
 }
 
 // Updates the pressed movie screen (where information about 1 movie is shown)
-
 void GUI::updatePressedMovieScreen()
 {
 	//Updating the scene when a movie is pressed
 
 	if (clickedMovie)
 	{
-		clickedMovie->state_info.setUpdatable(false);	//But we just se it to not updatable so information about this movie doesn't show in the other screen
-		clickedMovie->update();	//This movie needs to be updated so we can also leave this state
+		clickedMovie->state_info.setUpdatable(false);//But we just set it to not updatable so information from the other scene about this movie doesn't show in this screen.
+		clickedMovie->update();
 
 		//If user released the mouse, go to the previous state
 		if (!clickedMovie->state_info.isClickTriggered())
@@ -159,18 +159,22 @@ void GUI::updatePressedMovieScreen()
 			clickedMovie->state_info.setUpdatable(true);
 		}
 	}
+	else
+	{
+		m_state = STATUS_STARTED;
+		return;
+	}
 
 }
 
 //Initializing all our objects (movies,widgets)
-
 void GUI::init()
 {
+	graphics::preloadBitmaps(AssetsConst::ASSET_PATH);
+
 	graphics::setFont("OpenSans-Regular.ttf");
 	CreateMovies();
 	CreateWidgets();
-
-	graphics::preloadBitmaps(AssetsConst::ASSET_PATH);
 
 }
 
@@ -196,7 +200,8 @@ void GUI::CreateWidgets()
 
 	widgets.push_back(new TextField(CanvasConst::CANVAS_WIDTH / 15 + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - 12.0f - 2.0f, "Search Title/Dir/Prot"));
 
-	widgets.push_back(new Dock(CanvasConst::CANVAS_WIDTH / 2, -3.6f, widgets));
+	widgets.push_back(new Dock(CanvasConst::CANVAS_WIDTH / 2, -3.6f, widgets));	//For this program , we want all the widgets to appear on the dock,
+	//thats why we are passing all of them to the dock (except for the dock itself).
 }
 
 void GUI::CreateMovies()
@@ -215,9 +220,10 @@ void GUI::CreateMovies()
 	movie_list.push_back(new Movie("Lord Of The Rings", "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.", AssetsConst::LORDOFTHERINGS, "2001", "Peter Jackson", { "Elijah Wood","Ian McKellen","Orlando Bloom" }, { "History", "Fantasy","Adventure"}));
 
 	size_t size = movie_list.size();
-	for (size_t i = 0; i < 2; i++)
+
+	for (size_t i{ 0 }; i < 2; i++)
 	{
-		for (size_t j = 0; j <= 4; j++)
+		for (size_t j{ 0 }; j <= 4; j++)
 		{
 
 			movie_list[j + (i * 3 + i * 1 + i * 1)]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - i * 6.3)));
@@ -242,6 +248,7 @@ void GUI::CreateMovies()
 //Destroying our objects
 GUI::~GUI()
 {
+
 	for (const auto& movie : movie_list)
 	{
 		delete movie;
@@ -267,12 +274,10 @@ GUI* GUI::Get()
 	return s_gui;
 }
 
-//This method destroys the instance of the GUI class if it exists and sets the instance to nullptr.
-// This is useful for cleaning up resources when the GUI is no longer needed.
+//This method destroys the instance of GUI.
 void GUI::releaseInstance()
 {
 	//Destroying GUI Instance
-
 	if (s_gui)
 	{
 		delete s_gui;

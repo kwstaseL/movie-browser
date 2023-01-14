@@ -1,17 +1,17 @@
 #include "Slider.h"
 
 
-// Updates the state of the slider. This includes handling user input for dragging the slider and setting the year based on the slider position.
+// Continously updates the state of the slider.
+
 void Slider::update()
 {
-    //If the slider is invisible, we just return we don't want to update it.
+    //If the slider is invisible, return.
     if (!m_visible)
     {
         return;
     }
 
     //Gettng the current mouse state and convert the mouse position to canvas coordinates.
-
     graphics::MouseState ms;
     graphics::getMouseState(ms);
 
@@ -22,7 +22,7 @@ void Slider::update()
     //Saves the current position of the box to temp variable.
     int temp{ box.getPosX() };
 
-    // Check if the mouse is within the bounds of the slider or if the slider is being dragged.
+    // Check if the mouse is within the coordinates of the slider or if the slider is being dragged.
     // We want the box to be able to be dragged even if doesn't contains box's coordinates
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
     {
@@ -36,13 +36,12 @@ void Slider::update()
                 return;
             }
             // Check if the mouse is going out of the bounds of the slider.
-
             if (mouse_X >= 16.0f && box.getPosX() >= 16.0f)
             {
                 mouse_X = 16.0f;
                 m_year = 2020;
             }
-
+            // Check if the mouse is going out of the bounds of the slider.
             if (mouse_X <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
             {
                 mouse_X = m_positionX - 2.9f;
@@ -67,8 +66,8 @@ void Slider::update()
 
                 m_year += 0;
             }
-            // Enforce bounds on the position of the box.
 
+            // Enforcing bounds on the position of the box.
             if (box.getPosX() >= m_positionX + 3.5f)
             {
                 box.setPosX(m_positionX + 3.5f);
@@ -83,7 +82,7 @@ void Slider::update()
             releaseFocus();
             m_status_slider = SLIDER_RELEASED;
             box.setActive(true);
-            setActionTriggered(true);
+            m_action = true; //Alerting GUI to take an action on the slider
         }
 
     }
@@ -92,7 +91,8 @@ void Slider::update()
 // Continuously draws the slider on the canvas.
 void Slider::draw()
 {
-    // Don't draw the slider if it is not visible.
+
+    //If the slider is invisible, return.
     if (!m_visible)
     {
         return;
@@ -184,6 +184,7 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
     {
         for (const auto& movie : movie_list)
         {
+            //Here we are checkinng if the specific movie hasRequirements, and its years movie is between the sliders state
             if (std::stoi(movie->getDate()) >= m_year && std::stoi(movie->getDate()) <= (movie->state_info.getLastFilterToYear())
                 && hasRequirements(movie))
             {
@@ -193,14 +194,14 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
             {
                 movie->state_info.setDisabled(true);
             }
-            movie->state_info.setLastFilterFromYear(m_year);
+            movie->state_info.setLastFilterFromYear(m_year);    //Updating the last year that was filtered from the first slider
         }
 
     }
     else if (m_uid == 10) // To
     {
         for (const auto& movie : movie_list)
-        {
+        {   //Here we are checkinng if the specific movie hasRequirements, and its years movie is between the sliders state
             if (std::stoi(movie->getDate()) <= m_year && (std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear()) &&
                 !(movie->state_info.getLastFilterFromYear() > m_year) && hasRequirements(movie))
             {
@@ -211,20 +212,19 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
                 movie->state_info.setDisabled(true);
 
             }
-            movie->state_info.setLastFilterToYear(m_year);
+            movie->state_info.setLastFilterToYear(m_year);  //Updating the last year that was filtered from the second slider
         }
     }
-
-    setActionTriggered(false);
-    setOperating(false);
+    m_action = false;
+    m_operating = false;
     m_status_slider = SLIDER_IDLE;
 }
 
 /*
-Checks if the given movie meets the requirements for filtering (checks if is already filtered by other widgets),
-used to sychronize all filters with all widgets that can filter, together.
-\param movie: a pointer to the movie to be checked
-\return true if the movie meets the requirements, false otherwise
+Checks if the given movie meets the requirements for filtering (checks if it is filtered by other widgets),
+ used to sychronize all filters with all widgets that can filter, together.
+ \param movie: a pointer to the movie
+ \return true if the movie meets the requirements
 */
 bool Slider::hasRequirements(const Movie* movie) const
 {

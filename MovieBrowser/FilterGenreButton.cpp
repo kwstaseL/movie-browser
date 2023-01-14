@@ -1,10 +1,10 @@
 #include "FilterGenreButton.h"
 
 /*
-	Checks if the given movie meets the requirements for filtering (checks if is already filtered or not by other widgets),
-	used to sychronize all filters with all widgets that can filter, together.
-	@param movie: a pointer to the movie to be checked
-	@return true if the movie meets the requirements, else false
+Checks if the given movie meets the requirements for filtering (checks if is already filtered or not by other widgets),
+used to sychronize all filters with all widgets that can filter, together.
+\param movie: a pointer to the movie to be checked
+\return true if the movie meets the requirements else false
 */
 bool FilterGenreButton::hasRequirements(const Movie* movie) const
 {
@@ -12,7 +12,7 @@ bool FilterGenreButton::hasRequirements(const Movie* movie) const
 	{
 		for (const auto& filter : filterToBeChecked)
 		{
-			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)	//If getWidgeState return disabled, return false since this movie doesnt meet the requirementes filter all widgets together
+			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)	//If getWidgeState returns disabled, return false since this movie doesnt meet the requirementes for filtering
 			{
 				return false;
 			}
@@ -21,12 +21,12 @@ bool FilterGenreButton::hasRequirements(const Movie* movie) const
 	}
 }
 
-//Filters all movies by genre
-//@param movie_list: a vector of all the movies
+// Filters all movies by genre
+// \param movie_list: a vector of all the movies
 void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 {
 	//If the genre map isn't created, create it 
-	if (!isGenreMapCreated())
+	if (!genreMapCreated)
 	{
 		createGenreMap(movie_list);
 	}
@@ -63,8 +63,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 	//For every movie
 	for (const auto& movie : movie_list)
 	{
-		//If it has all genres that were pressed and it has requirements, then dont disable it, and set it that is it has all current genres
-		//We use hasAtLeastOneGenre, just to check if there is a at least 1 movie that has all genres, if there isn't, we just filter by the last genre that was pressed
+		//If it has all genres that were pressed and it has requirements, then dont disable it, and set it that is it has all current genres that were pressed.
 		if ((movie->state_info.getGenreCount() == (s_scanned_genres.size())) && hasRequirements(movie))
 		{
 			atLeastOneMovieHasGenres = true;
@@ -85,6 +84,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 			}
 		}
 	}
+
 	releaseFocus();	//Releasing focus since operation is done
 }
 
@@ -93,7 +93,6 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 // Its used map quickly filter movies by genre. 
 void FilterGenreButton::createGenreMap(const std::vector<Movie*>& movie_list)
 {
-
 	for (const auto& movie : movie_list)
 	{
 		for (const auto& genre : movie->genres)
@@ -101,17 +100,17 @@ void FilterGenreButton::createGenreMap(const std::vector<Movie*>& movie_list)
 			s_genreMap[genre].insert(movie);
 		}
 	}
-	setGenreMapCreated(true);
+	genreMapCreated = true;
 }
 
-// Resets the state of the button
+// Resets the state of the button by clearing all the genres that where pressed.
 void FilterGenreButton::clear()
 {
 	s_scanned_genres.clear();
 }
 
 //Performs the filtering action when the button is pressed
-//@param movie_list: a vector of all the movies
+//\param movie_list: a vector of all the movies
 void FilterGenreButton::takeAction(const std::vector<Movie*>& movie_list)
 {
 	filterByGenre(movie_list);
@@ -121,7 +120,7 @@ void FilterGenreButton::takeAction(const std::vector<Movie*>& movie_list)
 void FilterGenreButton::update()
 {
 
-	if (!m_visible)	//If the widget is invisible , return
+	if (!m_visible)	//If the widget is invisible , return (+ if button is IDLE can also be added here, if we have a button that might not be invisible)
 	{
 		return;
 	}
@@ -133,7 +132,7 @@ void FilterGenreButton::update()
 	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
-	//Checking if our mouse is in bounds of buttons coordinates
+	//Checking if our mouse is inside the coordinates of our button
 	if (contains(mouse_X, mouse_Y))
 	{
 		m_button_state = button_state_t::BUTTON_HIGHLIGHTED;
@@ -146,22 +145,23 @@ void FilterGenreButton::update()
 			{
 				return;
 			}
-
+			
 			m_button_state = button_state_t::BUTTON_PRESSED;
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("button.wav"), 0.5f);
-			setActionTriggered(true);	//Alert that the button was clicked
+			m_action = true;	//Alert that the button was clicked
 		}
 		if (ms.button_left_released) //Button was pressed and now is released
 		{
 			m_button_state = button_state_t::BUTTON_IDLE;
-			setActionTriggered(false);
-			setOperating(false);
+			m_action = false;
+			m_operating = false;
 		}
 	}
 	else
 	{
 		m_highlighted = false;
 	}
+
 }
 
 
@@ -173,7 +173,7 @@ void FilterGenreButton::draw()
 		return;
 	}
 
-	//Drawing highlight
+	//Drawing highlight background of the button.
 	SETCOLOR(brush.fill_color, 0.8f * m_highlighted, 0.8f * m_highlighted, 0.8f * m_highlighted);
 	brush.outline_opacity = 1.0f;
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_Genrebutton_width + 0.1, m_Genrebutton_height + 0.1, brush);
@@ -194,10 +194,10 @@ void FilterGenreButton::draw()
 
 
 /* Constructs a new filter genre button
-	 @param posX: the x coordinate of the filtergenrebutton's position
-	 @param posY: the y coordinate of the filtergenrebutton's position
-	 @param text: the text displayed on the button
-	*/
+\param posX: the x coordinate of the filtergenrebutton's position
+\param posY: the y coordinate of the filtergenrebutton's position
+\param text: the text displayed on the button
+*/
 FilterGenreButton::FilterGenreButton(float posX, float posY, const std::string_view text)
 	: Button(posX, posY, text)
 {

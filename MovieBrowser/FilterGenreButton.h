@@ -5,7 +5,6 @@
 
 
 // Represents a FilterGenreButton, which in our program has a text ("Action","Drama"), and when pressed filters movies by that genre.
-// The FilterGenreButton class is derived from the Button class, which provides an interface we use for all our buttons.
 // When filtering, we also take as consideration all the other widgets that may have filtered the movies.
 
 class FilterGenreButton final : public Button
@@ -20,10 +19,10 @@ private:
 	//Its used map quickly filter movies by genre. 
 	static inline genreMap s_genreMap{};
 
-	//A flag indicating whether the genre map has been created (only created once)
+	//Bool indicating whether the genre map has been created (only created once)
 	static inline bool genreMapCreated{ false };
 
-	// A flag indicating that there is at least one movie with multiple combinations of genres.
+	// A bool indicating that there is at least one movie with multiple combinations of genres
 	// For example, if the "Action" and "Drama" buttons are pressed and there is at least one movie
 	// that has both the Action and Drama genres, this variable would be true.
 	bool atLeastOneMovieHasGenres{ false };
@@ -36,39 +35,37 @@ private:
 	// This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
 	std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
 
+
+private:
+
 	/*
-	Checks if the given movie meets the requirements for filtering (checks if is already filtered or not by other widgets), 
+	Checks if the given movie meets the requirements for filtering (checks if is already filtered or not by other widgets),
 	used to sychronize all filters with all widgets that can filter, together.
 	\param movie: a pointer to the movie to be checked
-	\return true if the movie meets the requirements, else false
+	\return true if the movie meets the requirements else false
 	*/
 	bool hasRequirements(const Movie* movie) const;
-
-	// Filters all movies by genre
-	// \param movie_list: a vector of all the movies
-	void filterByGenre(const std::vector<Movie*>& movie_list);
-
-	// Creates A map in which the key is a genre text ("Action","Drama"...) and the value is an unordered set of all the movies that have that specific genre.
-	// Its used map quickly filter movies by genre. 
-	void createGenreMap(const std::vector<Movie*>& movie_list);
-
-	//Sets the flag indicating whether the genre map has been created
-	void setGenreMapCreated(bool a) { genreMapCreated = a; }
-
-	//Returns the flag indicating whether the genre map has been created
-	bool isGenreMapCreated() const { return genreMapCreated; }
-
-	void clear() override;
 
 	//Performs the filtering action when the button is pressed
 	//\param movie_list: a vector of all the movies
 	void takeAction(const std::vector<Movie*>& movie_list) override;
+
+	// Filters all movies by genre
+	// \param movie_list: a vector of all the movies
+	void filterByGenre(const std::vector<Movie*>& movie_list);
 
 	// Updates the state of the filter genre buttons
 	void update() override;
 
 	// Draws all the filter genre buttons
 	void draw() override;
+
+	// Creates A map in which the key is a genre text ("Action","Drama"...) and the value is an unordered set of all the movies that have that specific genre.
+	// Its used map quickly filter movies by genre. 
+	void createGenreMap(const std::vector<Movie*>& movie_list);
+
+	void clear() override;
+
 
 public:
 

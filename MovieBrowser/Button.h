@@ -7,7 +7,7 @@ class Button : public Widget
 {
 protected:
 
-	//Enum class representing the different states of a button: idle, pressed, or highlighted.
+	//Enum class representing the different states of our button: idle, pressed, or highlighted.
 	enum class button_state_t {
 
 		BUTTON_IDLE,       //Button is not being pressed or highlighted
@@ -31,7 +31,7 @@ protected:
 	//Checks if the mouse is within the coordinates of the button
 	// \param mouse_x: the x coordinate of the mouse
 	// \param mouse_y: the y coordinate of the mouse
-	// \return true if the mouse is within the button's coordinates, false otherwise
+	// \return true if the mouse is within the button's coordinates
 	bool contains(float mouse_x, float mouse_y) const;
 
 private:
@@ -45,9 +45,9 @@ private:
 	//Resets the button's state
 	virtual void clear() = 0;
 
-	//Performs an action(e.g.filter movies) when the button is pressed.
+	//Performs an action (e.g filter movies based on gnre) when the button is pressed.
 	//This function is being called when the button is pressed to perform the action depending on the button.
-	//(When filtering, the Buttons which filters the genres take into consideration all the other widgets that may have filtered the movies.)
+	//(When filtering, the Buttons which filters the genres takes into consideration all the other widgets that may have filtered the movies.)
 	// \param movie_list: a vector of all the movies
 	virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
 

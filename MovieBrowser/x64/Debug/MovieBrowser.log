@@ -1,7 +1,0 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  Dock.cpp
-C:\Users\admin\Desktop\MovieBrowser\MovieBrowser\constants.h(27,56): warning C4305: 'initializing': truncation from 'double' to 'const float'
-C:\Users\admin\Desktop\MovieBrowser\MovieBrowser\constants.h(53,24): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\admin\Desktop\MovieBrowser\MovieBrowser\Dock.cpp(11,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\admin\Desktop\MovieBrowser\MovieBrowser\Dock.cpp(12,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  MovieBrowser.vcxproj -> C:\Users\admin\Desktop\MovieBrowser\bin\MovieBrowserd.exe

@@ -140,12 +140,13 @@ const std::string& Movie::getDir() const
 
 const std::vector<std::string> Movie::createDescription()
 {
-	std::string description = getDesc();	//Getting the description of this particular movie
+	std::string description = getDesc();	//Getting the description of the movie
 	char* tokens = &description[0];
 	char* context;
 	tokens = strtok_s(tokens, " ", &context);
 	std::vector<std::string> words;	//Creating vector which stores all the words separated
 
+	// Here we are iterating to all the words of the description and tokenize them based on the " "
 	while (tokens != NULL) {
 		words.push_back(tokens);
 		tokens = strtok_s(nullptr, " ", &context);
@@ -156,7 +157,7 @@ const std::vector<std::string> Movie::createDescription()
 
 	for (const auto& word : words) {	// For all the words in our words vector
 
-		//Here we check if adding a word would exceed the 75 which represents the maximum length of the line on each row.
+		//Here we check if adding a word would exceed the 90 which represents the maximum length of the line on each row.
 		if (line.length() + word.length() + 1 > 90) {
 
 			//Adds the current line to the lines vector
@@ -164,7 +165,7 @@ const std::vector<std::string> Movie::createDescription()
 			//and clears the line so a new line can start
 			line.clear();
 		}
-		// Here, it adds the current word we are iterating allong with a space
+		// Here, it adds the current word we are iterating allong with a space to this particular line
 		line += word + "  ";
 	}
 	//Pushes back the last current line

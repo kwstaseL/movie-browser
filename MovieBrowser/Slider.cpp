@@ -1,93 +1,71 @@
 #include "Slider.h"
-
+#include <iostream>
 
 // Continously updates the state of the slider.
-
 void Slider::update()
 {
-    //If the slider is invisible, return.
+    // If the slider is invisible, return.
     if (!m_visible)
     {
         return;
     }
 
-    //Gettng the current mouse state and convert the mouse position to canvas coordinates.
+    //Getting the current mouse state and convert the mouse position to canvas coordinates.
     graphics::MouseState ms;
     graphics::getMouseState(ms);
 
     mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
     mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
-
-    //Saves the current position of the box to temp variable.
-    int temp{ box.getPosX() };
+    // Save the current position of the button to a temp variable.
+    float temp = box.getPosX();
 
     // Check if the mouse is within the coordinates of the slider or if the slider is being dragged.
-    // We want the box to be able to be dragged even if doesn't contains box's coordinates
+    // We want the button to be able to be dragged even if it doesn't contain the button's coordinates
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
     {
-        // If the mouse is being dragged, update the position of the box and the year based on the change in position.
-        if (ms.dragging)         
+        // If the mouse is being dragged, update the position of the button and the value based on the change in position.
+        if (ms.dragging)
         {
-            box.setActive(true);
-
             if (!requestFocus())
             {
                 return;
             }
-            // Check if the mouse is going out of the bounds of the slider.
-            if (mouse_X >= 16.0f && box.getPosX() >= 16.0f)
+            // Check if the mouse and the box is going out of the bounds of the slider. (checking for end of slider) 
+            if (mouse_X >= m_positionX + 3.6f && box.getPosX() >= m_positionX + 3.6f)
             {
-                mouse_X = 16.0f;
+                mouse_X = m_positionX + 3.6f;
                 m_value = m_max_value;
             }
-            // Check if the mouse is going out of the bounds of the slider.
-            if (mouse_X <= m_positionX - 2.9f && box.getPosX() <= m_positionX - 2.9f)
+            // Check if the mouse and the box is going out of the bounds of the slider. (checking for start of slider) 
+            if (mouse_X <= m_positionX - 2.9f - 0.65f && box.getPosX() <= m_positionX - 2.9f - 0.65f)
             {
-                mouse_X = m_positionX - 2.9f;
+                mouse_X = m_positionX - 2.9f - 0.65f;
                 m_value = m_min_value;
             }
 
-            box.setPosX(mouse_X);
+            box.setPosX(mouse_X);   //Setting to the box the position of our mouse horizontally
 
             m_status_slider = SLIDER_DRAGGING;
 
-            // Update the year based on the change in position of the box.
+            //Calculates the value of the m_value based on the box's slider position.
+            // Adds the minimum value of our slider + (the current position of our box - the start of our slider ( m_positionX + 2.9f + 0.65f)) divided by the subtraction of our 
+            // 2 horizantal "borders"  (m_positionX + 3.6f and m_positionX + 2.9f + 0.65f) of the slider  which when subtracted it gives as the lengh of our slider
+            // (This division finds in what "percentage" of our whole slider our slider button is at the moment) after we find that we multiply it by all the discrete values we can get
+            // and adding that to the minimum value we have set to get our final value for that specific location of the button
+            m_value = m_min_value + (box.getPosX() - m_positionX + 2.9f + 0.65f) / (m_positionX + 3.6f - m_positionX + 2.9f + 0.65f) * (m_max_value - m_min_value);
 
-            if (temp < box.getPosX())
-            {
-                m_value += 10;
-            }
-            else if (temp > box.getPosX())
-            {
-                m_value -= 10;
-            }
-            else {
-
-                m_value += 0;
-            }
-
-            // Enforcing bounds on the position of the box.
-            if (box.getPosX() >= m_positionX + 3.5f)
-            {
-                box.setPosX(m_positionX + 3.5f);
-            }
-            if (box.getPosX() <= m_positionX - 2.9f)
-            {
-                box.setPosX(m_positionX - 2.9f);
-            }
-        }   // If the mouse button is released and the slider was being dragged, release focus and set the action as triggered.
-        else if ((ms.button_left_released || !ms.dragging) && m_status_slider == SLIDER_DRAGGING)
+           
+        }
+         else if ((ms.button_left_released || !ms.dragging) && m_status_slider == SLIDER_DRAGGING)
         {
             releaseFocus();
             m_status_slider = SLIDER_RELEASED;
-            box.setActive(true);
             m_action = true; //Alerting GUI to take an action on the slider
         }
-
     }
-
 }
+
 // Continuously draws the slider on the canvas.
 void Slider::draw()
 {
@@ -109,23 +87,10 @@ void Slider::draw()
     graphics::drawRect(m_positionX, m_positionY + m_height, 7.0f, .0001f, brush);
 
     // Draw the 2 boxes for the sliders.
-    if (m_text == "From")
-    {
-        br.texture = "";
-        graphics::drawRect(box.getPosX() + 0.1f, box.getPosY() + m_height + 0.3f, 0.2f, 0.5f, br);
+    br.texture = "";
+    graphics::drawRect(box.getPosX(), box.getPosY() + m_height, box.getBoxWidth(), box.getBoxHeight(), br);
 
-        graphics::drawText(box.getPosX() - 0.25f, box.getPosY() + m_height, 0.3f, std::to_string((m_value)), br);
-
-    }
-    else if (m_text == "To") 
-    {
-        br.texture = "";
-        graphics::drawRect(box.getPosX() + 0.1f, box.getPosY() + m_height + 0.6f, 0.2f, 0.5f, br);
-
-        graphics::drawText(box.getPosX() - 0.25f, box.getPosY() + m_height + 0.3f, 0.3f, std::to_string((m_value)), br);
-    }
- 
-
+    graphics::drawText(box.getPosX() - 0.25f, box.getPosY() + m_height - 0.3f, 0.3f, std::to_string((m_value)), br);
 
 
 }
@@ -136,28 +101,17 @@ void Slider::draw()
 bool Slider::contains(float mouse_x, float mouse_y) const
 {
 
-    if (m_text == "From") //From
-    {
-
-        return (mouse_x > box.getPosX() + 0.1f - 0.2f / 2 && mouse_x < box.getPosX() + 0.1f + 0.2f / 2 && mouse_y > box.getPosY() + m_height + 0.3f - 0.5f / 2 && mouse_y < box.getPosY() + m_height + 0.3f + 0.5f / 2);
-    }
-
-    if (m_text == "To")    //To
-    {
-     
-        return (mouse_x > box.getPosX() + 0.1f - 0.2f / 2 && mouse_x < box.getPosX() + 0.1f + 0.2f / 2 && mouse_y > box.getPosY() + m_height + 0.6f - 0.5f / 2 && mouse_y < box.getPosY() + m_height + 0.6f + 0.5f / 2);
-
-    }
-
+    return (mouse_x > box.getPosX() - box.getBoxWidth() / 2 && mouse_x < box.getPosX() + box.getBoxWidth() / 2 
+        && mouse_y > box.getPosY() + m_height - box.getBoxHeight() / 2 && mouse_y < box.getPosY() + m_height + box.getBoxHeight() / 2);
+    
 }
 // This is the function which runs the filterByYear when the box is dragged and released
 void Slider::takeAction(const std::vector<Movie*>& movie_list)
 {
-    if (m_slider_filter == SlilderFiltering::FilterBy::FilterByYear)
-    {
+   
         // Filter the list of movies based on the year on the slider, and taking into consideration all the other filters that might be active.
         filterByYear(movie_list);
-    }
+
 }
 
 // Clears the slider
@@ -166,15 +120,15 @@ void Slider::clear()
     if (m_text == "From")
     {
         m_value = m_min_value;
-        box.setPosX(m_positionX - 2.9f);
-        box.setPosY(m_positionY - 0.56f);
+        box.setPosX(m_positionX - 3.55f);
+        box.setPosY(m_positionY + 0.06f);
 
     }
     else
     {
         m_value = m_max_value;
-        box.setPosX(16.0f);
-        box.setPosY(m_positionY - 0.56f);
+        box.setPosX(m_positionX + 3.6f);
+        box.setPosY(m_positionY +0.04f);
     }
     m_status_slider = SLIDER_IDLE;
 }
@@ -246,10 +200,15 @@ bool Slider::hasRequirements(const Movie* movie) const
 }
 
 
-Slider::Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, const SlilderFiltering::FilterBy& filter)
-    : Widget(posX, posY), m_text{ text }, m_min_value{min_v}, m_max_value{max_v}, m_slider_filter{filter}
+Slider::Slider(float posX, float posY, const std::string_view text,int min_v,int max_v)
+    : Widget(posX, posY), m_text{ text }, m_min_value{min_v}, m_max_value{max_v}
 {
     clear();
+    m_status_slider = SLIDER_IDLE;
+
+    //Inserting the height and width of the box
+    box.setBoxHeight(0.5f);
+    box.setBoxWidth(0.2f);
 
     //Inserting all the widgetfilters slider needs to check before filtering
     filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);

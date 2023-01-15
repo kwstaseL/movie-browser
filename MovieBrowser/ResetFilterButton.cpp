@@ -1,25 +1,4 @@
 #include "ResetFilterButton.h"
-
-/*
- * Resets all movie filter widgets to their default values and enables all movies.
- * When this function gets called, each widget will "clear" all their own states automatically.
- *
- * \param movie_list A list of our movies
- */
-void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
-{
-    for (const auto& movie : movie_list)
-    {
-        movie->state_info.setDisabled(false);
-
-        movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
-        movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
-
-        movie->state_info.setLastFilterFromYear(1950);
-        movie->state_info.setLastFilterToYear(2020);
-    }
-}
-
 /*
 *  Called when the reset filter button is clicked.
 *  Resets all applied filters and all other widgets clear their own state.
@@ -86,6 +65,27 @@ void ResetFilterButton::update()
 		m_highlighted = false;
 	}
 }
+
+/*
+ * Resets all movie filter widgets to their default values and enables all movies.
+ * When this function gets called, each widget will "clear" all their own states automatically.
+ *
+ * \param movie_list A list of our movies
+ */
+void ResetFilterButton::resetFilter(const std::vector<Movie*>& movie_list) const
+{
+    for (const auto& movie : movie_list)
+    {
+        movie->state_info.setDisabled(false);
+
+        movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
+        movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
+
+        movie->state_info.setLastFilterFromYear(1950);
+        movie->state_info.setLastFilterToYear(2020);
+    }
+}
+
 
 // Continuously draws the reset filter button.
 void ResetFilterButton::draw()

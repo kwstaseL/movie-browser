@@ -11,34 +11,27 @@ struct ClickableBox
 private:
 
     // The x and y position of the box
-    int m_positionX{};
-    int m_positionY{};
+    float m_positionX{};
+    float m_positionY{};
 
-    //Whether the box is currently active or not
-    bool m_active{ false };
+    //Width and height of the clickable box
+    float m_box_width{};
+    float m_box_height{};
 
 public:
 
-    bool isActive() const { return m_active; }
-    int getPosX() const { return m_positionX; }
-    int getPosY() const { return m_positionY; }
+    float getPosX() const { return m_positionX; }
+    float getPosY() const { return m_positionY; }
 
-    void setPosX(int x) { m_positionX = x; }
-    void setPosY(int y) { m_positionY = y; }
-    void setActive(bool a) { m_active = a; }
+    void setPosX(float x) { m_positionX = x; }
+    void setPosY(float y) { m_positionY = y; }
+
+    void setBoxHeight(float h) { m_box_height = h; }
+    void setBoxWidth(float w) { m_box_width = w; }
+
+    float getBoxWidth() const { return m_box_width; }
+    float getBoxHeight() const { return m_box_height; }
 };
-
-// Indicates which filtering can be done on the slider
-// Added if we ever want to filter something other than year on the slider.
-namespace SlilderFiltering
-{
-
-    enum class FilterBy
-    {
-        FilterByYear
-    };
-
-}
 
 class Slider : public Widget
 {
@@ -54,10 +47,10 @@ private:
     // The current state of the slider
     m_slider_state m_status_slider{ SLIDER_IDLE };
 
-    const SlilderFiltering::FilterBy m_slider_filter;
-
     // The text to display on the slider
     const std::string m_text;
+
+    float timer{ 0 };
 
     // The value that the slider is currently set to
     int m_value{};
@@ -99,7 +92,6 @@ private:
     // Filter the list of movies based on the year on the slider, 
     // and taking into consideration all the other filters that might be active for a specfic movie.
     void filterByYear(const std::vector<Movie*>& movie_list);
-
      /*
      Checks if the given movie meets the requirements for filtering (checks if it is filtered by other widgets),
      used to sychronize all filters with all widgets that can filter, together.
@@ -115,7 +107,7 @@ public:
     //  \param float x: The x coordinate of the slider's position.
     //  \param float y: The y coordinate of the slider's position.
     //  \param const std::string_view text: It's the text to be displayed near the slider ("From","To")
-    Slider(float posX, float posY, const std::string_view text,int min_v,int max_v,const SlilderFiltering::FilterBy& filter);
+    Slider(float posX, float posY, const std::string_view text,int min_v,int max_v);
     virtual ~Slider() = default;
 
 };

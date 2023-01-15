@@ -5,6 +5,20 @@
 #include <stack>
 #include <deque>
 
+// Indicates which filtering can be done on the textfield
+// Added if we ever want to filter something other than title,protagnoist_director on the TextField.
+
+namespace TextFieldFiltering {
+
+    //Enum represents if the widget filter is enabled or disabled. 
+    enum class FilterBy
+    {
+
+        TITLE_PROTAGONIST_DIRECTOR
+
+    };
+}
+
 /*
 Represents a TextField, which in our program has a text ("Search Movie/Dir/Prot"), and when pressed user can provide a title of a movie or a director or a prodagonist.
 The TextButton class is derived from the Widget class, which provids a common interface for interacting with different types of widgets.
@@ -22,6 +36,9 @@ private:
 
     // This variable acts like a "timer", when the timer surpasses a default value, we want to set m_typed to false, so user can type again
     int m_timer{ -1 };
+
+    enum class FilterBy;
+    const TextFieldFiltering::FilterBy m_textfield_filter;
 
     // We use a stack to keep in the out of sight words (that the user can't see) when the textfield gets overflowed with words
     // we keep the words that the user can't see in a stack.
@@ -74,7 +91,7 @@ private:
      * Searches for movies by title or director using the given list of movies.
      * \param movie_list The list of movies to search through.
      */
-    void search(const std::vector<Movie*>& movie_list);
+    void searchByTitleProtDir(const std::vector<Movie*>& movie_list);
 
     // Clears all variables of the textfield
     void clear() override;
@@ -102,7 +119,7 @@ public:
      * \param posY The y position of the text field.
      * \param text The text to display in the text field.
      */
-    TextField(float posX, float posY, const std::string_view text);
+    TextField(float posX, float posY, const std::string_view text, const TextFieldFiltering::FilterBy& filter);
     virtual ~TextField() = default;
 };
 

@@ -35,7 +35,7 @@ void Dock::update()
 		{
 			//On each update, we increase dock's height multiplied by getDeltaTime which
 			//is the time passed from the previous state update
-			m_height += 0.012f * graphics::getDeltaTime();
+			m_height += 0.013f * graphics::getDeltaTime();
 
 			if (m_height > 6.0f)
 			{

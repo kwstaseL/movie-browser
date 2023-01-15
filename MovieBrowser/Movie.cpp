@@ -157,7 +157,7 @@ const std::vector<std::string> Movie::createDescription()
 	for (const auto& word : words) {	// For all the words in our words vector
 
 		//Here we check if adding a word would exceed the 75 which represents the maximum length of the line on each row.
-		if (line.length() + word.length() + 1 > 75) {
+		if (line.length() + word.length() + 1 > 90) {
 
 			//Adds the current line to the lines vector
 			description_lines.push_back(line);

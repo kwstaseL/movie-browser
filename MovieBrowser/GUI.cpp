@@ -1,5 +1,6 @@
 #include "GUI.h"
 
+
 // Draw is the function that is continuously running and drawing all our objects to the screen.
 // - drawStartedScreen() -> Indicates the scene where all the objects(movies,widgets) appear and are being drawned.	(STATUS_STARTED)
 // - drawPressedMovieScreen() -> Indicates the scene where a movie is pressed, and information is displayed for that movie.	(STATUS_MOVIE_PRESSED)
@@ -192,13 +193,13 @@ void GUI::CreateWidgets()
 	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f - 2.0f, "Animation"));
 	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f - 2.0f, "Crime"));
 
-	widgets.push_back(new Slider(CanvasConst::CANVAS_WIDTH / 15 + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.20 - 12.0f - 2.0f, "From"));
+	widgets.push_back(new Slider(CanvasConst::CANVAS_WIDTH / 15 + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.20 - 12.0f - 2.0f, "From",1950,2020,SlilderFiltering::FilterBy::FilterByYear));
 
-	widgets.push_back(new Slider(CanvasConst::CANVAS_WIDTH / 15 + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.10 - 12.0f - 2.0f, "To"));
+	widgets.push_back(new Slider(CanvasConst::CANVAS_WIDTH / 15 + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.10 - 12.0f - 2.0f, "To",1950,2020,SlilderFiltering::FilterBy::FilterByYear));
 
 	widgets.push_back(new ResetFilterButton(CanvasConst::CANVAS_WIDTH / 15 + 18.0f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Clear Filter"));
 
-	widgets.push_back(new TextField(CanvasConst::CANVAS_WIDTH / 15 + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - 12.0f - 2.0f, "Search Title/Dir/Prot"));
+	widgets.push_back(new TextField(CanvasConst::CANVAS_WIDTH / 15 + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - 12.0f - 2.0f, "Search Title/Dir/Prot",TextFieldFiltering::FilterBy::TITLE_PROTAGONIST_DIRECTOR));
 
 	widgets.push_back(new Dock(CanvasConst::CANVAS_WIDTH / 2, -3.6f, widgets));	//For this program , we want all the widgets to appear on the dock,
 	//thats why we are passing all of them to the dock (except for the dock itself).

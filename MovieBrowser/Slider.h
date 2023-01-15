@@ -28,6 +28,18 @@ public:
     void setActive(bool a) { m_active = a; }
 };
 
+// Indicates which filtering can be done on the slider
+// Added if we ever want to filter something other than year on the slider.
+namespace SlilderFiltering
+{
+
+    enum class FilterBy
+    {
+        FilterByYear
+    };
+
+}
+
 class Slider : public Widget
 {
 private:
@@ -42,11 +54,16 @@ private:
     // The current state of the slider
     m_slider_state m_status_slider{ SLIDER_IDLE };
 
+    const SlilderFiltering::FilterBy m_slider_filter;
+
     // The text to display on the slider
     const std::string m_text;
 
-    // The year that the slider is currently set to
-    int m_year{};
+    // The value that the slider is currently set to
+    int m_value{};
+
+    const int m_min_value{};
+    const int m_max_value{};
 
     // A vector indicating all widgets this class needs to check, if they have filtered the movies previously.
     // This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
@@ -98,7 +115,7 @@ public:
     //  \param float x: The x coordinate of the slider's position.
     //  \param float y: The y coordinate of the slider's position.
     //  \param const std::string_view text: It's the text to be displayed near the slider ("From","To")
-    Slider(float posX, float posY, const std::string_view text);
+    Slider(float posX, float posY, const std::string_view text,int min_v,int max_v,const SlilderFiltering::FilterBy& filter);
     virtual ~Slider() = default;
 
 };

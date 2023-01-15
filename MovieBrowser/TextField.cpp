@@ -203,14 +203,17 @@ void TextField::update()
 */
 void TextField::takeAction(const std::vector<Movie*>& movie_list)
 {
-	search(movie_list);
+	if (m_textfield_filter == TextFieldFiltering::FilterBy::TITLE_PROTAGONIST_DIRECTOR)
+	{
+		searchByTitleProtDir(movie_list);
+	}
 }
 
 /*
 * Searches for movies by title/director/protagonist using the given list of movies.
 * \param movie_list The list of movies to search through.
 */
-void TextField::search(const std::vector<Movie*>& movie_list)
+void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 {
 	if (!requestFocus())   //If someone else is operating currently, return
 	{
@@ -298,8 +301,8 @@ bool TextField::contains(float mouse_x, float mouse_y) const
 
 }
 
-TextField::TextField(float posX, float posY, const std::string_view text)
-	: Widget(posX, posY), m_text{ text }
+TextField::TextField(float posX, float posY, const std::string_view text, const TextFieldFiltering::FilterBy& filter)
+	: Widget(posX, posY), m_text{ text },m_textfield_filter{filter}
 {
 	//Inserting all the widgets textfield must check before filtering the movies.
 	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);

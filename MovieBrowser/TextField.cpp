@@ -172,7 +172,7 @@ void TextField::update()
 		}
 		m_timer++;	//Increments the timer
 
-		if (m_timer > 8)	//If the timer surpasses a default value of 8
+		if (m_timer > 9)	//If the timer surpasses a default value of 8
 			m_typed = false;	//Alerts that the user can now type again
 
 		if (characters.size() + extra_words >= 25)	//If characters surpasses 25, the textfield is full

@@ -23,8 +23,6 @@ void Dock::update()
 			}
 		}
 		
-		m_offset = -9.0f;	//Extending the area of the dock where our mouse can be.
-
 		if (PlaySound)
 		{
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("minimize.wav"), 0.5f);

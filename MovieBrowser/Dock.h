@@ -22,9 +22,6 @@ private:
 
 	m_dock_status m_dock_state{ m_dock_status::STATE_IDLE };
 
-	//This offset is used when the dock is sliding down in order to extend the area where the mouse can be.
-	float m_offset{ -15.0f };
-
 	//A boolean variable to play the sound of the dock sliding only once.
 	bool PlaySound{ true };
 

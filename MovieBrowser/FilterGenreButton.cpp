@@ -198,9 +198,10 @@ void FilterGenreButton::takeAction(const std::vector<Movie*>& movie_list)
 \param posY: the y coordinate of the filtergenrebutton's position
 \param text: the text displayed on the button
 */
-FilterGenreButton::FilterGenreButton(float posX, float posY, const std::string_view text)
+FilterGenreButton::FilterGenreButton(float posX, float posY, const std::string_view text, bool invisible)
 	: Button(posX, posY, text)
 {
+	m_visible = !invisible;
 	// Inserting the widgets this class needs to check before filtering the movies
 	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);
 }

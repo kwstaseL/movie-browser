@@ -1,15 +1,5 @@
 #include "ResetFilterButton.h"
 
-/*
-*  Called when the reset filter button is clicked.
-*  Resets all applied filters and all other widgets clear their own state.
-*  \param movie_list A list of our movies.
-*/
-void ResetFilterButton::takeAction(const std::vector<Movie*>& movie_list)
-{
-    restoreMovieStates(movie_list);
-    clearWidgets();
-}
 
 //Continuously updates the reset filter button.
 void ResetFilterButton::update()
@@ -66,6 +56,45 @@ void ResetFilterButton::update()
 	}
 }
 
+// Continuously draws the reset filter button.
+void ResetFilterButton::draw()
+{
+    // If the reset filter button is invisible, dont draw it.
+    if (!m_visible)
+    {
+        return;
+    }
+    float highlight = 0.8f * m_highlighted;
+
+    //Drawing highlight animation
+    SETCOLOR(brush.fill_color, 0.8f * highlight, 0.8f * highlight, 0.8f * highlight);
+    brush.outline_opacity = 0.5f;
+    graphics::drawRect(m_positionX, m_positionY + m_height, m_button_width + 0.1f, m_button_height + 0.1f, brush);
+
+    //Drawing text of button
+    brush.fill_opacity = 1.0f;
+    SETCOLOR(brush.fill_color, 1.0f, 1.0f, 1.0f);
+    graphics::drawText(m_positionX - 0.75f, m_positionY + 0.125f + m_height, 0.4f, m_button_text, brush);
+
+    SETCOLOR(brush.fill_color, 1.0f, 0.0f, 0.0f);
+    //Drawing our button
+    brush.texture = "";
+    brush.fill_opacity = 1.0f;
+    brush.outline_opacity = 0.2f;
+    graphics::drawRect(m_positionX, m_positionY + m_height, m_button_width, m_button_height, brush);
+}
+
+/*
+*  Called when the reset filter button is clicked.
+*  Resets all applied filters and all other widgets clear their own state.
+*  \param movie_list A list of our movies.
+*/
+void ResetFilterButton::takeAction(const std::vector<Movie*>& movie_list)
+{
+    restoreMovieStates(movie_list);
+    clearWidgets();
+}
+
 /*
  * Resets all movie filter widgets to their default values and enables all movies.
  * When this function gets called, each widget will "clear" all their own states automatically.
@@ -76,13 +105,7 @@ void ResetFilterButton::restoreMovieStates(const std::vector<Movie*>& movie_list
 {
     for (const auto& movie : movie_list)
     {
-        movie->state_info.setDisabled(false);
-
-        movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
-        movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
-
-        movie->state_info.setLastSelectedFromYear(1970);
-        movie->state_info.setLastSelectedToYear(2020);
+        movie->state_info.resetMovieState();
     }
 }
 
@@ -92,36 +115,9 @@ void ResetFilterButton::clearWidgets()
     {
         widget->clear();
     }
+    clear();
 }
 
-
-// Continuously draws the reset filter button.
-void ResetFilterButton::draw()
-{
-    // If the reset filter button is invisible, dont draw it.
-	if (!m_visible)
-	{
-		return;
-	}
-	float highlight = 0.8f * m_highlighted;
-
-    //Drawing highlight animation
-	SETCOLOR(brush.fill_color, 0.8f * highlight, 0.8f * highlight, 0.8f * highlight);
-	brush.outline_opacity = 0.5f;
-	graphics::drawRect(m_positionX, m_positionY + m_height, m_button_width + 0.1f, m_button_height + 0.1f, brush);
-
-    //Drawing text of button
-	brush.fill_opacity = 1.0f;
-	SETCOLOR(brush.fill_color, 1.0f, 1.0f, 1.0f);
-	graphics::drawText(m_positionX - 0.75f, m_positionY + 0.125f + m_height, 0.4f, m_button_text, brush);
-
-	SETCOLOR(brush.fill_color, 1.0f, 0.0f, 0.0f);
-	//Drawing our button
-	brush.texture = "";
-	brush.fill_opacity = 1.0f;
-	brush.outline_opacity = 0.2f;
-	graphics::drawRect(m_positionX, m_positionY + m_height, m_button_width, m_button_height, brush);
-}
 
 void ResetFilterButton::clear()
 {
@@ -134,6 +130,8 @@ void ResetFilterButton::clear()
 * \param posY The y coordinate of the button's position.
 * \param text The text to display on the button.
 */
-ResetFilterButton::ResetFilterButton(float posX, float posY, const std::string_view text, const std::vector<Widget*>& widgets)
+ResetFilterButton::ResetFilterButton(float posX, float posY, const std::string_view text, const std::vector<Widget*>& widgets, bool invisible)
 	: Button(posX, posY, text), m_widgets{widgets}
-{}
+{
+    m_visible = !invisible;
+}

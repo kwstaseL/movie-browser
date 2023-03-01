@@ -125,7 +125,7 @@ public:
      * \param posY The y position of the text field.
      * \param text The text to display in the text field.
      */
-    TextField(float posX, float posY, const std::string_view text, const TextFieldFiltering::FilterBy& filter);
+    TextField(float posX, float posY, const std::string_view text, const TextFieldFiltering::FilterBy& filter, bool invisible = true);
     virtual ~TextField() = default;
 };
 

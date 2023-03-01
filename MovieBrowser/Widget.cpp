@@ -27,8 +27,6 @@ bool Widget::requestFocus()
 	return false;
 }
 
-Widget::~Widget() = default;
-
 Widget::Widget(float posX, float posY)
 
 	: m_positionX{ posX }, m_positionY{ posY }, m_uid{ s_idGenerator++ }

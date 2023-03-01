@@ -295,9 +295,11 @@ bool TextField::contains(float mouse_x, float mouse_y) const
 
 }
 
-TextField::TextField(float posX, float posY, const std::string_view text, const TextFieldFiltering::FilterBy& filter)
+TextField::TextField(float posX, float posY, const std::string_view text, const TextFieldFiltering::FilterBy& filter, bool invisible)
 	: Widget(posX, posY), m_text{ text },m_textfield_filter{filter}
 {
+	m_visible = !invisible;
+
 	//Inserting all the widgets textfield must check before filtering the movies.
 	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);
 	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);

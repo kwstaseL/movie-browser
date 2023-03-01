@@ -114,42 +114,12 @@ bool Movie::contains(float mouse_x, float mouse_y) const
 }
 
 
-const std::string& Movie::getName() const
-{
-	return m_name;
-}
-
-const std::string& Movie::getDesc() const
-{
-	return m_description;
-}
-
-const std::string& Movie::getDate() const
-{
-	return m_production_year;
-}
-
-const std::string& Movie::getDir() const
-{
-	return m_director;
-}
-
-const std::vector<std::string>& Movie::getGenres() const
-{
-	return m_genres;
-}
-
-const std::vector<std::string>& Movie::getProtagonists() const
-{
-	return m_protagonists;
-}
-
 // Function that returns a description lines vector which represents all the lines that should be drawen to the canvas line-by-line.
 // Based on the whole description of the movie.
 
 const std::vector<std::string> Movie::createDescription()
 {
-	const int MAX_LINE_WORDS = 90;
+	const int MAX_LINE_WORDS = 80;
 	std::string description = getDesc();	//Getting the description of the movie
 	char* tokens = &description[0];
 	char* context;
@@ -307,5 +277,34 @@ void Movie::drawMovieInformation()
 		offset += g.size() / 3.5f;
 	}
 
+}
 
+const std::string& Movie::getName() const
+{
+	return m_name;
+}
+
+const std::string& Movie::getDesc() const
+{
+	return m_description;
+}
+
+const std::string& Movie::getDate() const
+{
+	return m_production_year;
+}
+
+const std::string& Movie::getDir() const
+{
+	return m_director;
+}
+
+const std::vector<std::string>& Movie::getGenres() const
+{
+	return m_genres;
+}
+
+const std::vector<std::string>& Movie::getProtagonists() const
+{
+	return m_protagonists;
 }

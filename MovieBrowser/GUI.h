@@ -48,10 +48,10 @@ private:
 private:
 
 	//A function that creates all the movies
-	void CreateMovies();
+	void createMovies();
 
 	// A function that creates all the widgets
-	void CreateWidgets();
+	void createWidgets();
 
 	// Updates the started screen (the screen with all movies and widgets are shown)
 	void updateStartedScreen();

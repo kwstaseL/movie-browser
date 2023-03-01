@@ -193,11 +193,11 @@ bool Slider::hasRequirements(const Movie* movie) const
 }
 
 
-Slider::Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, SliderPosition::Type position)
-    : Widget(posX, posY), m_text{ text }, m_min_value{min_v}, m_max_value{max_v}, m_slider_position_type{position}
+Slider::Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, SliderPosition::Type position, bool invisible)
+    : Widget(posX, posY), m_text{ text }, m_min_value{ min_v }, m_max_value{ max_v }, m_slider_position_type{ position }
 {
     clear();
-
+    m_visible = !invisible;
     //Inserting all the widgetfilters slider needs to check before filtering
     filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);
     filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);

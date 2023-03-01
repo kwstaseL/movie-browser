@@ -90,6 +90,7 @@ public:
     //Clears the state of the widget. It is called polymorphically for every widget.
     virtual void clear() = 0;
     //Sets the visibility of the widget.
+    virtual bool isVisible() const { return m_visible; }
     virtual void setVisibility(bool v) { m_visible = v; }
     virtual float getHeightOffset() const { return m_height_offset; }
 
@@ -103,7 +104,7 @@ public:
      */
     Widget(float posX, float posY);
 
-    virtual ~Widget();
+    virtual ~Widget() = default;
 };
 
 #endif

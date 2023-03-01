@@ -74,7 +74,7 @@ public:
 		\param posY: the y coordinate of the filtergenrebutton's position
 		\param text: the text displayed on the button
 	*/
-	FilterGenreButton(float posX, float posY, const std::string_view text);
+	FilterGenreButton(float posX, float posY, const std::string_view text, bool invisible = true);
 	virtual ~FilterGenreButton() = default;
 
 };

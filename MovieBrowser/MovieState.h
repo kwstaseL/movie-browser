@@ -78,6 +78,16 @@ public:
         widgetFilterStates[WidgetKey] = WidgetState;
     }
 
+    void resetMovieState()
+    {
+        for (auto& [key, value] : widgetFilterStates) {
+            value = WidgetEnums::WidgetFilterState::ENABLED;
+        }
+        setDisabled(false);
+        setLastSelectedFromYear(1970);
+        setLastSelectedToYear(2020);
+    }
+
     //Returns if this a movie can be highlighted/glown and information can drawen about it (if mouse if hovered on the movie).
     bool isInformationVisible() const { return _isInformationVisible; }
 
@@ -93,7 +103,7 @@ public:
     bool isClickTriggered() const { return _clickTriggered; }
     void setClickTriggered(bool c) { _clickTriggered = c; }
 
-    void setUpdatable(bool a) { _isInformationVisible = a; }
+    void setInformationVisible(bool a) { _isInformationVisible = a; }
 
     void setLastSelectedFromYear(int y) { _lastSelectedFromYear = y; }
     int getLastSelectedFromYear() const { return _lastSelectedFromYear; }

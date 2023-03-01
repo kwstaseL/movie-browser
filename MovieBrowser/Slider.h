@@ -116,7 +116,7 @@ public:
     //  \param float x: The x coordinate of the slider's position.
     //  \param float y: The y coordinate of the slider's position.
     //  \param const std::string_view text: It's the text to be displayed near the slider ("From","To")
-    Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, SliderPosition::Type position);
+    Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, SliderPosition::Type position, bool invisible = true);
     virtual ~Slider() = default;
 
 };

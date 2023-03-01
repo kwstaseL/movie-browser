@@ -135,15 +135,15 @@ void GUI::updatePressedMovieScreen()
 	//Updating the scene when a movie is pressed
 
 	if (clickedMovie)
-	{
-		clickedMovie->state_info.setUpdatable(false);//But we just set it to not updatable so information from the other scene about this movie doesn't show in this screen.
+	{// Set it to False so information from the other scene about this movie doesn't show in this screen.
+		clickedMovie->state_info.setInformationVisible(false);
 		clickedMovie->update();
 
 		//If user released the mouse, go to the previous state
 		if (!clickedMovie->state_info.isClickTriggered())
 		{
 			m_state = STATUS_STARTED;
-			clickedMovie->state_info.setUpdatable(true);
+			clickedMovie->state_info.setInformationVisible(true);
 		}
 	}
 	else
@@ -159,12 +159,11 @@ void GUI::init()
 {
 	graphics::preloadBitmaps(AssetsConst::ASSET_PATH);
 	graphics::setFont("OpenSans-Regular.ttf");
-	CreateMovies();
-	CreateWidgets();
-
+	createMovies();
+	createWidgets();
 }
 
-void GUI::CreateWidgets()
+void GUI::createWidgets()
 {
 	//Creating all our widget objects
 
@@ -186,11 +185,11 @@ void GUI::CreateWidgets()
 
 	widgets.push_back(new ResetFilterButton(CanvasConst::CANVAS_WIDTH / 15 + 18.0f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Clear Filter",widgets));
 
-	widgets.push_back(new Dock(CanvasConst::CANVAS_WIDTH / 2, -3.6f, widgets));	//For this program , we want all the widgets to appear on the dock,
+	widgets.push_back(new Dock(CanvasConst::CANVAS_WIDTH / 2, -3.5f, widgets));	//For this program , we want all the widgets to appear on the dock,
 	//thats why we are passing all of them to the dock (except for the dock itself).
 }
 
-void GUI::CreateMovies()
+void GUI::createMovies()
 {
 	//Creating all our movies, and placing each one in the right position
 

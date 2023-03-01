@@ -23,6 +23,7 @@ private:
      */
     void restoreMovieStates(const std::vector<Movie*>& movie_list) const;
 
+    // Called to clear all widgets when click the reset filter button
     void clearWidgets();
     /*
     *  Called when the reset filter button is clicked.
@@ -48,7 +49,7 @@ public:
      * \param posY The y coordinate of the button's position.
      * \param text The text to display on the button.
      */
-    ResetFilterButton(float posX, float posY, const std::string_view text,const std::vector<Widget*>& widgets);
+    ResetFilterButton(float posX, float posY, const std::string_view text,const std::vector<Widget*>& widgets, bool invisible = true);
     virtual ~ResetFilterButton() = default;
 
 };

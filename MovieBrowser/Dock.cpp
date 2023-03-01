@@ -142,7 +142,7 @@ Dock::Dock(float x, float y, const std::vector<Widget*>& widgets_list)
 {
 	for (const auto& widget : widgets_list)
 	{
-		if (widget)
+		if (widget && !widget->isVisible())
 		{
 			widgets.push_back(widget);
 		}
@@ -170,14 +170,14 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 	{
 		for (const auto& movie : movie_list) {
 
-			movie->state_info.setUpdatable(false); //Setting our to not be active, which means it still can be drawn, but it is not being updated.
+			movie->state_info.setInformationVisible(false); //Setting our to not be active, which means it still can be drawn, but it is not being updated.
 		}
 	}
 	else if (m_dock_state == m_dock_status::STATE_GOING_UP)
 	{
 		for (const auto& movie : movie_list) {
 
-			movie->state_info.setUpdatable(true); //Setting our to be active, which means it can now be drawn and updated.
+			movie->state_info.setInformationVisible(true); //Setting our to be active, which means it can now be drawn and updated.
 		}
 	}
 	m_action = false;	//Since we are donef with the operation, alert it.

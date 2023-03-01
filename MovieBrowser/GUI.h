@@ -32,7 +32,7 @@ private:
 	gui_state_t m_state{ STATUS_STARTED };
 
 	// A vector which contains all movie pointers
-	std::vector<Movie*> movie_list;
+	std::vector<Movie*> movies;
 
 	// A vector which contains all widget pointers
 	std::vector<Widget*> widgets;
@@ -43,10 +43,7 @@ private:
 	// Indicates which movie was "clicked"
 	Movie* clickedMovie{ nullptr };
 
-	//Indicates the last Widget being pressed/active
-	Widget* lastActiveWidget{ nullptr };
-
-	graphics::Brush br;
+	graphics::Brush brush;
 
 private:
 

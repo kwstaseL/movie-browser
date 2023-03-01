@@ -14,7 +14,10 @@ namespace TextFieldFiltering {
     enum class FilterBy
     {
 
-        TITLE_PROTAGONIST_DIRECTOR
+        TITLE_PROTAGONIST_DIRECTOR,
+        TITLE,
+        PROTAGONIST,
+        DIRECTOR
 
     };
 }
@@ -37,8 +40,14 @@ private:
     // This variable acts like a "timer", when the timer surpasses a default value, we want to set m_typed to false, so user can type again
     int m_timer{ -1 };
 
-    enum class FilterBy;
+    // Represents the filter which the textfield will filter
     const TextFieldFiltering::FilterBy m_textfield_filter;
+
+    // Represents the speed that the user can write on the textfield
+    const int m_textfield_speed{ 8 };
+
+    // Represents the maximum words that the user can write on the textfield
+    const int max_textfield_words{ 25 };
 
     // We use a stack to keep in the out of sight words (that the user can't see) when the textfield gets overflowed with words
     // we keep the words that the user can't see in a stack.
@@ -52,9 +61,6 @@ private:
     // Contains a constant value to specify what text field it is ("Search Movie").
     const std::string m_text;
 
-    // Keeps track of how many extra words are stored from the time the text field was "full".
-    int extra_words = 0;
-
     // Keeps track if the text field is full or not.
     bool isFull{ false };
 
@@ -66,7 +72,7 @@ private:
     std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
 
     //This represents how much height will the textfield need in order to appear when the dock comes down
-    float m_height_offset{ 4.0f };
+    const float m_height_offset{ 4.0f };
 
 private:
 

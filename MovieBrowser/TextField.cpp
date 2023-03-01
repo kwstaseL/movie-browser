@@ -1,8 +1,6 @@
 #include "TextField.h"
 #include <algorithm>
 
-
-
 /*
 Function which takes as input a Movie pointer, and checks if this particular movie
 has the filtered genre (if any filter button was pressed) ,
@@ -22,7 +20,7 @@ bool TextField::hasRequirements(const Movie* movie) const
 				return false;
 			}
 		}
-		return std::stoi(movie->getDate()) <= movie->state_info.getLastFilterToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear();
+		return std::stoi(movie->getDate()) <= movie->state_info.getLastSelectedToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastSelectedFromYear();
 	}
 }
 
@@ -97,7 +95,7 @@ void TextField::update()
 	// If button is highlighted (user has pressed the button)
 	if (m_highlighted)
 	{
-		char ascii = 0;
+		char ascii{};
 
 		//Looping for each available keystate (excluding {BACKSPACE,SPACE})
 		//to see if they are being pressed
@@ -120,7 +118,6 @@ void TextField::update()
 					{
 						outofsight_words.push(characters[0]);
 						characters.erase(characters.begin());	
-						extra_words++;	//Variable to count how many extra words are kept in the stack
 					}
 				}
 			}
@@ -140,7 +137,6 @@ void TextField::update()
 					{
 						outofsight_words.push(characters[0]);
 						characters.erase(characters.begin());
-						extra_words++;
 					}
 				}
 			}
@@ -153,7 +149,6 @@ void TextField::update()
 						if (!outofsight_words.empty())
 						{
 							characters.push_front(outofsight_words.top());	//Starting putting back to the beginning of the textfield the words of the stack
-							extra_words--;
 							outofsight_words.pop();	//Removing the world we have already inserted to the front of the word from the stack.
 						}
 					}
@@ -172,24 +167,23 @@ void TextField::update()
 		}
 		m_timer++;	//Increments the timer
 
-		if (m_timer > 9)	//If the timer surpasses a default value of 8
+		if (m_timer > m_textfield_speed)	//If the timer surpasses a default value of 8
 			m_typed = false;	//Alerts that the user can now type again
 
-		if (characters.size() + extra_words >= 25)	//If characters surpasses 25, the textfield is full
+		if (characters.size() + outofsight_words.size()+1 >= max_textfield_words)	//If characters surpasses 25, the textfield is full
 		{
 			isFull = true;
 		}
 		else
 		{
 			isFull = false;
-			extra_words = 0;
 		}
 	}
 
 	if (!characters.empty())	//If the characters is not empty, draw the string
 	{
 		std::string textfield_string(characters.begin(), characters.end());
-		graphics::drawText(m_positionX - 1.9f, m_positionY + m_height + 0.1f, 0.3f, textfield_string, brush);
+		graphics::drawText(m_positionX - 2.0f, m_positionY + m_height + 0.1f, 0.3f, textfield_string, brush);
 	}
 	else //else just draw the "Search Movie/Director/Protagonist" text
 	{
@@ -234,8 +228,10 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 		//Checking if the searching word that was given is referring to a protagonist.
 		bool hasProtagonist{ false };
 
+		std::vector<std::string> protagonists = movie->getProtagonists();
+
 		//We are using find() method to see if the inputted string is present in the dir/title of protagonist name, if it isn't it returns the std::string::npos
-		for (const auto& protagonist : movie->m_protagonists)
+		for (const auto& protagonist : protagonists)
 		{
 			std::string protagonist_name = protagonist;
 			std::transform(protagonist_name.begin(), protagonist_name.end(), protagonist_name.begin(), ::tolower);
@@ -246,7 +242,6 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 			}
 
 		}
-
 		//If keystate was BackSpace or the character is empty, it finds
 		// all the movies that have the current string on their title, director or protagonist (with the backspace applied or if the character is empty (empty string)))
 		// and have all other widgets applied
@@ -282,7 +277,6 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 void TextField::clear()
 {
 	characters.clear();
-	extra_words = 0;
 	textInvisible = false;
 	m_timer = -1;
 }

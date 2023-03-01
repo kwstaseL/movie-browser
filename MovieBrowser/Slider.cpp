@@ -1,5 +1,4 @@
 #include "Slider.h"
-#include <iostream>
 
 // Continously updates the state of the slider.
 void Slider::update()
@@ -17,9 +16,6 @@ void Slider::update()
     mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
     mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
-    // Save the current position of the button to a temp variable.
-    float temp = box.getPosX();
-
     // Check if the mouse is within the coordinates of the slider or if the slider is being dragged.
     // We want the button to be able to be dragged even if it doesn't contain the button's coordinates
     if (contains(mouse_X, mouse_Y) || m_status_slider == SLIDER_DRAGGING)
@@ -32,15 +28,15 @@ void Slider::update()
                 return;
             }
             // Check if the mouse and the box is going out of the bounds of the slider. (checking for end of slider) 
-            if (mouse_X >= m_positionX + 3.6f && box.getPosX() >= m_positionX + 3.6f)
+            if (mouse_X >= SLIDER_START_RANGE && box.getPosX() >= SLIDER_START_RANGE)
             {
-                mouse_X = m_positionX + 3.6f;
+                mouse_X = SLIDER_START_RANGE;
                 m_value = m_max_value;
             }
             // Check if the mouse and the box is going out of the bounds of the slider. (checking for start of slider) 
-            if (mouse_X <= m_positionX - 2.9f - 0.65f && box.getPosX() <= m_positionX - 2.9f - 0.65f)
+            if (mouse_X <= SLIDER_END_RANGE && box.getPosX() <= SLIDER_END_RANGE)
             {
-                mouse_X = m_positionX - 2.9f - 0.65f;
+                mouse_X = SLIDER_END_RANGE;
                 m_value = m_min_value;
             }
 
@@ -49,13 +45,12 @@ void Slider::update()
             m_status_slider = SLIDER_DRAGGING;
 
             //Calculates the value of the m_value based on the box's slider position.
-            // Adds the minimum value of our slider + (the current position of our box - the start of our slider ( m_positionX + 2.9f + 0.65f)) divided by the subtraction of our 
-            // 2 horizantal "borders"  (m_positionX + 3.6f and m_positionX + 2.9f + 0.65f) of the slider  which when subtracted it gives as the lengh of our slider
+            // Adds the minimum value of our slider + (the current position of our box - the start of our slider) divided by the subtraction of our 
+            // 2 horizantal "borders"  of the slider  which when subtracted it gives as the length of our slider
             // (This division finds in what "percentage" of our whole slider our slider button is at the moment) after we find that we multiply it by all the discrete values we can get
             // and adding that to the minimum value we have set to get our final value for that specific location of the button
-            m_value = m_min_value + (box.getPosX() - m_positionX + 2.9f + 0.65f) / (m_positionX + 3.6f - m_positionX + 2.9f + 0.65f) * (m_max_value - m_min_value);
+            m_value = m_min_value + (box.getPosX() - SLIDER_END_RANGE) / (SLIDER_START_RANGE - SLIDER_END_RANGE) * (m_max_value - m_min_value);
 
-           
         }
          else if ((ms.button_left_released || !ms.dragging) && m_status_slider == SLIDER_DRAGGING)
         {
@@ -108,27 +103,25 @@ bool Slider::contains(float mouse_x, float mouse_y) const
 // This is the function which runs the filterByYear when the box is dragged and released
 void Slider::takeAction(const std::vector<Movie*>& movie_list)
 {
-   
-        // Filter the list of movies based on the year on the slider, and taking into consideration all the other filters that might be active.
-        filterByYear(movie_list);
-
+    // Filter the list of movies based on the year on the slider, and taking into consideration all the other filters that might be active.
+    filterByYear(movie_list);
 }
 
 // Clears the slider
 void Slider::clear()
 {
-    if (m_text == "From")
+    if (m_slider_position_type == SliderPosition::Type::FROM)
     {
         m_value = m_min_value;
-        box.setPosX(m_positionX - 3.55f);
-        box.setPosY(m_positionY + 0.06f);
+        box.setPosX(m_positionX - 3.5f);
+        box.setPosY(m_positionY + 0.05f);
 
     }
-    else
+    else if (m_slider_position_type == SliderPosition::Type::TO)
     {
         m_value = m_max_value;
-        box.setPosX(m_positionX + 3.6f);
-        box.setPosY(m_positionY +0.04f);
+        box.setPosX(m_positionX + 3.5f);
+        box.setPosY(m_positionY + 0.05f);
     }
     m_status_slider = SLIDER_IDLE;
 }
@@ -138,12 +131,12 @@ void Slider::clear()
 
 void Slider::filterByYear(const std::vector<Movie*>& movie_list)
 {
-    if (m_text == "From")
+    if (m_slider_position_type == SliderPosition::Type::FROM)
     {
         for (const auto& movie : movie_list)
         {
             //Here we are checkinng if the specific movie hasRequirements, and its years movie is between the sliders state
-            if (std::stoi(movie->getDate()) >= m_value && std::stoi(movie->getDate()) <= (movie->state_info.getLastFilterToYear())
+            if (std::stoi(movie->getDate()) >= m_value && std::stoi(movie->getDate()) <= (movie->state_info.getLastSelectedToYear())
                 && hasRequirements(movie))
             {
                 movie->state_info.setDisabled(false);
@@ -152,16 +145,16 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
             {
                 movie->state_info.setDisabled(true);
             }
-            movie->state_info.setLastFilterFromYear(m_value);    //Updating the last year that was filtered from the first slider
+            movie->state_info.setLastSelectedFromYear(m_value);    //Updating the last year that was filtered from the first slider
         }
 
     }
-    else if (m_text == "To")
+    else if (m_slider_position_type == SliderPosition::Type::TO)
     {
         for (const auto& movie : movie_list)
         {   //Here we are checkinng if the specific movie hasRequirements, and its years movie is between the sliders state
-            if (std::stoi(movie->getDate()) <= m_value && (std::stoi(movie->getDate()) >= movie->state_info.getLastFilterFromYear()) &&
-                !(movie->state_info.getLastFilterFromYear() > m_value) && hasRequirements(movie))
+            if (std::stoi(movie->getDate()) <= m_value && (std::stoi(movie->getDate()) >= movie->state_info.getLastSelectedFromYear()) &&
+                !(movie->state_info.getLastSelectedFromYear() > m_value) && hasRequirements(movie))
             {
                 movie->state_info.setDisabled(false);
             }
@@ -170,7 +163,7 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
                 movie->state_info.setDisabled(true);
 
             }
-            movie->state_info.setLastFilterToYear(m_value);  //Updating the last year that was filtered from the second slider
+            movie->state_info.setLastSelectedToYear(m_value);  //Updating the last year that was filtered from the second slider
         }
     }
     m_action = false;
@@ -200,15 +193,10 @@ bool Slider::hasRequirements(const Movie* movie) const
 }
 
 
-Slider::Slider(float posX, float posY, const std::string_view text,int min_v,int max_v)
-    : Widget(posX, posY), m_text{ text }, m_min_value{min_v}, m_max_value{max_v}
+Slider::Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, SliderPosition::Type position)
+    : Widget(posX, posY), m_text{ text }, m_min_value{min_v}, m_max_value{max_v}, m_slider_position_type{position}
 {
     clear();
-    m_status_slider = SLIDER_IDLE;
-
-    //Inserting the height and width of the box
-    box.setBoxHeight(0.5f);
-    box.setBoxWidth(0.2f);
 
     //Inserting all the widgetfilters slider needs to check before filtering
     filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);

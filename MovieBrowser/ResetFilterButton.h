@@ -11,14 +11,19 @@ class ResetFilterButton final : public Button
 {
 private:
 
+    const std::vector<Widget*> m_widgets{};
+
+private:
+
     /*
      * Resets all movie filter widgets to their default values and enables all movies.
      * When this function gets called, each widget will "clear" all their states automatically.
      * 
      * \param movie_list A list of our movies
      */
-    void resetFilter(const std::vector<Movie*>& movie_list) const;
+    void restoreMovieStates(const std::vector<Movie*>& movie_list) const;
 
+    void clearWidgets();
     /*
     *  Called when the reset filter button is clicked.
     *  Resets all applied filters and all other widgets clear their own state.
@@ -43,7 +48,7 @@ public:
      * \param posY The y coordinate of the button's position.
      * \param text The text to display on the button.
      */
-    ResetFilterButton(float posX, float posY, const std::string_view text);
+    ResetFilterButton(float posX, float posY, const std::string_view text,const std::vector<Widget*>& widgets);
     virtual ~ResetFilterButton() = default;
 
 };

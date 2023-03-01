@@ -1,6 +1,9 @@
-#pragma once
+#ifndef MOVIE_STATE_H
+#define MOVIE_STATE_H
+
 #include <unordered_map>
 
+//DONE
 
 namespace WidgetEnums {
 
@@ -18,7 +21,6 @@ namespace WidgetEnums {
         TitleFilter
 
     };
-
 }
 
 // Class where keep all the filtering states for each Movie and also some extra variables (eg isDisabled, isClickTriggered..).
@@ -33,20 +35,22 @@ private:
     std::unordered_map<WidgetEnums::WidgetFilters, WidgetEnums::WidgetFilterState> widgetFilterStates;
 
     //This represents the state where a movie can't be highlighted/glown or information is can be drawen about it, but the image of the movie is still drawen.
-    bool m_isUpdatable{ true };
+    bool _isInformationVisible{ true };
 
     //Variable used to see if a movie is disabled, a movie is disabled (not updated or drawen) when it doesn't meet filters requirements.
-    bool m_isDisabled{ false };
+    bool _isDisabled{ false };
 
     //Used to store if a movie is clicked.
-    bool m_clickTriggered{ false };
+    bool _clickTriggered{ false };
 
-    //Used to store the last years that where filtered on the Slider.
-    int lastFilterFromYear{ 1950 };
-    int lastFilterToYear{ 2020 };
+    // Represents the most recent year selected by the user for the "From" slider.
+    int _lastSelectedFromYear{ 1970 };
+
+    // Represents the most recent year selected by the user for the "To" slider.
+    int _lastSelectedToYear{ 2020 };
 
     //Stores all the current genres that are pressed by the user and the movie has
-    int m_genreCount{ 0 };
+    int _genreCount{ 0 };
 
 public:
 
@@ -56,10 +60,16 @@ public:
         widgetFilterStates[WidgetKey] = WidgetState;
     }
 
-    //Gets the state of a widget
-    const WidgetEnums::WidgetFilterState& getWidgetState(const WidgetEnums::WidgetFilters& WidgetKey) const
-    {
-        return widgetFilterStates.at(WidgetKey);
+    // Gets the state of a widget filter
+    const WidgetEnums::WidgetFilterState& getWidgetState(const WidgetEnums::WidgetFilters& widgetKey) const {
+
+        auto it = widgetFilterStates.find(widgetKey);
+        if (it != widgetFilterStates.end()) {
+            return it->second;
+        }
+        const WidgetEnums::WidgetFilterState defaultState = WidgetEnums::WidgetFilterState::DISABLED;
+        return defaultState;
+
     }
 
     //Inserts a state of a new widget filter
@@ -69,26 +79,29 @@ public:
     }
 
     //Returns if this a movie can be highlighted/glown and information can drawen about it (if mouse if hovered on the movie).
-    bool isUpdatable() const { return m_isUpdatable; }
+    bool isInformationVisible() const { return _isInformationVisible; }
 
     //Setters and Getters
 
-    int getGenreCount() const { return m_genreCount; }
-    void resetGenreCount() { m_genreCount = 0; }
-    void AddGenreCount(int g) { m_genreCount += g; }
+    int getGenreCount() const { return _genreCount; }
+    void resetGenreCount() { _genreCount = 0; }
+    void addGenreCount(int g) { _genreCount += g; }
 
-    void setDisabled(bool d) { m_isDisabled = d; }
-    bool isDisabled() const { return m_isDisabled; }
+    void setDisabled(bool d) { _isDisabled = d; }
+    bool isDisabled() const { return _isDisabled; }
 
-    bool isClickTriggered() const { return m_clickTriggered; }
-    void setClickTriggered(bool c) { m_clickTriggered = c; }
+    bool isClickTriggered() const { return _clickTriggered; }
+    void setClickTriggered(bool c) { _clickTriggered = c; }
 
-    void setUpdatable(bool a) { m_isUpdatable = a; }
+    void setUpdatable(bool a) { _isInformationVisible = a; }
 
-    void setLastFilterFromYear(int y) { lastFilterFromYear = y; }
-    int getLastFilterFromYear() const { return lastFilterFromYear; }
+    void setLastSelectedFromYear(int y) { _lastSelectedFromYear = y; }
+    int getLastSelectedFromYear() const { return _lastSelectedFromYear; }
 
-    void setLastFilterToYear(int y) { lastFilterToYear = y; }
-    int getLastFilterToYear() const { return lastFilterToYear; }
+    void setLastSelectedToYear(int y) { _lastSelectedToYear = y; }
+    int getLastSelectedToYear() const { return _lastSelectedToYear; }
+
 
 };
+
+#endif

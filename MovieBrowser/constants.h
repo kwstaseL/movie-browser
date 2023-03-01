@@ -1,9 +1,12 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+//DONE
 
 //Function which takes in graphics::Brush and fills it with color
-#define SETCOLOR(c,r,g,b) {c[0] = r,c[1] = g; c[2] = b;}    
+#define SETCOLOR(c,r,g,b) {c[0] = r,c[1] = g; c[2] = b;}  
+
+#define SOUND_VOLUME 0.5
 
 namespace constants
 {

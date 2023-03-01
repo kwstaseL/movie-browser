@@ -1,11 +1,20 @@
-#ifndef SLIDERBUTTON_H
-#define SLIDERBUTTON_H
+#ifndef SLIDER_H
+#define SLIDER_H
 
 #include "Widget.h"
 
+namespace SliderPosition
+{
+    enum class Type
+    {
+        FROM,
+        TO
+    };
+}
+
+
 // Defines a Slider class, which is a widget that can be used to filter a list of movies by year.
 // The Slider class has a clickable box that can be dragged to set the year based on the movement of the mouse of the user.
-
 struct ClickableBox
 {
 private:
@@ -15,8 +24,8 @@ private:
     float m_positionY{};
 
     //Width and height of the clickable box
-    float m_box_width{};
-    float m_box_height{};
+    const float m_box_width{ 0.2f };
+    const float m_box_height{ 0.5f };
 
 public:
 
@@ -25,10 +34,7 @@ public:
 
     void setPosX(float x) { m_positionX = x; }
     void setPosY(float y) { m_positionY = y; }
-
-    void setBoxHeight(float h) { m_box_height = h; }
-    void setBoxWidth(float w) { m_box_width = w; }
-
+ 
     float getBoxWidth() const { return m_box_width; }
     float getBoxHeight() const { return m_box_height; }
 };
@@ -44,13 +50,16 @@ private:
         SLIDER_DRAGGING     // Slider is now being dragged.
     };
 
+    const float SLIDER_START_RANGE{ m_positionX + 3.5f };
+    const float SLIDER_END_RANGE{ m_positionX - 3.5f };
+
+    const SliderPosition::Type m_slider_position_type{};
+
     // The current state of the slider
     m_slider_state m_status_slider{ SLIDER_IDLE };
 
     // The text to display on the slider
     const std::string m_text;
-
-    float timer{ 0 };
 
     // The value that the slider is currently set to
     int m_value{};
@@ -66,7 +75,7 @@ private:
     ClickableBox box;
 
     //This represents how much height will the slider need in order to appear when the dock comes down
-    float m_height_offset{ 4.0f };
+    const float m_height_offset{ 4.0f };
 
 private:
 
@@ -107,7 +116,7 @@ public:
     //  \param float x: The x coordinate of the slider's position.
     //  \param float y: The y coordinate of the slider's position.
     //  \param const std::string_view text: It's the text to be displayed near the slider ("From","To")
-    Slider(float posX, float posY, const std::string_view text,int min_v,int max_v);
+    Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, SliderPosition::Type position);
     virtual ~Slider() = default;
 
 };

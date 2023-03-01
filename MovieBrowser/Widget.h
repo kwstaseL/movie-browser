@@ -45,6 +45,10 @@ protected:
     // Height that every widget gains when dock is down.
     float m_height_offset{};
 
+    graphics::Brush brush;
+
+protected:
+
     /*
      * Requests focus when doing an operation.
      * \return true if the focus was successfully requested, false if another widget already has the focus.
@@ -54,8 +58,6 @@ protected:
      * Releases focus when the operation is complete.
      */
     void releaseFocus();
-
-    graphics::Brush brush;
 
 public:
 
@@ -75,6 +77,8 @@ public:
      * \return true if an action has been triggered, false otherwise.
      */
     virtual bool actionTriggered() const { return m_action; }
+
+
     void setActionTriggered(bool action) { m_action = action; }
 
     /*
@@ -82,9 +86,6 @@ public:
      * \param movie_list A list of all the movies where we are going to operte on.
      */
     virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
-
-     // Gets the ID of the widget.  It is called polymorphically for every widget.
-    virtual int getID() const { return m_uid; }
 
     //Clears the state of the widget. It is called polymorphically for every widget.
     virtual void clear() = 0;
@@ -94,7 +95,7 @@ public:
 
     virtual bool isOperating() const { return m_operating; }
     virtual void setOperating(bool o) { m_operating = o; }
-
+   
     /*
      * Constructs a new widget.
      * \param posX The x position of the widget.

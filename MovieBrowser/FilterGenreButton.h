@@ -44,7 +44,7 @@ private:
 	\param movie: a pointer to the movie to be checked
 	\return true if the movie meets the requirements else false
 	*/
-	bool hasRequirements(const Movie* movie) const;
+	bool hasRequirements(const Movie* const movie) const;
 
 	//Performs the filtering action when the button is pressed
 	//\param movie_list: a vector of all the movies

@@ -4,7 +4,7 @@
 
 // Constructor for Movie class. Initializes member variables (desc,name,year..), sets the position of the information box, and also creates the filterstates of all the widgets needed.
 Movie::Movie(const std::string_view name, const std::string_view desc, const std::string_view image, const std::string_view year, const std::string_view dir, const std::vector<std::string>& prot, const std::vector<std::string>& genre)
-	: m_name{ name }, m_description{ desc }, m_image{ image }, m_production_year{ year }, m_director{ dir }, genres{ genre }, m_protagonists{ prot }
+	: m_name{ name }, m_description{ desc }, m_image{ image }, m_production_year{ year }, m_director{ dir }, m_genres{ genre }, m_protagonists{ prot }
 {
 	//Setting the position of the information box to the center of the canvas
 	informationBox.setPosX(CanvasConst::CANVAS_WIDTH / 2);
@@ -13,7 +13,6 @@ Movie::Movie(const std::string_view name, const std::string_view desc, const std
 	//Creates the Widget Filter States, that each movie has and is filtered upon
 	state_info.insertNewWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
 	state_info.insertNewWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::ENABLED);
-
 }
 
 //Function that draws a movie on the screen
@@ -26,11 +25,11 @@ void Movie::draw()
 	}
 
 	// Calculate glow effect for when the mouse is hovering over the movie.
-	m_glow = 0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted;
-	m_highlight = 0.2f * m_highlighted + m_glow * 0.5f;
+	float glow = 0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted;
+	float highlight = 0.2f * m_highlighted + glow * 0.5f;
 
 	// Draw highlight/glow effect.
-	SETCOLOR(brush_update1.fill_color, m_highlight, m_highlight, m_highlight);
+	SETCOLOR(brush_update1.fill_color, highlight, highlight, highlight);
 	brush_update1.outline_opacity = 0.0f;
 	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width + 0.125f, MovieConst::Movie_Banner_Height + 0.125f, brush_update1);
 
@@ -38,7 +37,7 @@ void Movie::draw()
 	brush_update2.outline_opacity = 0.1f;
 
 	brush_update2.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
-	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width, MovieConst::Movie_Banner_Height, brush_update2);
+		graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width, MovieConst::Movie_Banner_Height, brush_update2);
 
 }
 
@@ -63,20 +62,20 @@ void Movie::update()
 	if (contains(mx, my)) {
 
 		// If the movie is updatable and not disabled, highlight it and display its state_information.
-		if (state_info.isUpdatable())
+		if (state_info.isInformationVisible())
 		{
-			if (m_PlaySound)
+			if (playSound)
 			{
-				graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("browse.wav"), 0.4f);
+				graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("browse.wav"), SOUND_VOLUME);
 			}
 
 			setHighlight(true);
-			DisplayInfo();
-			m_PlaySound = false;
+			displayMovieDetails();
+			playSound = false;
 
 		}
 		//If mouse contains movie, and mouse button left button is pressed,update its state to pressed.
-		if (ms.button_left_pressed && state_info.isUpdatable())
+		if (ms.button_left_pressed && state_info.isInformationVisible())
 		{
 			state_info.setClickTriggered(true);
 		}
@@ -89,7 +88,7 @@ void Movie::update()
 	}
 	else
 	{
-		m_PlaySound = true;
+		playSound = true;
 		setHighlight(false);
 	}
 
@@ -135,11 +134,22 @@ const std::string& Movie::getDir() const
 	return m_director;
 }
 
+const std::vector<std::string>& Movie::getGenres() const
+{
+	return m_genres;
+}
+
+const std::vector<std::string>& Movie::getProtagonists() const
+{
+	return m_protagonists;
+}
+
 // Function that returns a description lines vector which represents all the lines that should be drawen to the canvas line-by-line.
 // Based on the whole description of the movie.
 
 const std::vector<std::string> Movie::createDescription()
 {
+	const int MAX_LINE_WORDS = 90;
 	std::string description = getDesc();	//Getting the description of the movie
 	char* tokens = &description[0];
 	char* context;
@@ -158,7 +168,7 @@ const std::vector<std::string> Movie::createDescription()
 	for (const auto& word : words) {	// For all the words in our words vector
 
 		//Here we check if adding a word would exceed the 90 which represents the maximum length of the line on each row.
-		if (line.length() + word.length() + 1 > 90) {
+		if (line.length() + word.length() + 1 > MAX_LINE_WORDS) {
 
 			//Adds the current line to the lines vector
 			description_lines.push_back(line);
@@ -176,7 +186,7 @@ const std::vector<std::string> Movie::createDescription()
 
 
 // Function that displays movie state_information on the "starting screen" 
-void Movie::DisplayInfo()
+void Movie::displayMovieDetails()
 {
 
 	graphics::Brush br;
@@ -207,7 +217,7 @@ void Movie::DisplayInfo()
 	//For all genres, draw the genre
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f - 1.0f, CanvasConst::CANVAS_HEIGHT / 1.28f, 0.5f, "Genre:      ", br);
 	offset = 1.5f;
-	for (const auto& g : genres)
+	for (const auto& g : m_genres)
 	{
 		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f + offset, CanvasConst::CANVAS_HEIGHT / 1.28, 0.5f, g, br);
 		offset += g.size() / 2.9f;
@@ -216,7 +226,7 @@ void Movie::DisplayInfo()
 }
 
 // Function used to draw state_information about a movie on the screen when the movie is clicked
-void Movie::drawInformation()
+void Movie::drawMovieInformation()
 {
 	graphics::Brush brush;
 
@@ -233,7 +243,7 @@ void Movie::drawInformation()
 	brush.texture = "";
 	brush.fill_opacity = 0.7f;
 	brush.outline_opacity = 0.3f;
-	graphics::drawRect(informationBox.getPosX(), informationBox.getPosY(), CanvasConst::CANVAS_WIDTH / 1.2, CanvasConst::CANVAS_HEIGHT / 1.2, brush);
+	graphics::drawRect(informationBox.getPosX(), informationBox.getPosY(), CanvasConst::CANVAS_WIDTH / 1.2f, CanvasConst::CANVAS_HEIGHT / 1.2f, brush);
 
 	// Draw the title of the movie
 	graphics::setFont("OpenSans-Semibold.ttf");
@@ -290,7 +300,7 @@ void Movie::drawInformation()
 	//Draw all Genres of the movie
 	offset = 3.5f;
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, "Genre: ", br);
-	for (const auto& g : genres)
+	for (const auto& g : m_genres)
 	{
 		graphics::setFont("OpenSans-Light.ttf");
 		graphics::drawText(CanvasConst::CANVAS_WIDTH / 4.7f + offset, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, g, br);

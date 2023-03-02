@@ -13,12 +13,10 @@ namespace TextFieldFiltering {
     //Enum represents if the widget filter is enabled or disabled. 
     enum class FilterBy
     {
-
         TITLE_PROTAGONIST_DIRECTOR,
         TITLE,
         PROTAGONIST,
         DIRECTOR
-
     };
 }
 
@@ -31,48 +29,48 @@ class TextField : public Widget
 {
 private:
     // Constants that store the height and width of the text field.
-    const float m_Textfield_height{ 0.5f };
-    const float m_Textfield_width{ 4.0f };
-
-    // Variable that stores whether the user has typed in the text field.
-    bool m_typed{ false };
-
-    // This variable acts like a "timer", when the timer surpasses a default value, we want to set m_typed to false, so user can type again
-    int m_timer{ -1 };
+    static constexpr float m_Textfield_height{ 0.5f };
+    static constexpr float m_Textfield_width{ 4.0f };
 
     // Represents the filter which the textfield will filter
     const TextFieldFiltering::FilterBy m_textfield_filter;
 
     // Represents the speed that the user can write on the textfield
-    const int m_textfield_speed{ 8 };
+    static constexpr int m_textfield_speed{ 8 };
 
     // Represents the maximum words that the user can write on the textfield
-    const int max_textfield_words{ 25 };
+    static constexpr int max_textfield_words{ 25 };
+
+    // Deque that stores all the characters the user gave as input, we decided to use a deque because it
+    // allows fast insertion and deletion at both its beginning and its end (O(1)).
+    std::deque<char> m_characters{};
+
+    // Contains a constant value to specify what text field it is ("Search Movie").
+    const std::string m_text{};
+
+    // Keeps track if the text field is full or not.
+    bool _isFull{ false };
+
+    //Represents if the text that is drawn inside the textfield is invisible or not.
+    bool _isTextInvisible{ false };
+
+    // Variable that stores whether the user has typed in the text field.
+    bool _typed{ false };
+
+    // This variable acts like a "timer", when the timer surpasses a default value, we want to set m_typed to false, so user can type again
+    int _timer{ -1 };
 
     // We use a stack to keep in the out of sight words (that the user can't see) when the textfield gets overflowed with words
     // we keep the words that the user can't see in a stack.
     // When the user presses "BACKSPACE" we insert one-by-one each character in the front of the whole word that is kept in the deque.
-    std::stack<char> outofsight_words;
-
-    // Deque that stores all the characters the user gave as input, we decided to use a deque because it
-    // allows fast insertion and deletion at both its beginning and its end (O(1)).
-    std::deque<char> characters;
-
-    // Contains a constant value to specify what text field it is ("Search Movie").
-    const std::string m_text;
-
-    // Keeps track if the text field is full or not.
-    bool isFull{ false };
-
-    //Represents if the text that is drawn inside the textfield is invisible or not.
-    bool textInvisible{ false };
+    std::stack<char> _outofsight_characters{};
 
     // A vector indicating all widgets this class needs to check, if they have filtered the movies previously.
    // This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
-    std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
+    std::vector<WidgetEnums::WidgetFilters> filterToBeChecked{};
 
     //This represents how much height will the textfield need in order to appear when the dock comes down
-    const float m_height_offset{ 4.0f };
+    static constexpr float m_height_offset{ 4.0f };
 
 private:
 

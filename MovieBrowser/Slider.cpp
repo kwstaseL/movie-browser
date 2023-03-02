@@ -28,15 +28,15 @@ void Slider::update()
                 return;
             }
             // Check if the mouse and the box is going out of the bounds of the slider. (checking for end of slider) 
-            if (mouse_X >= SLIDER_START_RANGE && box.getPosX() >= SLIDER_START_RANGE)
+            if (mouse_X >= _SLIDER_START_RANGE && box.getPosX() >= _SLIDER_START_RANGE)
             {
-                mouse_X = SLIDER_START_RANGE;
+                mouse_X = _SLIDER_START_RANGE;
                 m_value = m_max_value;
             }
             // Check if the mouse and the box is going out of the bounds of the slider. (checking for start of slider) 
-            if (mouse_X <= SLIDER_END_RANGE && box.getPosX() <= SLIDER_END_RANGE)
+            if (mouse_X <= _SLIDER_END_RANGE && box.getPosX() <= _SLIDER_END_RANGE)
             {
-                mouse_X = SLIDER_END_RANGE;
+                mouse_X = _SLIDER_END_RANGE;
                 m_value = m_min_value;
             }
 
@@ -49,7 +49,7 @@ void Slider::update()
             // 2 horizantal "borders"  of the slider  which when subtracted it gives as the length of our slider
             // (This division finds in what "percentage" of our whole slider our slider button is at the moment) after we find that we multiply it by all the discrete values we can get
             // and adding that to the minimum value we have set to get our final value for that specific location of the button
-            m_value = m_min_value + (box.getPosX() - SLIDER_END_RANGE) / (SLIDER_START_RANGE - SLIDER_END_RANGE) * (m_max_value - m_min_value);
+            m_value = m_min_value + (box.getPosX() - _SLIDER_END_RANGE) / (_SLIDER_START_RANGE - _SLIDER_END_RANGE) * (m_max_value - m_min_value);
 
         }
          else if ((ms.button_left_released || !ms.dragging) && m_status_slider == SLIDER_DRAGGING)
@@ -72,20 +72,28 @@ void Slider::draw()
     }
 
     //Drawing Line
+    constexpr float LINE_POSX_OFFSET{ -4.5f };
+    constexpr float LINE_POSY_OFFSET{ 0.115f };
+
     graphics::Brush br;
     SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
-    graphics::drawText(m_positionX - 4.5f, m_positionY + m_height + 0.115f, 0.3f, m_text, br);
+    graphics::drawText(m_positionX + LINE_POSX_OFFSET, m_positionY + m_height + LINE_POSY_OFFSET, 0.3f, m_text, br);
 
+    const float LINE_WIDTH{ 7.0f };
+    const float LINE_HEIGHT{ .0001f };
     brush.texture = "";
     brush.fill_opacity = 0.1;
     brush.outline_opacity = .5f;
-    graphics::drawRect(m_positionX, m_positionY + m_height, 7.0f, .0001f, brush);
+    graphics::drawRect(m_positionX, m_positionY + m_height, LINE_WIDTH, LINE_HEIGHT, brush);
 
     // Draw the 2 boxes for the sliders.
+
+    constexpr float BOXTEXT_POSX_OFFSET{ -0.25f };
+    constexpr float BOXTEXT_POSY_OFFSET{ -0.3f };
+
     br.texture = "";
     graphics::drawRect(box.getPosX(), box.getPosY() + m_height, box.getBoxWidth(), box.getBoxHeight(), br);
-
-    graphics::drawText(box.getPosX() - 0.25f, box.getPosY() + m_height - 0.3f, 0.3f, std::to_string((m_value)), br);
+    graphics::drawText(box.getPosX() + BOXTEXT_POSX_OFFSET, box.getPosY() + m_height + BOXTEXT_POSY_OFFSET, 0.3f, std::to_string((m_value)), br);
 
 
 }
@@ -106,22 +114,20 @@ void Slider::takeAction(const std::vector<Movie*>& movie_list)
     // Filter the list of movies based on the year on the slider, and taking into consideration all the other filters that might be active.
     filterByYear(movie_list);
 }
-
-// Clears the slider
+//Clears the slider
 void Slider::clear()
 {
     if (m_slider_position_type == SliderPosition::Type::FROM)
     {
         m_value = m_min_value;
-        box.setPosX(m_positionX - 3.5f);
-        box.setPosY(m_positionY + 0.05f);
-
+        box.setPosX(m_positionX - _SLIDER_BOX_X_OFFSET);
+        box.setPosY(m_positionY + _SLIDER_BOX_Y_OFFSET);
     }
     else if (m_slider_position_type == SliderPosition::Type::TO)
     {
         m_value = m_max_value;
-        box.setPosX(m_positionX + 3.5f);
-        box.setPosY(m_positionY + 0.05f);
+        box.setPosX(m_positionX + _SLIDER_BOX_X_OFFSET);
+        box.setPosY(m_positionY + _SLIDER_BOX_Y_OFFSET);
     }
     m_status_slider = SLIDER_IDLE;
 }
@@ -193,11 +199,13 @@ bool Slider::hasRequirements(const Movie* movie) const
 }
 
 
-Slider::Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, SliderPosition::Type position, bool invisible)
+Slider::Slider(float posX, float posY, const std::string_view text,int min_v,
+    int max_v, SliderPosition::Type position, bool invisible)
     : Widget(posX, posY), m_text{ text }, m_min_value{ min_v }, m_max_value{ max_v }, m_slider_position_type{ position }
 {
     clear();
     m_visible = !invisible;
+
     //Inserting all the widgetfilters slider needs to check before filtering
     filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);
     filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);

@@ -55,16 +55,21 @@ void FilterGenreButton::draw()
 	{
 		return;
 	}
-
+	
 	//Drawing highlight background of the button.
-	SETCOLOR(brush.fill_color, 0.8f * m_highlighted, 0.8f * m_highlighted, 0.8f * m_highlighted);
+
+	const float HIGHLIGHT_COLOR_FACTOR{ 0.8f };
+	const float BUTTON_HIGHLIGHT_THICKNESS{ 0.1f };
+	SETCOLOR(brush.fill_color, HIGHLIGHT_COLOR_FACTOR * m_highlighted, HIGHLIGHT_COLOR_FACTOR * m_highlighted, HIGHLIGHT_COLOR_FACTOR * m_highlighted);
 	brush.outline_opacity = 1.0f;
-	graphics::drawRect(m_positionX, m_positionY + m_height, m_button_width + 0.1f, m_button_height + 0.1f, brush);
+	graphics::drawRect(m_positionX, m_positionY + m_height, m_button_width + BUTTON_HIGHLIGHT_THICKNESS, m_button_height + BUTTON_HIGHLIGHT_THICKNESS, brush);
 
 	//Drawing m_button_text which represents the buttons name ("Action","Drama"..)
+	const float TEXT_POSITION_X_OFFSET{ 0.45f };
+	const float TEXT_POSITION_Y_OFFSET{ 0.125f };
 	brush.fill_opacity = 1.0f;
 	SETCOLOR(brush.fill_color, 1.0f, 1.0f, 1.0f);
-	graphics::drawText(m_positionX - 0.45f, m_positionY + 0.125f + m_height, 0.4f, m_button_text, brush);
+	graphics::drawText(m_positionX - TEXT_POSITION_X_OFFSET, m_positionY + TEXT_POSITION_Y_OFFSET + m_height, 0.4f, m_button_text, brush);
 
 
 	//Drawing our button
@@ -108,7 +113,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 	//Inserting to the unordered set the button (text) that was pressed
 	s_scanned_genres.insert(m_button_text);
 
-	atLeastOneMovieHasGenres = false;
+	hasAllGenres = false;
 	/*
 		For every movie, we disable it and turn genre filter state to false, we also reset the Genre count which holds
 		all the current genres that are pressed by the user the movie has
@@ -139,14 +144,14 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 		//If it has all genres that were pressed and it has requirements, then dont disable it, and set it that is it has all current genres that were pressed.
 		if ((movie->state_info.getGenreCount() == (s_scanned_genres.size())) && hasRequirements(movie))
 		{
-			atLeastOneMovieHasGenres = true;
+			hasAllGenres = true;
 			movie->state_info.setDisabled(false);
 			movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::GenreFilter, WidgetEnums::WidgetFilterState::ENABLED);
 		}
 	}
 
 	//Because no movie has all genres that were pressed, we just filter based on the last genre that was pressed
-	if (!atLeastOneMovieHasGenres)
+	if (!hasAllGenres)
 	{
 		clear();
 		s_scanned_genres.insert(m_button_text);

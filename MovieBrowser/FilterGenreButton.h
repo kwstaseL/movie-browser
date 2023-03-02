@@ -25,7 +25,7 @@ private:
 	// A bool indicating that there is at least one movie with multiple combinations of genres
 	// For example, if the "Action" and "Drama" buttons are pressed and there is at least one movie
 	// that has both the Action and Drama genres, this variable would be true.
-	bool atLeastOneMovieHasGenres{ false };
+	bool hasAllGenres{ false };
 
 	// A set of genre buttons that have been pressed, stored by their names. It is static because every
 	//filter genre button needs to know about it when filtering.
@@ -64,6 +64,7 @@ private:
 	// Its used map quickly filter movies by genre. 
 	void createGenreMap(const std::vector<Movie*>& movie_list);
 
+	// Resets the state of the button by clearing all the necessary variables (called when reset filter button is pressed).
 	void clear() override;
 
 

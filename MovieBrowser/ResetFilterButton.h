@@ -11,6 +11,7 @@ class ResetFilterButton final : public Button
 {
 private:
 
+    // Vector which keeps all the widgets to be resetted
     const std::vector<Widget*> m_widgets{};
 
 private:

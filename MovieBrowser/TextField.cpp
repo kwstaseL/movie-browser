@@ -36,7 +36,8 @@ void TextField::draw()
 	graphics::Brush br;
 
 	// Set the color of the brush based on whether the TextField is highlighted or not
-	SETCOLOR(br.fill_color, 0.5f * m_highlighted, 0.5f * m_highlighted, 0.5f * m_highlighted);
+	const float HIGHLIGHT_COLOR_FACTOR = 0.5f;
+	SETCOLOR(br.fill_color, HIGHLIGHT_COLOR_FACTOR * m_highlighted, HIGHLIGHT_COLOR_FACTOR * m_highlighted, HIGHLIGHT_COLOR_FACTOR * m_highlighted);
 	brush.outline_opacity = 1.0f;
 
 	// Drawing the TextField
@@ -45,15 +46,16 @@ void TextField::draw()
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 
 	// If the TextField is highlighted and there is no text in it, draw some text inside the TextField
-	if (!textInvisible && characters.empty())
+	if (!_isTextInvisible && m_characters.empty())
 	{
-		graphics::drawText(m_positionX - 0.8f, m_positionY + m_height + 0.1f, 0.3f, m_text, br);
+		const float TEXTFIELD_TEXT_OFFSET_X = -0.8f;
+		const float TEXTFIELD_TEXT_OFFSET_Y = 0.1f;
+		graphics::drawText(m_positionX + TEXTFIELD_TEXT_OFFSET_X, m_positionY + m_height + TEXTFIELD_TEXT_OFFSET_Y, 0.3f, m_text, br);
 	}
 
 }
 
 // Continously updates our TextField.
-
 void TextField::update()
 {
 
@@ -78,7 +80,7 @@ void TextField::update()
 		//If button is pressed, hide the text "Search Movie/Dir/Prot", and highlight the box
 		if (ms.button_left_pressed)
 		{
-			textInvisible = true;
+			_isTextInvisible = true;
 			m_highlighted = true;
 		}
 	}
@@ -104,90 +106,94 @@ void TextField::update()
 			// If a key is being pressed and we are ready to type again
 			if (graphics::getKeyState((graphics::scancode_t)i))
 			{
-				if (!m_typed)
+				if (!_typed)
 				{
 					// Convert the key to ASCII and add it to the text field
 					ascii = (char)(i + 93);
 
-					m_timer = 0;	//Reset Timer
-					characters.push_back(ascii);	//Pushing back to the deque the character the user pressed
-					m_typed = true;
+					_timer = 0;	//Reset Timer
+					m_characters.push_back(ascii);	//Pushing back to the deque the character the user pressed
+					_typed = true;
 					m_action = true;	//Takes the action (filtering) since we need to find the movies with this parcticular string that the user gave.
 
-					if (isFull)	//If the text field is full, store the first character in a stack and remove it from the text field
+					if (_isFull)	//If the text field is full, store the first character in a stack and remove it from the text field
 					{
-						outofsight_words.push(characters[0]);
-						characters.erase(characters.begin());	
+						_outofsight_characters.push(m_characters[0]);
+						m_characters.erase(m_characters.begin());	
 					}
 				}
 			}
 			if (graphics::getKeyState((graphics::SCANCODE_SPACE)))	//Check if the SPACE key is being pressed
 			{
-				if (!m_typed)	//Add a space to the deque which holds all the characters
+				if (!_typed)	//Add a space to the deque which holds all the m_characters
 				{
-					m_timer = 0;
-					characters.push_back(' ');
+					_timer = 0;
+					m_characters.push_back(' ');
 
-					m_typed = true;
+					_typed = true;
 					m_action = true; //Takes the action (filtering) since we need to find the movies with this parcticular string
 
 					//If the text field is full, store the first character in a stack and remove it from the text field, also we keep how many extra words are
 					// inserted in tto the stack.
-					if (isFull)
+					if (_isFull)
 					{
-						outofsight_words.push(characters[0]);
-						characters.erase(characters.begin());
+						_outofsight_characters.push(m_characters[0]);
+						m_characters.erase(m_characters.begin());
 					}
 				}
 			}
 			if (graphics::getKeyState(graphics::SCANCODE_BACKSPACE))	        //Check if the BACKSPACE key is being pressed
 			{
-				if (!characters.empty() && (!m_typed))	//If I can type and the characters is not empty
+				if (!m_characters.empty() && (!_typed))	//If I can type and the m_characters is not empty
 				{
-					if (isFull)	// If the textfield is full
+					if (_isFull)	// If the textfield is full
 					{
-						if (!outofsight_words.empty())
+						if (!_outofsight_characters.empty())
 						{
-							characters.push_front(outofsight_words.top());	//Starting putting back to the beginning of the textfield the words of the stack
-							outofsight_words.pop();	//Removing the world we have already inserted to the front of the word from the stack.
+							m_characters.push_front(_outofsight_characters.top());	//Starting putting back to the beginning of the textfield the words of the stack
+							_outofsight_characters.pop();	//Removing the world we have already inserted to the front of the word from the stack.
 						}
 					}
 
-					if (!characters.empty())
+					if (!m_characters.empty())
 					{
-						characters.pop_back();	//Removing from the end of the characters deque, since the keyState was BACKSPACE
+						m_characters.pop_back();	//Removing from the end of the m_characters deque, since the keyState was BACKSPACE
 					}
 
-					m_typed = true; //set the flag to true since the user has typed
-					m_timer = 0; //Resetting the timer 
+					_typed = true; //set the flag to true since the user has typed
+					_timer = 0; //Resetting the timer 
 
 				}
 				m_action = true;	//Takes the action (filtering) since we need to find the movies with this parcticular string where the character was removed from the end
 			}
 		}
-		m_timer++;	//Increments the timer
+		_timer++;	//Increments the timer
 
-		if (m_timer > m_textfield_speed)	//If the timer surpasses a default value of 8
-			m_typed = false;	//Alerts that the user can now type again
+		if (_timer > m_textfield_speed)	//If the timer surpasses a default value of 8
+			_typed = false;	//Alerts that the user can now type again
 
-		if (characters.size() + outofsight_words.size()+1 >= max_textfield_words)	//If characters surpasses 25, the textfield is full
+		if (m_characters.size() + _outofsight_characters.size() +1 >= max_textfield_words)	//If m_characters surpasses 25, the textfield is full
 		{
-			isFull = true;
+			_isFull = true;
 		}
 		else
 		{
-			isFull = false;
+			_isFull = false;
 		}
 	}
 
-	if (!characters.empty())	//If the characters is not empty, draw the string
+	float TEXT_POSX_OFFSET{ 2.0f };
+	const float TEXT_POSY_OFFSET{ 0.1f };
+
+	if (!m_characters.empty())	//If the m_characters is not empty, draw the string
 	{
-		std::string textfield_string(characters.begin(), characters.end());
-		graphics::drawText(m_positionX - 2.0f, m_positionY + m_height + 0.1f, 0.3f, textfield_string, brush);
+		std::string textfield_string(m_characters.begin(), m_characters.end());
+		graphics::drawText(m_positionX - TEXT_POSX_OFFSET, m_positionY + m_height + TEXT_POSY_OFFSET, 0.3f, textfield_string, brush);
 	}
 	else //else just draw the "Search Movie/Director/Protagonist" text
 	{
-		graphics::drawText(m_positionX - 0.8f, m_positionY + m_height + 0.1f, 0.3f, m_text, brush);
+		TEXT_POSX_OFFSET = 0.8f;
+		graphics::drawText(m_positionX - TEXT_POSX_OFFSET, m_positionY + m_height + TEXT_POSY_OFFSET, 0.3f, m_text, brush);
 	}
 }
 
@@ -214,7 +220,7 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 		return;
 	}
 
-	std::string search_string(characters.begin(), characters.end());   //Making a string out of the deque characters
+	std::string search_string(m_characters.begin(), m_characters.end());   //Making a string out of the deque m_characters
 
 	//For each movie, we check whether this movie is referred given a search_string, based on either each protaginsts, director or title.
 	for (const auto& movie : movie_list)
@@ -247,7 +253,7 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 		// and have all other widgets applied
 
 		if ((movie_name.find(search_string) != std::string::npos || movie_director.find(search_string) != std::string::npos || hasProtagonist)
-			&& ((graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || characters.empty())))
+			&& ((graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || m_characters.empty())))
 		{
 			if (hasRequirements(movie))
 			{
@@ -276,9 +282,9 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 // Clears all variables of the textfield
 void TextField::clear()
 {
-	characters.clear();
-	textInvisible = false;
-	m_timer = -1;
+	m_characters.clear();
+	_isTextInvisible = false;
+	_timer = -1;
 }
 
 /*

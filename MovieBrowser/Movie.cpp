@@ -24,20 +24,30 @@ void Movie::draw()
 		return;
 	}
 
-	// Calculate glow effect for when the mouse is hovering over the movie.
-	float glow = 0.5f + 0.5f * sinf(graphics::getGlobalTime() / 100) * m_highlighted;
-	float highlight = 0.2f * m_highlighted + glow * 0.5f;
+	const float BASE_GLOW{ 0.5f };
+	const float GLOW_AMPLITUDE{ 0.5f };
+	const float GLOW_PERIOD{ 100.0f };
+	const float HIGHLIGHT_STRENGTH{ 0.2f };
+	const float HIGHLIGHT_SCALE{ 0.5f };
 
+	// Calculate glow effect for when the mouse is hovering over the movie.
+	float glow = BASE_GLOW + GLOW_AMPLITUDE * sinf(graphics::getGlobalTime() / GLOW_PERIOD) * m_highlighted;
+	float highlight = HIGHLIGHT_STRENGTH * m_highlighted + glow * HIGHLIGHT_SCALE;
+
+
+	
 	// Draw highlight/glow effect.
-	SETCOLOR(brush_update1.fill_color, highlight, highlight, highlight);
-	brush_update1.outline_opacity = 0.0f;
-	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width + 0.125f, MovieConst::Movie_Banner_Height + 0.125f, brush_update1);
+	const float BANNER_PADDING = 0.125f;
+
+	SETCOLOR(brush2.fill_color, highlight, highlight, highlight);
+	brush2.outline_opacity = 0.0f;
+	graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width + BANNER_PADDING, MovieConst::Movie_Banner_Height + BANNER_PADDING, brush2);
+
 
 	//Drawing our Movie image
-	brush_update2.outline_opacity = 0.1f;
-
-	brush_update2.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
-		graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width, MovieConst::Movie_Banner_Height, brush_update2);
+	brush3.outline_opacity = 0.1f;
+	brush3.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
+		graphics::drawRect(m_pos[0], m_pos[1], MovieConst::Movie_Banner_Width, MovieConst::Movie_Banner_Height, brush3);
 
 }
 
@@ -163,8 +173,9 @@ void Movie::displayMovieDetails()
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 
 	//Drawing the Movies Name
+	const int NAME_FONT_OFFSET = 1.0f;
 	graphics::setFont("OpenSans-Semibold.ttf");
-	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f - 1.0f, CanvasConst::CANVAS_HEIGHT / 1.35f, 1.0f, getName(), br);
+	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f - NAME_FONT_OFFSET, CanvasConst::CANVAS_HEIGHT / 1.35f, 1.0f, getName(), br);
 
 	//Drawing the Movies Date
 	graphics::setFont("OpenSans-Regular.ttf");
@@ -172,25 +183,24 @@ void Movie::displayMovieDetails()
 
 	//Drawing the Movies Directors
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f, CanvasConst::CANVAS_HEIGHT / 1.15f, 0.5f, "Director:      " + getDir(), br);
-
 	graphics::setFont("OpenSans-Regular.ttf");
 
 	//For all protagonists, draw the protagonist
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f, CanvasConst::CANVAS_HEIGHT / 1.10f, 0.5f, "Protagonists:      ", br);
-	float offset{ 3.5f };
+	float LABEL_OFFSET{ 3.5f };
 	for (const auto& protagonist : m_protagonists)
 	{
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f + offset, CanvasConst::CANVAS_HEIGHT / 1.10f, 0.5f, protagonist, br);
-		offset += protagonist.size() / 3;
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f + LABEL_OFFSET, CanvasConst::CANVAS_HEIGHT / 1.10f, 0.5f, protagonist, br);
+		LABEL_OFFSET += protagonist.size() / 3.0f;
 	}
 
 	//For all genres, draw the genre
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f - 1.0f, CanvasConst::CANVAS_HEIGHT / 1.28f, 0.5f, "Genre:      ", br);
-	offset = 1.5f;
-	for (const auto& g : m_genres)
+	LABEL_OFFSET = 1.5f;
+	for (const auto& genre : m_genres)
 	{
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f + offset, CanvasConst::CANVAS_HEIGHT / 1.28, 0.5f, g, br);
-		offset += g.size() / 2.9f;
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 15.0f + LABEL_OFFSET, CanvasConst::CANVAS_HEIGHT / 1.28, 0.5f, genre, br);
+		LABEL_OFFSET += genre.size() / 3.0f;
 	}
 
 }
@@ -198,22 +208,21 @@ void Movie::displayMovieDetails()
 // Function used to draw state_information about a movie on the screen when the movie is clicked
 void Movie::drawMovieInformation()
 {
-	graphics::Brush brush;
+	graphics::Brush brush4;
 
 	//Drawing our background image
 	// Set the brush properties for the background
-
-	br.fill_opacity = 0.5f;
-	br.outline_opacity = 0.0f;
-	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::BACKGROUND);
-	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 2, CanvasConst::CANVAS_HEIGHT / 2, CanvasConst::CANVAS_WIDTH, CanvasConst::CANVAS_HEIGHT, br);
+	brush.fill_opacity = 0.5f;
+	brush.outline_opacity = 0.0f;
+	brush.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::BACKGROUND);
+	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 2, CanvasConst::CANVAS_HEIGHT / 2, CanvasConst::CANVAS_WIDTH, CanvasConst::CANVAS_HEIGHT, brush);
 
 	//Drawing outside box of movie state_information
-	SETCOLOR(brush.fill_color, 0.0f, 0.0f, 0.0f);
-	brush.texture = "";
-	brush.fill_opacity = 0.7f;
-	brush.outline_opacity = 0.3f;
-	graphics::drawRect(informationBox.getPosX(), informationBox.getPosY(), CanvasConst::CANVAS_WIDTH / 1.2f, CanvasConst::CANVAS_HEIGHT / 1.2f, brush);
+	SETCOLOR(brush4.fill_color, 0.0f, 0.0f, 0.0f);
+	brush4.texture = "";
+	brush4.fill_opacity = 0.7f;
+	brush4.outline_opacity = 0.3f;
+	graphics::drawRect(informationBox.getPosX(), informationBox.getPosY(), CanvasConst::CANVAS_WIDTH / 1.2f, CanvasConst::CANVAS_HEIGHT / 1.2f, brush4);
 
 	// Draw the title of the movie
 	graphics::setFont("OpenSans-Semibold.ttf");
@@ -222,9 +231,10 @@ void Movie::drawMovieInformation()
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f, CanvasConst::CANVAS_HEIGHT / 6.0f, 1.0f, getName(), br);
 
 	// Draw the image of the movie
+	float WIDTH_OFFSET{ 0.7f };
 	br.outline_opacity = 0.5f;
 	br.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(m_image);
-	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 5.5f, CanvasConst::CANVAS_HEIGHT / 3.8f, MovieConst::Movie_Banner_Width + 0.7f, MovieConst::Movie_Banner_Height + 0.7f, br);
+	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 5.5f, CanvasConst::CANVAS_HEIGHT / 3.8f, MovieConst::Movie_Banner_Width + WIDTH_OFFSET, MovieConst::Movie_Banner_Height + WIDTH_OFFSET, br);
 
 	// Set the font and brush properties for the description
 	graphics::setFont("OpenSans-Semibold.ttf");
@@ -240,11 +250,11 @@ void Movie::drawMovieInformation()
 	}
 
 	//For all lines in the lines vector we have made, draws the lines. Every time a line is drawn, we add a height so the next line can go under the previous line drawen.
-	float text_height{ 0.0f };
+	float text_height_offset{ 0.0f };
 	for (const auto& line : description_lines)
 	{
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f+text_height, 0.5f, line, br);
-		text_height += .7f;
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 8.0f, CanvasConst::CANVAS_HEIGHT / 1.65f+ text_height_offset, 0.5f, line, br);
+		text_height_offset += .7f;
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -257,24 +267,24 @@ void Movie::drawMovieInformation()
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f, CanvasConst::CANVAS_HEIGHT / 3.3f, 0.5f, "-Directors:   " + getDir(), br);
 
 	//Draw all protagonists of the movie
-	float offset{ 3.5f };
+	WIDTH_OFFSET = 3.5f;
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, "-Protagonists: ", br);
 
 	for (const auto& protagonist : m_protagonists)
 	{
 		graphics::setFont("OpenSans-Light.ttf");
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f + offset, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, protagonist, br);
-		offset += protagonist.size() / 3.5f;
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.5f + WIDTH_OFFSET, CanvasConst::CANVAS_HEIGHT / 2.7f, 0.5f, protagonist, br);
+		WIDTH_OFFSET += protagonist.size() / 3.5f;
 	}
 
 	//Draw all Genres of the movie
-	offset = 3.5f;
+	WIDTH_OFFSET = 3.5f;
 	graphics::drawText(CanvasConst::CANVAS_WIDTH / 3.6f, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, "Genre: ", br);
-	for (const auto& g : m_genres)
+	for (const auto& genre : m_genres)
 	{
 		graphics::setFont("OpenSans-Light.ttf");
-		graphics::drawText(CanvasConst::CANVAS_WIDTH / 4.7f + offset, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, g, br);
-		offset += g.size() / 3.5f;
+		graphics::drawText(CanvasConst::CANVAS_WIDTH / 4.7f + WIDTH_OFFSET, CanvasConst::CANVAS_HEIGHT / 4.5f, 0.5f, genre, br);
+		WIDTH_OFFSET += genre.size() / 3.5f;
 	}
 
 }

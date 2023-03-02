@@ -3,8 +3,6 @@
 
 #include <unordered_map>
 
-//DONE
-
 namespace WidgetEnums {
 
     //Enum represents if the widget filter is enabled or disabled. 

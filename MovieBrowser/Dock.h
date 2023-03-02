@@ -3,8 +3,6 @@
 
 #include "Widget.h"
 
-//DONE
-
 //This class represents the Dock, which when hovered with the mouse, comes down to reveal all the widgets we use.
 
 class Dock final : public Widget
@@ -23,14 +21,18 @@ private:
 	const float m_dock_width{ CanvasConst::CANVAS_WIDTH / 2 };
 
 	// Represents the maximum height that the dock will have
-	const float max_dock_height{ 6.0f };
+	static constexpr float _max_dock_height{ 6.0f };
 
 	// Represents the speed that the dock will come down
-	const float dock_speed{ 0.013f };
+	static constexpr float _dock_animation_speed{ 0.013f };
 
 	// Represents the speed that the widgets will come down
-	const float widget_speed{ 0.008f };
+	static constexpr float _widget_animation_speed{ 0.008f };
 
+	// Represents the speed that the widgets will go up
+	static constexpr float _widget_restore_speed{ 0.01f };
+	
+	//Variable which keeps the current state of the dock
 	m_dock_status m_dock_state{ m_dock_status::STATE_IDLE };
 
 	//A boolean variable to play the sound of the dock sliding only once.

@@ -64,20 +64,27 @@ void ResetFilterButton::draw()
     {
         return;
     }
-    float highlight = 0.8f * m_highlighted;
+    
+    const float HIGHLIGHT_COLOR_FACTOR{ 0.8f };
+    float highlight = HIGHLIGHT_COLOR_FACTOR * m_highlighted;
 
     //Drawing highlight animation
-    SETCOLOR(brush.fill_color, 0.8f * highlight, 0.8f * highlight, 0.8f * highlight);
+    const float BUTTON_OUTLINE_THICKNESS{ 0.1f };
+
+    SETCOLOR(brush.fill_color, HIGHLIGHT_COLOR_FACTOR * highlight, HIGHLIGHT_COLOR_FACTOR * highlight, HIGHLIGHT_COLOR_FACTOR * highlight);
     brush.outline_opacity = 0.5f;
-    graphics::drawRect(m_positionX, m_positionY + m_height, m_button_width + 0.1f, m_button_height + 0.1f, brush);
+    graphics::drawRect(m_positionX, m_positionY + m_height, m_button_width + BUTTON_OUTLINE_THICKNESS, m_button_height + BUTTON_OUTLINE_THICKNESS, brush);
 
     //Drawing text of button
+    const float TEXT_POSITION_X_OFFSET{ 0.75f };
+    const float TEXT_POSITION_Y_OFFSET{ 0.125f };
+
     brush.fill_opacity = 1.0f;
     SETCOLOR(brush.fill_color, 1.0f, 1.0f, 1.0f);
-    graphics::drawText(m_positionX - 0.75f, m_positionY + 0.125f + m_height, 0.4f, m_button_text, brush);
+    graphics::drawText(m_positionX - TEXT_POSITION_X_OFFSET, m_positionY + TEXT_POSITION_Y_OFFSET + m_height, 0.4f, m_button_text, brush);
 
-    SETCOLOR(brush.fill_color, 1.0f, 0.0f, 0.0f);
     //Drawing our button
+    SETCOLOR(brush.fill_color, 1.0f, 0.0f, 0.0f);
     brush.texture = "";
     brush.fill_opacity = 1.0f;
     brush.outline_opacity = 0.2f;

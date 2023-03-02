@@ -1,7 +1,5 @@
 #include "Dock.h"
 
-//DONE
-
 //Function that continuously updates our dock
 void Dock::update()
 {
@@ -18,7 +16,7 @@ void Dock::update()
 		{
 			m_dock_state = m_dock_status::STATE_GOING_DOWN;
 
-			if (m_height != dock_speed)
+			if (m_height != _dock_animation_speed)
 			{
 				m_action = true;	//Alert the GUI that the dock is now coming down, so an action must be taken 
 			}
@@ -30,15 +28,15 @@ void Dock::update()
 		}
 
 		//Giving our dock a height, basically the animation of it coming down.
-		if (m_height != max_dock_height)
+		if (m_height != _max_dock_height)
 		{
 			//On each update, we increase dock's height multiplied by getDeltaTime which
 			//is the time passed from the previous state update
-			m_height += dock_speed * graphics::getDeltaTime();
+			m_height += _dock_animation_speed * graphics::getDeltaTime();
 
-			if (m_height > max_dock_height)
+			if (m_height > _max_dock_height)
 			{
-				m_height = max_dock_height;
+				m_height = _max_dock_height;
 			}
 		}
 		
@@ -51,7 +49,7 @@ void Dock::update()
 
 				//On each update, we increase all widget's height multiplied by getDeltaTime which
 				//is the time passed from the previous state update
-				widget->m_height += widget_speed * graphics::getDeltaTime();
+				widget->m_height += _widget_animation_speed * graphics::getDeltaTime();
 
 				if (widget->m_height > widget->getHeightOffset())	//If the height of a particular widget is where it should be then set it to be there.
 				{
@@ -81,7 +79,7 @@ void Dock::update()
 		{
 			//On each update, we decrease dock's height multiplied by getDeltaTime which
 			//is the time passed from the previous state update
-			m_height -= 0.01f * graphics::getDeltaTime();
+			m_height -= _widget_restore_speed * graphics::getDeltaTime();
 			if (m_height < 0.5f)
 			{
 				m_height = 0.0f;
@@ -102,7 +100,7 @@ void Dock::update()
 				widgetsResetted = false;
 				//On each update, we decrease all widget's height multiplied by getDeltaTime which
 				//is the time passed from the previous state update
-				widget->m_height -= 0.01f * graphics::getDeltaTime();	 
+				widget->m_height -= _widget_restore_speed * graphics::getDeltaTime();
 
 				if (widget->m_height < 0.0f)	//If the height of a particular widget is where it should be (0) then set it to be there.
 				{

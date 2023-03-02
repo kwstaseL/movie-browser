@@ -24,11 +24,11 @@ private:
     float m_positionY{};
 
     //Width and height of the clickable box
-    const float m_box_width{ 0.2f };
-    const float m_box_height{ 0.5f };
+    static constexpr float m_box_width{ 0.2f };
+    static constexpr float m_box_height{ 0.5f };
 
 public:
-
+    
     float getPosX() const { return m_positionX; }
     float getPosY() const { return m_positionY; }
 
@@ -50,8 +50,11 @@ private:
         SLIDER_DRAGGING     // Slider is now being dragged.
     };
 
-    const float SLIDER_START_RANGE{ m_positionX + 3.5f };
-    const float SLIDER_END_RANGE{ m_positionX - 3.5f };
+    static constexpr float _SLIDER_BOX_X_OFFSET{ 3.5f };
+    static constexpr float _SLIDER_BOX_Y_OFFSET{ 0.05f };
+
+    const float _SLIDER_START_RANGE{ m_positionX + _SLIDER_BOX_X_OFFSET };
+    const float _SLIDER_END_RANGE{ m_positionX - _SLIDER_BOX_X_OFFSET };
 
     const SliderPosition::Type m_slider_position_type{};
 
@@ -59,7 +62,7 @@ private:
     m_slider_state m_status_slider{ SLIDER_IDLE };
 
     // The text to display on the slider
-    const std::string m_text;
+    const std::string m_text{};
 
     // The value that the slider is currently set to
     int m_value{};
@@ -75,7 +78,7 @@ private:
     ClickableBox box;
 
     //This represents how much height will the slider need in order to appear when the dock comes down
-    const float m_height_offset{ 4.0f };
+    static constexpr float m_height_offset{ 4.0f };
 
 private:
 
@@ -116,7 +119,8 @@ public:
     //  \param float x: The x coordinate of the slider's position.
     //  \param float y: The y coordinate of the slider's position.
     //  \param const std::string_view text: It's the text to be displayed near the slider ("From","To")
-    Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, SliderPosition::Type position, bool invisible = true);
+    Slider(float posX, float posY, const std::string_view text,int min_v,int max_v, 
+        SliderPosition::Type position, bool invisible = true);
     virtual ~Slider() = default;
 
 };

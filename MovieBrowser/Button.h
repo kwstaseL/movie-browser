@@ -3,8 +3,6 @@
 
 #include "Widget.h"
 
-//DONE
-
 class Button : public Widget
 {
 protected:
@@ -21,13 +19,14 @@ protected:
 	//The text displayed on the button ("Action","Drama",...,"Clear Filter")
 	const std::string m_button_text{};
 
-	const float m_button_height{ .5f };
-	const float m_button_width{ 3.0f };
+	static constexpr float m_button_height{ .5f };
+	static constexpr float m_button_width{ 3.0f };
 
 	button_state_t m_button_state{ button_state_t::BUTTON_IDLE };
 
 	//This represents how much height will the button need in order to appear when the dock comes down
-	const float m_height_offset{ 2.0f };
+	static constexpr float m_height_offset{ 2.0f };
+
 	float getHeightOffset() const override { return m_height_offset; }
 
 	//Checks if the mouse is within the coordinates of the button

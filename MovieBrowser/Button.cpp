@@ -1,8 +1,6 @@
 #include "Button.h"
 
 
-//DONE
-
 //Constructs a new button
 // \param posX: the x coordinate of the button's position
 // \param posY: the y coordinate of the button's position

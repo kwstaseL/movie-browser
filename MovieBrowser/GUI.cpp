@@ -211,7 +211,7 @@ void GUI::createMovies()
 	movies.push_back(new Movie("MidSommar", "A couple travels to Northern Europe to visit a rural hometown's fabled Swedish mid-summer festival. What begins as an idyllic retreat quickly devolves into an increasingly violent and bizarre competition at the hands of a pagan cult.", AssetsConst::MIDSOMMAR, "2019", "Ari Ster", { "Florence Pugh","Jack Reynor","Vilhelm Blomgren" }, { "Horror","Drama" }));
 	movies.push_back(new Movie("Lord Of The Rings", "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.", AssetsConst::LORDOFTHERINGS, "2001", "Peter Jackson", { "Elijah Wood","Ian McKellen","Orlando Bloom" }, { "History", "Fantasy","Adventure"}));
 
-	size_t size = movies.size();
+	size_t movies_size = movies.size();
 
 	for (size_t i = 0; i < 2; i++) 
 	{
@@ -219,7 +219,7 @@ void GUI::createMovies()
 		{
 			size_t index = j + (i * 3 + i * 1 + i * 1);
 
-			if (index >= size) 
+			if (index >= movies_size)
 			{
 				break;
 			}

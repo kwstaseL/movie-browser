@@ -89,7 +89,7 @@ private:
    * \param movie The movie to check.
    * \return true if the movie has the filtered genre and is between the 2 years specified by the slider, false otherwise.
    */
-    bool hasRequirements(const Movie* movie) const;
+    bool hasRequirements(const Movie* const movie) const;
 
     /*
      * Searches for movies by title or director using the given list of movies.

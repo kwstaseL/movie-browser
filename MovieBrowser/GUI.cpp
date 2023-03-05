@@ -7,15 +7,19 @@
 
 void GUI::draw()
 {
-	if (m_state == STATUS_STARTED)
+	switch (m_state)
 	{
-		drawStartedScreen();
-	}
-	else if (m_state == STATUS_MOVIE_PRESSED)
-	{
-		drawPressedMovieScreen();
-	}
+	case STATUS_STARTED:
 
+		drawStartedScreen();
+		break;
+
+	case STATUS_MOVIE_PRESSED:
+
+		drawPressedMovieScreen();
+		break;
+
+	}
 }
 
 // Update is the function that is continuously running and updating all our objects to the screen.
@@ -24,16 +28,19 @@ void GUI::draw()
 	
 void GUI::update()
 {
-
-	if (m_state == STATUS_STARTED)
+	switch (m_state)
 	{
+	case STATUS_STARTED:
+
 		updateStartedScreen();
-	}
-	else if (m_state == STATUS_MOVIE_PRESSED)
-	{
-		updatePressedMovieScreen();
-	}
+		break;
 
+	case STATUS_MOVIE_PRESSED:
+
+		updatePressedMovieScreen();
+		break;
+
+	}
 }
 
 // Updates the started screen (the screen with all movies and widgets are shown)
@@ -166,27 +173,27 @@ void GUI::init()
 void GUI::createWidgets()
 {
 	//Creating all our widget objects
+	const float y_offset = 12.0f + 2.0f;
+	const float x_offset = CanvasConst::CANVAS_WIDTH / 15;
+	const float row1_y = CanvasConst::CANVAS_HEIGHT / 1.28 - y_offset;
+	const float row2_y = CanvasConst::CANVAS_HEIGHT / 1.2 - y_offset;
+	const float row3_y = CanvasConst::CANVAS_HEIGHT / 1.13 - y_offset;
 
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f - 2.0f, "Action"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f - 2.0f, "Drama"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.28 - 12.0f - 2.0f, "Horror"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Adventure"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Fantasy"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Sci-Fi"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 8.3f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f - 2.0f, "History"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 11.4f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f - 2.0f, "Animation"));
-	widgets.push_back(new FilterGenreButton(CanvasConst::CANVAS_WIDTH / 15 + 14.5f, CanvasConst::CANVAS_HEIGHT / 1.13 - 12.0f - 2.0f, "Crime"));
+	widgets.emplace_back(new FilterGenreButton(x_offset + 8.3f, row1_y, "Action"));
+	widgets.emplace_back(new FilterGenreButton(x_offset + 11.4f, row1_y, "Drama"));
+	widgets.emplace_back(new FilterGenreButton(x_offset + 14.5f, row1_y, "Horror"));
+	widgets.emplace_back(new FilterGenreButton(x_offset + 8.3f, row2_y, "Adventure"));
+	widgets.emplace_back(new FilterGenreButton(x_offset + 11.4f, row2_y, "Fantasy"));
+	widgets.emplace_back(new FilterGenreButton(x_offset + 14.5f, row2_y, "Sci-Fi"));
+	widgets.emplace_back(new FilterGenreButton(x_offset + 8.3f, row3_y, "History"));
+	widgets.emplace_back(new FilterGenreButton(x_offset + 11.4f, row3_y, "Animation"));
+	widgets.emplace_back(new FilterGenreButton(x_offset + 14.5f, row3_y, "Crime"));
 
-	widgets.push_back(new Slider(CanvasConst::CANVAS_WIDTH / 15 + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.20 - 12.0f - 2.0f, "From",1970,2020,SliderPosition::Type::FROM));
-
-	widgets.push_back(new Slider(CanvasConst::CANVAS_WIDTH / 15 + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.10 - 12.0f - 2.0f, "To",1970,2020, SliderPosition::Type::TO));
-
-	widgets.push_back(new TextField(CanvasConst::CANVAS_WIDTH / 15 + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - 12.0f - 2.0f, "Search Title/Dir/Prot",TextFieldFiltering::FilterBy::TITLE_PROTAGONIST_DIRECTOR));
-
-	widgets.push_back(new ResetFilterButton(CanvasConst::CANVAS_WIDTH / 15 + 18.0f, CanvasConst::CANVAS_HEIGHT / 1.2 - 12.0f - 2.0f, "Clear Filter",widgets));
-
-	widgets.push_back(new Dock(CanvasConst::CANVAS_WIDTH / 2, -3.5f, widgets));	//For this program , we want all the widgets to appear on the dock,
-	//thats why we are passing all of them to the dock (except for the dock itself).
+	widgets.emplace_back(new Slider(x_offset + 11.5f, row2_y, "From", 1970, 2020, SliderPosition::Type::FROM));
+	widgets.emplace_back(new Slider(x_offset + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.10 - y_offset, "To", 1970, 2020, SliderPosition::Type::TO));
+	widgets.emplace_back(new TextField(x_offset + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - y_offset, "Search Title/Dir/Prot", TextFieldFiltering::FilterBy::TITLE_PROTAGONIST_DIRECTOR));
+	widgets.emplace_back(new ResetFilterButton(x_offset + 18.0f, row2_y, "Clear Filter", widgets));
+	widgets.emplace_back(new Dock(CanvasConst::CANVAS_WIDTH / 2, -3.5f, widgets));
 }
 
 void GUI::createMovies()
@@ -206,27 +213,20 @@ void GUI::createMovies()
 
 	size_t size = movies.size();
 
-	for (size_t i{ 0 }; i < 2; i++)
+	for (size_t i = 0; i < 2; i++) 
 	{
-		for (size_t j{ 0 }; j <= 4; j++)
+		for (size_t j = 0; j < 5; j++) 
 		{
+			size_t index = j + (i * 3 + i * 1 + i * 1);
 
-			movies[j + (i * 3 + i * 1 + i * 1)]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - i * 6.3)));
-			movies[j + (i * 3 + i * 1 + i * 1)]->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + j * 5.5);
-			size--;
-			if (j + (i * 3 + i * 1 + i * 1) == 7)
+			if (index >= size) 
 			{
 				break;
 			}
-
+			movies[index]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - i * 6.3)));
+			movies[index]->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + j * 5.5);
 		}
 	}
-
-	movies[8]->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + 3 * 5.5);
-	movies[8]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - 1 * 6.3)));
-
-	movies[9]->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + 4 * 5.5);
-	movies[9]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - 1 * 6.3)));
 
 }
 

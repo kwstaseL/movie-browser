@@ -9,7 +9,7 @@ It helps us filter movies, synchronizing all widgets
 Returns true if movie has a filtered genre("Action","Drama" etc..) and is between the 2 years
 Returns false otherwise
 */
-bool TextField::hasRequirements(const Movie* movie) const
+bool TextField::hasRequirements(const Movie* const movie) const
 {
 	if (movie)
 	{

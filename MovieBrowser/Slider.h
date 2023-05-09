@@ -3,15 +3,6 @@
 
 #include "Widget.h"
 
-namespace SliderPosition
-{
-    enum class Type
-    {
-        FROM,
-        TO
-    };
-}
-
 
 // Defines a Slider class, which is a widget that can be used to filter a list of movies by year.
 // The Slider class has a clickable box that can be dragged to set the year based on the movement of the mouse of the user.
@@ -39,47 +30,17 @@ public:
     float getBoxHeight() const { return m_box_height; }
 };
 
+namespace SliderPosition
+{
+    enum class Type
+    {
+        FROM,
+        TO
+    };
+}
+
 class Slider : public Widget
 {
-private:
-
-    enum m_slider_state
-    {
-        SLIDER_IDLE,        // Slider is not being dragged.
-        SLIDER_RELEASED,    // Slider was previously being draggedn and now is released
-        SLIDER_DRAGGING     // Slider is now being dragged.
-    };
-
-    static constexpr float _SLIDER_BOX_X_OFFSET{ 3.5f };
-    static constexpr float _SLIDER_BOX_Y_OFFSET{ 0.05f };
-
-    const float _SLIDER_START_RANGE{ m_positionX + _SLIDER_BOX_X_OFFSET };
-    const float _SLIDER_END_RANGE{ m_positionX - _SLIDER_BOX_X_OFFSET };
-
-    const SliderPosition::Type m_slider_position_type{};
-
-    // The current state of the slider
-    m_slider_state m_status_slider{ SLIDER_IDLE };
-
-    // The text to display on the slider
-    const std::string m_text{};
-
-    // The value that the slider is currently set to
-    int m_value{};
-
-    const int m_min_value{};
-    const int m_max_value{};
-
-    // A vector indicating all widgets this class needs to check, if they have filtered the movies previously.
-    // This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
-    std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
-
-    // The clickable box for the slider
-    ClickableBox box;
-
-    //This represents how much height will the slider need in order to appear when the dock comes down
-    static constexpr float m_height_offset{ 4.0f };
-
 private:
 
     // Continously Updates the state of the slider
@@ -104,14 +65,54 @@ private:
     // Filter the list of movies based on the year on the slider, 
     // and taking into consideration all the other filters that might be active for a specfic movie.
     void filterByYear(const std::vector<Movie*>& movie_list);
-     /*
-     Checks if the given movie meets the requirements for filtering (checks if it is filtered by other widgets),
-     used to sychronize all filters with all widgets that can filter, together.
-     \param movie: a pointer to the movie
-     \return true if the movie meets the requirements
-     */
+    /*
+    Checks if the given movie meets the requirements for filtering (checks if it is filtered by other widgets),
+    used to sychronize all filters with all widgets that can filter, together.
+    \param movie: a pointer to the movie
+    \return true if the movie meets the requirements
+    */
     bool hasRequirements(const Movie* movie) const;
     float getHeightOffset() const override { return m_height_offset; }
+
+private:
+
+    enum m_slider_state
+    {
+        SLIDER_IDLE,        // Slider is not being dragged.
+        SLIDER_RELEASED,    // Slider was previously being draggedn and now is released
+        SLIDER_DRAGGING     // Slider is now being dragged.
+    };
+
+    static constexpr float SLIDER_BOX_X_OFFSET{ 3.5f };
+    static constexpr float SLIDER_BOX_Y_OFFSET{ 0.05f };
+
+    const float SLIDER_START_RANGE{ m_positionX + SLIDER_BOX_X_OFFSET };
+    const float SLIDER_END_RANGE{ m_positionX - SLIDER_BOX_X_OFFSET };
+
+    const SliderPosition::Type m_slider_position_type{};
+
+    // The current state of the slider
+    m_slider_state m_status_slider{ SLIDER_IDLE };
+
+    // The text to display on the slider
+    const std::string m_text{};
+
+    // The value that the slider is currently set to
+    int m_value{};
+
+    // Defines the min/max value of the slider
+    const int m_min_value{};
+    const int m_max_value{};
+
+    // A vector indicating all widgets this class needs to check, if they have filtered the movies previously.
+    // This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
+    std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
+
+    // The clickable box for the slider
+    ClickableBox box;
+
+    //This represents how much height will the slider need in order to appear when the dock comes down
+    static constexpr float m_height_offset{ 4.0f };
 
 public:
 

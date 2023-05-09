@@ -46,7 +46,7 @@ void TextField::draw()
 	SETCOLOR(br.fill_color, 1.0f, 1.0f, 1.0f);
 
 	// If the TextField is highlighted and there is no text in it, draw some text inside the TextField
-	if (!_isTextInvisible && m_characters.empty())
+	if (!isTextInvisible && m_characters.empty())
 	{
 		const float TEXTFIELD_TEXT_OFFSET_X = -0.8f;
 		const float TEXTFIELD_TEXT_OFFSET_Y = 0.1f;
@@ -80,7 +80,7 @@ void TextField::update()
 		//If button is pressed, hide the text "Search Movie/Dir/Prot", and highlight the box
 		if (ms.button_left_pressed)
 		{
-			_isTextInvisible = true;
+			isTextInvisible = true;
 			m_highlighted = true;
 		}
 	}
@@ -106,52 +106,52 @@ void TextField::update()
 			// If a key is being pressed and we are ready to type again
 			if (graphics::getKeyState((graphics::scancode_t)i))
 			{
-				if (!_typed)
+				if (!typed)
 				{
 					// Convert the key to ASCII and add it to the text field
 					ascii = (char)(i + 93);
 
-					_timer = 0;	//Reset Timer
+					timer = 0;	//Reset Timer
 					m_characters.push_back(ascii);	//Pushing back to the deque the character the user pressed
-					_typed = true;
+					typed = true;
 					m_action = true;	//Takes the action (filtering) since we need to find the movies with this parcticular string that the user gave.
 
-					if (_isFull)	//If the text field is full, store the first character in a stack and remove it from the text field
+					if (isFull)	//If the text field is full, store the first character in a stack and remove it from the text field
 					{
-						_outofsight_characters.push(m_characters[0]);
+						outofsight_characters.push(m_characters[0]);
 						m_characters.erase(m_characters.begin());	
 					}
 				}
 			}
 			if (graphics::getKeyState((graphics::SCANCODE_SPACE)))	//Check if the SPACE key is being pressed
 			{
-				if (!_typed)	//Add a space to the deque which holds all the m_characters
+				if (!typed)	//Add a space to the deque which holds all the m_characters
 				{
-					_timer = 0;
+					timer = 0;
 					m_characters.push_back(' ');
 
-					_typed = true;
+					typed = true;
 					m_action = true; //Takes the action (filtering) since we need to find the movies with this parcticular string
 
 					//If the text field is full, store the first character in a stack and remove it from the text field, also we keep how many extra words are
 					// inserted in tto the stack.
-					if (_isFull)
+					if (isFull)
 					{
-						_outofsight_characters.push(m_characters[0]);
+						outofsight_characters.push(m_characters[0]);
 						m_characters.erase(m_characters.begin());
 					}
 				}
 			}
 			if (graphics::getKeyState(graphics::SCANCODE_BACKSPACE))	        //Check if the BACKSPACE key is being pressed
 			{
-				if (!m_characters.empty() && (!_typed))	//If I can type and the m_characters is not empty
+				if (!m_characters.empty() && (!typed))	//If I can type and the m_characters is not empty
 				{
-					if (_isFull)	// If the textfield is full
+					if (isFull)	// If the textfield is full
 					{
-						if (!_outofsight_characters.empty())
+						if (!outofsight_characters.empty())
 						{
-							m_characters.push_front(_outofsight_characters.top());	//Starting putting back to the beginning of the textfield the words of the stack
-							_outofsight_characters.pop();	//Removing the world we have already inserted to the front of the word from the stack.
+							m_characters.push_front(outofsight_characters.top());	//Starting putting back to the beginning of the textfield the words of the stack
+							outofsight_characters.pop();	//Removing the world we have already inserted to the front of the word from the stack.
 						}
 					}
 
@@ -160,25 +160,25 @@ void TextField::update()
 						m_characters.pop_back();	//Removing from the end of the m_characters deque, since the keyState was BACKSPACE
 					}
 
-					_typed = true; //set the flag to true since the user has typed
-					_timer = 0; //Resetting the timer 
+					typed = true; //set the flag to true since the user has typed
+					timer = 0; //Resetting the timer 
 
 				}
 				m_action = true;	//Takes the action (filtering) since we need to find the movies with this parcticular string where the character was removed from the end
 			}
 		}
-		_timer++;	//Increments the timer
+		timer++;	//Increments the timer
 
-		if (_timer > m_textfield_speed)	//If the timer surpasses a default value of 8
-			_typed = false;	//Alerts that the user can now type again
+		if (timer > m_textfield_speed)	//If the timer surpasses a default value of 8
+			typed = false;	//Alerts that the user can now type again
 
-		if (m_characters.size() + _outofsight_characters.size() +1 >= max_textfield_words)	//If m_characters surpasses 25, the textfield is full
+		if (m_characters.size() + outofsight_characters.size() +1 >= max_textfield_words)	//If m_characters surpasses 25, the textfield is full
 		{
-			_isFull = true;
+			isFull = true;
 		}
 		else
 		{
-			_isFull = false;
+			isFull = false;
 		}
 	}
 
@@ -283,8 +283,8 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 void TextField::clear()
 {
 	m_characters.clear();
-	_isTextInvisible = false;
-	_timer = -1;
+	isTextInvisible = false;
+	timer = -1;
 }
 
 /*

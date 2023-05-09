@@ -9,7 +9,7 @@ void Slider::update()
         return;
     }
 
-    //Getting the current mouse state and convert the mouse position to canvas coordinates.
+    // Getting the current mouse state and convert the mouse position to canvas coordinates.
     graphics::MouseState ms;
     graphics::getMouseState(ms);
 
@@ -28,15 +28,15 @@ void Slider::update()
                 return;
             }
             // Check if the mouse and the box is going out of the bounds of the slider. (checking for end of slider) 
-            if (mouse_X >= _SLIDER_START_RANGE && box.getPosX() >= _SLIDER_START_RANGE)
+            if (mouse_X >= SLIDER_START_RANGE && box.getPosX() >= SLIDER_START_RANGE)
             {
-                mouse_X = _SLIDER_START_RANGE;
+                mouse_X = SLIDER_START_RANGE;
                 m_value = m_max_value;
             }
             // Check if the mouse and the box is going out of the bounds of the slider. (checking for start of slider) 
-            if (mouse_X <= _SLIDER_END_RANGE && box.getPosX() <= _SLIDER_END_RANGE)
+            if (mouse_X <= SLIDER_END_RANGE && box.getPosX() <= SLIDER_END_RANGE)
             {
-                mouse_X = _SLIDER_END_RANGE;
+                mouse_X = SLIDER_END_RANGE;
                 m_value = m_min_value;
             }
 
@@ -49,8 +49,7 @@ void Slider::update()
             // 2 horizantal "borders"  of the slider  which when subtracted it gives as the length of our slider
             // (This division finds in what "percentage" of our whole slider our slider button is at the moment) after we find that we multiply it by all the discrete values we can get
             // and adding that to the minimum value we have set to get our final value for that specific location of the button
-            m_value = m_min_value + (box.getPosX() - _SLIDER_END_RANGE) / (_SLIDER_START_RANGE - _SLIDER_END_RANGE) * (m_max_value - m_min_value);
-
+            m_value = m_min_value + (box.getPosX() - SLIDER_END_RANGE) / (SLIDER_START_RANGE - SLIDER_END_RANGE) * (m_max_value - m_min_value);
         }
          else if ((ms.button_left_released || !ms.dragging) && m_status_slider == SLIDER_DRAGGING)
         {
@@ -111,7 +110,8 @@ bool Slider::contains(float mouse_x, float mouse_y) const
 // This is the function which runs the filterByYear when the box is dragged and released
 void Slider::takeAction(const std::vector<Movie*>& movie_list)
 {
-    // Filter the list of movies based on the year on the slider, and taking into consideration all the other filters that might be active.
+    // Filter the list of movies based on the year on the slider,
+    // and taking into consideration all the other filters that might be active.
     filterByYear(movie_list);
 }
 //Clears the slider
@@ -120,14 +120,14 @@ void Slider::clear()
     if (m_slider_position_type == SliderPosition::Type::FROM)
     {
         m_value = m_min_value;
-        box.setPosX(m_positionX - _SLIDER_BOX_X_OFFSET);
-        box.setPosY(m_positionY + _SLIDER_BOX_Y_OFFSET);
+        box.setPosX(m_positionX - SLIDER_BOX_X_OFFSET);
+        box.setPosY(m_positionY + SLIDER_BOX_Y_OFFSET);
     }
     else if (m_slider_position_type == SliderPosition::Type::TO)
     {
         m_value = m_max_value;
-        box.setPosX(m_positionX + _SLIDER_BOX_X_OFFSET);
-        box.setPosY(m_positionY + _SLIDER_BOX_Y_OFFSET);
+        box.setPosX(m_positionX + SLIDER_BOX_X_OFFSET);
+        box.setPosY(m_positionY + SLIDER_BOX_Y_OFFSET);
     }
     m_status_slider = SLIDER_IDLE;
 }

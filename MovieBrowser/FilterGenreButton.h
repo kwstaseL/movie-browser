@@ -6,36 +6,8 @@
 
 // Represents a FilterGenreButton, which in our program has a text ("Action","Drama"), and when pressed filters movies by that genre.
 // When filtering, we also take as consideration all the other widgets that may have filtered the movies.
-
 class FilterGenreButton final : public Button
 {
-private:
-
-	using genreMap = std::unordered_map<std::string, std::unordered_set<Movie*>>;
-
-private:
-
-	// A map in which the key is a genre text ("Action","Drama"...) and the value is an unordered set of all the movies that have that specific genre.
-	//Its used map quickly filter movies by genre. 
-	static inline genreMap s_genreMap{};
-
-	//Bool indicating whether the genre map has been created (only created once)
-	static inline bool genreMapCreated{ false };
-
-	// A bool indicating that there is at least one movie with multiple combinations of genres
-	// For example, if the "Action" and "Drama" buttons are pressed and there is at least one movie
-	// that has both the Action and Drama genres, this variable would be true.
-	bool hasAllGenres{ false };
-
-	// A set of genre buttons that have been pressed, stored by their names. It is static because every
-	//filter genre button needs to know about it when filtering.
-	static inline std::unordered_set<std::string> s_scanned_genres;
-
-	//A vector indicating all widgets this class needs to check (before filtering the movies), if they have filtered the movies previously.
-	// This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
-	std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
-
-
 private:
 
 	/*
@@ -67,6 +39,31 @@ private:
 	// Resets the state of the button by clearing all the necessary variables (called when reset filter button is pressed).
 	void clear() override;
 
+private:
+
+	using genreMap = std::unordered_map<std::string, std::unordered_set<Movie*>>;
+
+private:
+
+	// A map in which the key is a genre text ("Action","Drama"...) and the value is an unordered set of all the movies that have that specific genre.
+	//Its used map quickly filter movies by genre. 
+	static inline genreMap s_genreMap{};
+
+	//Bool indicating whether the genre map has been created (only created once)
+	static inline bool genreMapCreated{ false };
+
+	// A bool indicating that there is at least one movie with multiple combinations of genres
+	// For example, if the "Action" and "Drama" buttons are pressed and there is at least one movie
+	// that has both the Action and Drama genres, this variable would be true.
+	bool hasAllGenres{ false };
+
+	// A set of genre buttons that have been pressed, stored by their names. It is static because every
+	//filter genre button needs to know about it when filtering.
+	static inline std::unordered_set<std::string> s_scanned_genres;
+
+	//A vector indicating all widgets this class needs to check (before filtering the movies), if they have filtered the movies previously.
+	// This is used in order to sychronize all filters together. (Also watch MovieState.h + hasRequirements)
+	std::vector<WidgetEnums::WidgetFilters> filterToBeChecked;
 
 public:
 

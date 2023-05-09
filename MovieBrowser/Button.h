@@ -5,6 +5,23 @@
 
 class Button : public Widget
 {
+private:
+
+	//Continuously updates the button
+	virtual void update() = 0;
+
+	//Continuously draws the button on the screen.
+	virtual void draw() = 0;
+
+	//Resets the button's state
+	virtual void clear() = 0;
+
+	//Performs an action (e.g filter movies based on gnre) when the button is pressed.
+	//This function is being called when the button is pressed to perform the action depending on the button.
+	//(When filtering, the Buttons which filters the genres takes into consideration all the other widgets that may have filtered the movies.)
+	// \param movie_list: a vector of all the movies
+	virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
+
 protected:
 
 	//Enum class representing the different states of our button: idle, pressed, or highlighted.
@@ -34,23 +51,6 @@ protected:
 	// \param mouse_y: the y coordinate of the mouse
 	// \return true if the mouse is within the button's coordinates
 	bool contains(float mouse_x, float mouse_y) const;
-
-private:
-
-	//Continuously updates the button
-	virtual void update() = 0;
-
-	//Continuously draws the button on the screen.
-	virtual void draw() = 0;
-
-	//Resets the button's state
-	virtual void clear() = 0;
-
-	//Performs an action (e.g filter movies based on gnre) when the button is pressed.
-	//This function is being called when the button is pressed to perform the action depending on the button.
-	//(When filtering, the Buttons which filters the genres takes into consideration all the other widgets that may have filtered the movies.)
-	// \param movie_list: a vector of all the movies
-	virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
 
 public:
 

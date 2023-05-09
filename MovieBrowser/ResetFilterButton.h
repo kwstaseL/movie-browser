@@ -11,15 +11,10 @@ class ResetFilterButton final : public Button
 {
 private:
 
-    // Vector which keeps all the widgets to be resetted
-    const std::vector<Widget*> m_widgets{};
-
-private:
-
     /*
      * Resets all movie filter widgets to their default values and enables all movies.
      * When this function gets called, each widget will "clear" all their states automatically.
-     * 
+     *
      * \param movie_list A list of our movies
      */
     void restoreMovieStates(const std::vector<Movie*>& movie_list) const;
@@ -35,12 +30,17 @@ private:
     void takeAction(const std::vector<Movie*>& movie_list) override;
 
     void clear() override;
-    
+
     //Continuously updates the reset filter button.
     void update() override;
-    
+
     // Continuously draws the reset filter button.
     void draw() override;
+
+private:
+
+    // Vector which keeps all the widgets to be resetted
+    const std::vector<Widget*> m_widgets{};
 
 public:
 

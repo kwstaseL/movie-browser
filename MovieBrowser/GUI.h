@@ -18,35 +18,6 @@ class GUI
 {
 private:
 
-	/* Enum represents all the states our programs goes to
-	* 
-	* - STATUS_STARTED indicates the starting screen where all movies are shown
-	* - STATUS_MOVIE_PRESSED indicates the scene where a movie is pressed and all information is displayed about that specific movie
-	*/
-	enum gui_state_t
-	{
-		STATUS_STARTED,	
-		STATUS_MOVIE_PRESSED
-	};
-
-	gui_state_t m_state{ STATUS_STARTED };
-
-	// A vector which contains all movie pointers
-	std::vector<Movie*> movies;
-
-	// A vector which contains all widget pointers
-	std::vector<Widget*> widgets;
-
-	// Singleton instance of GUI
-	static inline GUI* s_gui{};
-
-	// Indicates which movie was "clicked"
-	Movie* clickedMovie{ nullptr };
-
-	graphics::Brush brush;
-
-private:
-
 	//A function that creates all the movies
 	void createMovies();
 
@@ -73,6 +44,35 @@ private:
 	//Because we use are using a Singleton we don't want to instantiate/copy another GUI instance
 	GUI(const GUI& other) = delete;
 	GUI& operator=(const GUI&) = delete;
+
+private:
+
+	/* Enum represents all the states our programs goes to
+	* 
+	* - STATUS_STARTED indicates the starting screen where all movies are shown
+	* - STATUS_MOVIE_PRESSED indicates the scene where a movie is pressed and all information is displayed about that specific movie
+	*/
+	enum gui_state_t
+	{
+		STATUS_STARTED,	
+		STATUS_MOVIE_PRESSED
+	};
+
+	gui_state_t m_state{ STATUS_STARTED };
+
+	// A vector which contains all movie pointers
+	std::vector<Movie*> movies;
+
+	// A vector which contains all widget pointers
+	std::vector<Widget*> widgets;
+
+	// Singleton instance of GUI
+	static inline GUI* s_gui{};
+
+	// Indicates which movie was "clicked"
+	Movie* clickedMovie{ nullptr };
+
+	graphics::Brush brush;
 
 public:
 

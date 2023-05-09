@@ -191,6 +191,7 @@ void GUI::createWidgets()
 
 	widgets.emplace_back(new Slider(x_offset + 11.5f, row2_y, "From", 1970, 2020, SliderPosition::Type::FROM));
 	widgets.emplace_back(new Slider(x_offset + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.10 - y_offset, "To", 1970, 2020, SliderPosition::Type::TO));
+
 	widgets.emplace_back(new TextField(x_offset + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - y_offset, "Search Title/Dir/Prot", TextFieldFiltering::FilterBy::TITLE_PROTAGONIST_DIRECTOR));
 	widgets.emplace_back(new ResetFilterButton(x_offset + 18.0f, row2_y, "Clear Filter", widgets));
 	widgets.emplace_back(new Dock(CanvasConst::CANVAS_WIDTH / 2, -3.5f, widgets));
@@ -211,22 +212,33 @@ void GUI::createMovies()
 	movies.push_back(new Movie("MidSommar", "A couple travels to Northern Europe to visit a rural hometown's fabled Swedish mid-summer festival. What begins as an idyllic retreat quickly devolves into an increasingly violent and bizarre competition at the hands of a pagan cult.", AssetsConst::MIDSOMMAR, "2019", "Ari Ster", { "Florence Pugh","Jack Reynor","Vilhelm Blomgren" }, { "Horror","Drama" }));
 	movies.push_back(new Movie("Lord Of The Rings", "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.", AssetsConst::LORDOFTHERINGS, "2001", "Peter Jackson", { "Elijah Wood","Ian McKellen","Orlando Bloom" }, { "History", "Fantasy","Adventure"}));
 
-	size_t movies_size = movies.size();
+	const size_t movies_size = movies.size();
 
-	for (size_t i = 0; i < 2; i++) 
+	const size_t numRows = 2;
+	const size_t moviesPerRow = 5;
+
+	const double posYFactor = 6.3;
+	const double posXFactor = 5.5;
+
+	size_t size = movies.size();
+
+	for (size_t i = 0; i < numRows; i++) 
 	{
-		for (size_t j = 0; j < 5; j++) 
+		for (size_t j = 0; j < moviesPerRow; j++) 
 		{
-			size_t index = j + (i * 3 + i * 1 + i * 1);
+			size_t index = j + (i * moviesPerRow);
 
-			if (index >= movies_size)
+			if (index >= size) 
 			{
 				break;
 			}
-			movies[index]->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - i * 6.3)));
-			movies[index]->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + j * 5.5);
+
+			Movie* movie = movies[index];
+			movie->setPosY(CanvasConst::CANVAS_WIDTH / (abs(10 - 0.12 - i * posYFactor)));
+			movie->setPosX(CanvasConst::CANVAS_HEIGHT / 5.75 + j * posXFactor);
 		}
 	}
+
 
 }
 

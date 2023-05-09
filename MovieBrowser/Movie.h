@@ -37,6 +37,33 @@ public:
 */
 class Movie
 {
+public:
+
+	//Function that draws a movie on the screen
+	void draw();
+
+	//Function that updates the movie on the screen
+	void update();
+
+	// Function that draws information on the screen box
+	void drawMovieInformation();
+
+private:
+
+	// Function that displays movies information
+	void displayMovieDetails();
+	/*
+	 * Determines if the given coordinates of mouse x,y are insde the coordinates of the Movies Frame.
+	 * \param mouse_x: the x coordinate of the mouse.
+	 * \param mouse_y: the y coordinate of the mouse.
+	 * \return True if the given coordinates of mouse x,y is inside the border of the Movies Frame.
+	 */
+	bool contains(float x, float y) const;
+
+	// Function that returns a new "lines" vector which represents all the lines that should be drawen to the canvas.
+	// Based on the whole description of the movie
+	const std::vector<std::string> createDescription();
+
 private:
 
 	// Position of the movie on the screen.
@@ -84,23 +111,6 @@ private:
 	// Box that displays movie information when clicked.
 	InfoBox informationBox;
 
-
-private:
-
-	// Function that displays movies information
-	void displayMovieDetails();
-	/*
-	 * Determines if the given coordinates of mouse x,y are insde the coordinates of the Movies Frame.
-	 * \param mouse_x: the x coordinate of the mouse.
-	 * \param mouse_y: the y coordinate of the mouse.
-	 * \return True if the given coordinates of mouse x,y is inside the border of the Movies Frame.
-	 */
-	bool contains(float x, float y) const;
-
-	// Function that returns a new "lines" vector which represents all the lines that should be drawen to the canvas.
-	// Based on the whole description of the movie
-	const std::vector<std::string> createDescription();
-
 public:
 
 	// Constructing a new movie
@@ -112,15 +122,6 @@ public:
 	// For Example when clicking "Action" Filter Button ,we want all the movies that have action genre in their genres, to appear,
 	// but if we also want to search for a movie , while action button is still on, we want to only show those movies that have "Action" as genre.
 	MovieState state_info;
-
-	//Function that draws a movie on the screen
-	void draw();
-
-	//Function that updates the movie on the screen
-	void update();
-
-	// Function that draws information on the screen box
-	void drawMovieInformation();
 
 	//Getters for the information of each movie
 

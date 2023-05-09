@@ -9,6 +9,50 @@
  */
 class Widget
 {
+public:
+
+    // Updates the state of a widget, it is called polymorphically for every widget.
+    virtual void update() = 0;
+
+    // Draws the widget, it is called polymorphically for every widget.
+    virtual void draw() = 0;
+    /*
+     * Returns if an action is triggered (a button is pressed, text has been inputted by the user..). It is called polymorphically for every widget.
+     * \return true if an action has been triggered, false otherwise.
+     */
+    virtual bool actionTriggered() const { return m_action; }
+
+    void setActionTriggered(bool action) { m_action = action; }
+    /*
+     * Performs a specific operation based on the type of widget being called.  It is called polymorphically for every widget.
+     * \param movie_list A list of all the movies where we are going to operte on.
+     */
+    virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
+
+    //Clears the state of the widget. It is called polymorphically for every widget.
+    virtual void clear() = 0;
+    // Gets the visibility of a widget
+    virtual bool isVisible() const { return m_visible; }
+    // Sets the visibility of a widget
+    virtual void setVisibility(bool v) { m_visible = v; }
+    virtual float getHeightOffset() const { return m_height_offset; }
+
+    // Returns if a widget is operating or not
+    virtual bool isOperating() const { return m_operating; }
+    // Sets a widget to operating/not operating
+    virtual void setOperating(bool o) { m_operating = o; }
+
+protected:
+    /*
+     * Requests focus when doing an operation.
+     * \return true if the focus was successfully requested, false if another widget already has the focus.
+     */
+    bool requestFocus();
+    /*
+     * Releases focus when the operation is complete.
+     */
+    void releaseFocus();
+
 private:
 
     // ID Generator that inserts IDs when constructing a new Widget 
@@ -47,18 +91,6 @@ protected:
 
     graphics::Brush brush;
 
-protected:
-
-    /*
-     * Requests focus when doing an operation.
-     * \return true if the focus was successfully requested, false if another widget already has the focus.
-     */
-    bool requestFocus();
-    /*
-     * Releases focus when the operation is complete.
-     */
-    void releaseFocus();
-
 public:
 
     //Original height of the widget
@@ -66,37 +98,6 @@ public:
 
 public:
 
-     // Updates the state of a widget, it is called polymorphically for every widget.
-    virtual void update() = 0;
-    
-    // Draws the widget, it is called polymorphically for every widget.
-    virtual void draw() = 0;
-
-    /*
-     * Returns if an action is triggered (a button is pressed, text has been inputted by the user..). It is called polymorphically for every widget.
-     * \return true if an action has been triggered, false otherwise.
-     */
-    virtual bool actionTriggered() const { return m_action; }
-
-
-    void setActionTriggered(bool action) { m_action = action; }
-
-    /*
-     * Performs a specific operation based on the type of widget being called.  It is called polymorphically for every widget.
-     * \param movie_list A list of all the movies where we are going to operte on.
-     */
-    virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
-
-    //Clears the state of the widget. It is called polymorphically for every widget.
-    virtual void clear() = 0;
-    //Sets the visibility of the widget.
-    virtual bool isVisible() const { return m_visible; }
-    virtual void setVisibility(bool v) { m_visible = v; }
-    virtual float getHeightOffset() const { return m_height_offset; }
-
-    virtual bool isOperating() const { return m_operating; }
-    virtual void setOperating(bool o) { m_operating = o; }
-   
     /*
      * Constructs a new widget.
      * \param posX The x position of the widget.

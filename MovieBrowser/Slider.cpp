@@ -44,11 +44,12 @@ void Slider::update()
 
             m_status_slider = SLIDER_DRAGGING;
 
-            //Calculates the value of the m_value based on the box's slider position.
-            // Adds the minimum value of our slider + (the current position of our box - the start of our slider) divided by the subtraction of our 
-            // 2 horizantal "borders"  of the slider  which when subtracted it gives as the length of our slider
-            // (This division finds in what "percentage" of our whole slider our slider button is at the moment) after we find that we multiply it by all the discrete values we can get
-            // and adding that to the minimum value we have set to get our final value for that specific location of the button
+            // Calculates the value of m_value based on the position of the box slider.
+            // It determines the position of the slider button within the slider's range,
+            // and maps it to the corresponding value within the minimum and maximum value range.
+            // The formula involves normalizing the slider position as a percentage of the total slider length,
+            // and then scaling that percentage to the appropriate value range.
+            // The resulting value represents the current value based on the button's position.
             m_value = m_min_value + (box.getPosX() - SLIDER_END_RANGE) / (SLIDER_START_RANGE - SLIDER_END_RANGE) * (m_max_value - m_min_value);
         }
          else if ((ms.button_left_released || !ms.dragging) && m_status_slider == SLIDER_DRAGGING)

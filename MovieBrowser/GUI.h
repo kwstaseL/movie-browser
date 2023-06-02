@@ -18,11 +18,6 @@ class GUI
 {
 private:
 
-	//A function that creates all the movies
-	void createMovies();
-
-	// A function that creates all the widgets
-	void createWidgets();
 
 	// Updates the started screen (the screen with all movies and widgets are shown)
 	void updateStartedScreen();
@@ -35,6 +30,12 @@ private:
 
 	// Draws the pressed movie screen (where information about 1 movie is shown)
 	void drawPressedMovieScreen();
+
+	//A function that creates all the movies
+	void createMovies();
+
+	// A function that creates all the widgets
+	void createWidgets();
 
 	GUI() {};
 

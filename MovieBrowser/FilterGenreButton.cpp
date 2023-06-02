@@ -4,7 +4,8 @@
 void FilterGenreButton::update()
 {
 
-	if (!m_visible)	//If the widget is invisible , return (+ if button is IDLE can also be added here, if we have a button that might not be invisible)
+	//If the widget is invisible , return (+ if button is IDLE can also be added here, if we have a button that might not be invisible)
+	if (!m_visible)	
 	{
 		return;
 	}
@@ -32,9 +33,9 @@ void FilterGenreButton::update()
 			
 			m_button_state = button_state_t::BUTTON_PRESSED;
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("button.wav"), SOUND_VOLUME);
-			m_action = true;	//Alert that the button was clicked
+			m_action = true;	
 		}
-		if (ms.button_left_released) //Button was pressed and now is released
+		if (ms.button_left_released) 
 		{
 			m_button_state = button_state_t::BUTTON_IDLE;
 			m_action = false;
@@ -51,7 +52,8 @@ void FilterGenreButton::update()
 //Drawing our filter genre button
 void FilterGenreButton::draw()
 {
-	if (!m_visible)	//If the widget is invisible , return
+	//If the widget is invisible , return
+	if (!m_visible)	
 	{
 		return;
 	}
@@ -135,7 +137,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 			{
 				continue;
 			}
-			movie->state_info.addGenreCount(1);	//Adding +1 since it has the current genre
+			movie->state_info.addGenreCount(1);
 		}
 	}
 
@@ -165,7 +167,8 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 			}
 		}
 	}
-	releaseFocus();	//Releasing focus since operation is done
+	//Releasing focus since operation is done
+	releaseFocus();	
 }
 
 

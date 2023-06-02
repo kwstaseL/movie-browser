@@ -31,6 +31,8 @@ public:
 
     //Clears the state of the widget. It is called polymorphically for every widget.
     virtual void clear() = 0;
+
+    //  Helper functions
     // Gets the visibility of a widget
     virtual bool isVisible() const { return m_visible; }
     // Sets the visibility of a widget

@@ -22,7 +22,7 @@ namespace constants
         inline constexpr int CANVAS_HEIGHT{ 16 };
     }
 
-    namespace Movie_Sizes
+    namespace MOVIE_SIZES
     {
         inline constexpr float Movie_Banner_Height{ 4.15f };
         inline constexpr float Movie_Banner_Width{ 3.5f };
@@ -48,7 +48,7 @@ namespace constants
 
     }
 
-    namespace functions
+    namespace FUNCTIONS
     {
         inline float distance(float x1, float y1, float x2, float y2)
         {
@@ -63,9 +63,9 @@ namespace constants
 
 namespace WindowConst = constants::WINDOW;
 namespace CanvasConst = constants::CANVAS;
-namespace MovieConst = constants::Movie_Sizes;
+namespace MovieConst = constants::MOVIE_SIZES;
 namespace AssetsConst = constants::ASSETS;
-namespace FunctionsConst = constants::functions;
+namespace FunctionsConst = constants::FUNCTIONS;
 
 
 

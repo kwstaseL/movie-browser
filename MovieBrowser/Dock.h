@@ -9,24 +9,26 @@ class Dock final : public Widget
 {
 private:
 
-	//Checks if the mouse is within the coordinates of the dock.
-	// \param mouse_x: the x coordinate of the mouse
-	// \param mouse_y: the y coordinate of the mouse
-	// \return true if the mouse is within the dock's coordinates
-	bool contains(float mouse_x, float mouse_y) const;
-
-	//Sets all movies as not updatable or updatable using the `movie_list` depending if the dock is going down or it's going up, 
-	//\param movie_list: a vector of all our movies
-	void takeAction(const std::vector<Movie*>& movie_list) override;
-
-	//Resets the docks state
-	void clear() override;
 
 	//Function that continuously updates our dock
 	void update() override;
 
 	//Function that continuously draws our dock
 	void draw() override;
+
+	//Sets all movies as not updatable or updatable using the `movie_list` depending if the dock is going down or it's going up, 
+	//\param movie_list: a vector of all our movies
+	void takeAction(const std::vector<Movie*>& movie_list) override;
+
+	//Checks if the mouse is within the coordinates of the dock.
+	// \param mouse_x: the x coordinate of the mouse
+	// \param mouse_y: the y coordinate of the mouse
+	// \return true if the mouse is within the dock's coordinates
+	bool contains(float mouse_x, float mouse_y) const;
+
+	//Resets the docks state
+	void clear() override;
+
 
 private:
 
@@ -41,6 +43,12 @@ private:
 	const float m_dock_height{ CanvasConst::CANVAS_HEIGHT / 2 };
 	const float m_dock_width{ CanvasConst::CANVAS_WIDTH / 2 };
 
+	//A vector containing all the widgets that will appear inside the dock.
+	std::vector<Widget*> widgets{};
+
+	//Variable which keeps the current state of the dock
+	m_dock_status m_dock_state{ m_dock_status::STATE_IDLE };
+
 	// Represents the maximum height that the dock will have
 	static constexpr float max_dock_height{ 6.0f };
 
@@ -52,9 +60,6 @@ private:
 
 	// Represents the speed that the widgets will go up
 	static constexpr float widget_restore_speed{ 0.01f };
-	
-	//Variable which keeps the current state of the dock
-	m_dock_status m_dock_state{ m_dock_status::STATE_IDLE };
 
 	//A boolean variable to play the sound of the dock sliding only once.
 	bool playSound{ true };
@@ -62,8 +67,6 @@ private:
 	//Indicates if all the widgets are up and invisible
 	bool widgetsResetted{ true };
 
-	//A vector containing all the widgets that will appear inside the dock.
-	std::vector<Widget*> widgets{};
 
 public:
 

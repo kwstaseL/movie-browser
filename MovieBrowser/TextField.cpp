@@ -1,28 +1,6 @@
 #include "TextField.h"
 #include <algorithm>
 
-/*
-Function which takes as input a Movie pointer, and checks if this particular movie
-has the filtered genre (if any filter button was pressed) ,
-and if it has the 2 years we filter with the slider
-It helps us filter movies, synchronizing all widgets
-Returns true if movie has a filtered genre("Action","Drama" etc..) and is between the 2 years
-Returns false otherwise
-*/
-bool TextField::hasRequirements(const Movie* const movie) const
-{
-	if (movie)
-	{
-		for (const auto& filter : filterToBeChecked)
-		{
-			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)
-			{
-				return false;
-			}
-		}
-		return std::stoi(movie->getDate()) <= movie->state_info.getLastSelectedToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastSelectedFromYear();
-	}
-}
 
 // Continuously draws our textfield.
 void TextField::draw()
@@ -277,6 +255,30 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 	m_action = false;
 	m_operating = false;
 	releaseFocus();
+}
+
+/*
+Function which takes as input a Movie pointer, and checks if this particular movie
+has the filtered genre (if any filter button was pressed) ,
+and if it has the 2 years we filter with the slider
+It helps us filter movies, synchronizing all widgets
+Returns true if movie has a filtered genre("Action","Drama" etc..) and is between the 2 years
+Returns false otherwise
+*/
+bool TextField::hasRequirements(const Movie* const movie) const
+{
+	if (movie)
+	{
+		for (const auto& filter : filterToBeChecked)
+		{
+			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)
+			{
+				return false;
+			}
+		}
+		return std::stoi(movie->getDate()) <= movie->state_info.getLastSelectedToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastSelectedFromYear();
+	}
+	return false;
 }
 
 // Clears all variables of the textfield

@@ -21,9 +21,15 @@ namespace WidgetEnums {
     };
 }
 
-// Class where keep all the filtering states for each Movie and also some extra variables (eg isDisabled, isClickTriggered..).
-// For Example when clicking "Action" Filter Button ,we want all the movies that have action genre in their genres, to appear,
-// but if we also want to search for a movie , while action button is still on, we want to only show those movies that have "Action" as genre.
+/**
+     The MovieState class encapsulates the state and behavior related to movie filtering.
+    It maintains the filtering states for each movie, along with additional variables such as isDisabled and isClickTriggered.
+    When applying filters, such as clicking the "Action" Filter Button, this class ensures that only movies with the corresponding genre
+    are displayed. 
+    Furthermore, if a search operation is performed while the action filter is active, only movies that have "Action" as their genre
+    will be shown.
+    The class also keeps track of genre counts and slider selections, allowing for further customization and fine-tuning of the filtering process.
+ */
 class MovieState
 {
 public:

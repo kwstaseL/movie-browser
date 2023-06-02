@@ -10,15 +10,18 @@ void Dock::update()
 	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
-	if (contains(mouse_X, mouse_Y))	//If our mouse contains Dock's coordinates, we want the dock to come down
+	//If our mouse contains Dock's coordinates, we want the dock to come down
+	if (contains(mouse_X, mouse_Y))	
 	{
-		if (m_dock_state == m_dock_status::STATE_IDLE || m_dock_state == m_dock_status::STATE_GOING_UP)	//If the state previously was IDLE, or the Dock was Previously going up
+		//If the state previously was IDLE, or the Dock was Previously going up
+		if (m_dock_state == m_dock_status::STATE_IDLE || m_dock_state == m_dock_status::STATE_GOING_UP)	
 		{
 			m_dock_state = m_dock_status::STATE_GOING_DOWN;
 
 			if (m_height != dock_animation_speed)
 			{
-				m_action = true;	//Alert the GUI that the dock is now coming down, so an action must be taken 
+				//Alert the GUI that the dock is now coming down, so an action must be taken 
+				m_action = true;	
 			}
 		}
 		
@@ -51,7 +54,8 @@ void Dock::update()
 				//is the time passed from the previous state update
 				widget->m_height += widget_animation_speed * graphics::getDeltaTime();
 
-				if (widget->m_height > widget->getHeightOffset())	//If the height of a particular widget is where it should be then set it to be there.
+				//If the height of a particular widget is where it should be then set it to be there.
+				if (widget->m_height > widget->getHeightOffset())	
 				{
 					widget->m_height = widget->getHeightOffset();
 				}
@@ -59,18 +63,21 @@ void Dock::update()
 		}
 		playSound = false;
 	}
-	else if (!contains(mouse_X, mouse_Y))	// If our mouse doesn't contain Dock's coordinates, we want it to come up
+	// If our mouse doesn't contain Dock's coordinates, we want it to come up
+	else if (!contains(mouse_X, mouse_Y))	
 	{
 
-		if (m_dock_state == m_dock_status::STATE_IDLE)	// If mouse doesnt contain Dock's coordinates and the state is IDLE , return.
+		// If mouse doesnt contain Dock's coordinates and the state is IDLE , return.
+		if (m_dock_state == m_dock_status::STATE_IDLE)	
 		{
 			return;
 		}
 
 		if (m_dock_state == m_dock_status::STATE_GOING_DOWN)
 		{
+			// Alert that the dock is now coming up, so an action must be taken
 			m_dock_state = m_dock_status::STATE_GOING_UP;
-			m_action = true;	// Alert that the dock is now coming up, so an action must be taken
+			m_action = true;	
 			playSound = true;
 		}
 
@@ -102,7 +109,7 @@ void Dock::update()
 				//is the time passed from the previous state update
 				widget->m_height -= widget_restore_speed * graphics::getDeltaTime();
 
-				if (widget->m_height < 0.0f)	//If the height of a particular widget is where it should be (0) then set it to be there.
+				if (widget->m_height < 0.0f)	
 				{
 					widget->m_height = 0.0f;
 				}
@@ -127,7 +134,8 @@ void Dock::draw()
 	brush.fill_opacity = 0.95f;
 	brush.outline_opacity = 0.0f;
 	brush.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::DOCK);
-	graphics::drawRect(m_positionX, m_positionY + m_height, m_dock_width, m_dock_height, brush);	//Drawing the Dock.
+	//Drawing the Dock.
+	graphics::drawRect(m_positionX, m_positionY + m_height, m_dock_width, m_dock_height, brush);	
 	graphics::resetPose();
 }
 
@@ -168,14 +176,16 @@ void Dock::takeAction(const std::vector<Movie*>& movie_list)
 	{
 		for (const auto& movie : movie_list) {
 
-			movie->state_info.setInformationVisible(false); //Setting our to not be active, which means it still can be drawn, but it is not being updated.
+			//Setting our to not be active, which means it still can be drawn, but it is not being updated.
+			movie->state_info.setInformationVisible(false);
 		}
 	}
 	else if (m_dock_state == m_dock_status::STATE_GOING_UP)
 	{
 		for (const auto& movie : movie_list) {
 
-			movie->state_info.setInformationVisible(true); //Setting our to be active, which means it can now be drawn and updated.
+			//Setting our to be active, which means it can now be drawn and updated.
+			movie->state_info.setInformationVisible(true); 
 		}
 	}
 	m_action = false;	//Since we are donef with the operation, alert it.

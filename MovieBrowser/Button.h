@@ -22,6 +22,9 @@ private:
 	// \param movie_list: a vector of all the movies
 	virtual void takeAction(const std::vector<Movie*>& movie_list) = 0;
 
+	float getHeightOffset() const override { return m_height_offset; }
+
+
 protected:
 
 	//Enum class representing the different states of our button: idle, pressed, or highlighted.
@@ -43,8 +46,6 @@ protected:
 
 	//This represents how much height will the button need in order to appear when the dock comes down
 	static constexpr float m_height_offset{ 2.0f };
-
-	float getHeightOffset() const override { return m_height_offset; }
 
 	//Checks if the mouse is within the coordinates of the button
 	// \param mouse_x: the x coordinate of the mouse

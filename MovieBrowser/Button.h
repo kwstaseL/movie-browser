@@ -29,11 +29,11 @@ private:
 protected:
 
 	//Enum class representing the different states of our button: idle, pressed, or highlighted.
-	enum class button_state_t {
-
-		BUTTON_IDLE,       //Button is not being pressed or highlighted
-		BUTTON_PRESSED,    //Button is being pressed
-		BUTTON_HIGHLIGHTED //Button is being highlighted (mouse is hovering over it)
+	enum class button_state_t 
+	{
+		IDLE,       
+		PRESSED,    
+		HIGHLIGHTED 
 
 	};
 
@@ -43,7 +43,7 @@ protected:
 	static constexpr float m_button_height{ .5f };
 	static constexpr float m_button_width{ 3.0f };
 
-	button_state_t m_button_state{ button_state_t::BUTTON_IDLE };
+	button_state_t m_button_state{ button_state_t::IDLE };
 
 	//This represents how much height will the button need in order to appear when the dock comes down
 	static constexpr float m_height_offset{ 2.0f };

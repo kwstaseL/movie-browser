@@ -5,7 +5,6 @@
 void FilterGenreButton::update()
 {
 
-	//If the widget is invisible , return (+ if button is IDLE can also be added here, if we have a button that might not be invisible)
 	if (!m_visible)	
 	{
 		return;
@@ -14,33 +13,31 @@ void FilterGenreButton::update()
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
-	//Converting mouse_x,mouse_y to canvas units
 	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
-	//Checking if our mouse is inside the coordinates of our button
 	bool mouseOverButton = contains(mouse_X, mouse_Y);
 
 	if (mouseOverButton)
 	{
-		m_button_state = button_state_t::BUTTON_HIGHLIGHTED;
+		m_button_state = button_state_t::HIGHLIGHTED;
 
 		m_highlighted = true;
 
-		if (ms.button_left_pressed)	//Mouse is pressed
+		if (ms.button_left_pressed)	
 		{
 			if (!requestFocus())	//If someone else is operating, return
 			{
 				return;
 			}
 			
-			m_button_state = button_state_t::BUTTON_PRESSED;
+			m_button_state = button_state_t::PRESSED;
 			graphics::playSound(AssetsConst::ASSET_PATH + static_cast<std::string>("button.wav"), SOUND_VOLUME);
 			m_action = true;	
 		}
 		if (ms.button_left_released) 
 		{
-			m_button_state = button_state_t::BUTTON_IDLE;
+			m_button_state = button_state_t::IDLE;
 			m_action = false;
 			m_operating = false;
 		}
@@ -55,7 +52,6 @@ void FilterGenreButton::update()
 //Drawing our filter genre button
 void FilterGenreButton::draw()
 {
-	//If the widget is invisible , return
 	if (!m_visible)	
 	{
 		return;
@@ -148,7 +144,6 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 			}
 		}
 	}
-	//Releasing focus since operation is done
 	Widget::releaseFocus();	
 }
 

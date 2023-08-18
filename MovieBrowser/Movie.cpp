@@ -18,7 +18,6 @@ Movie::Movie(const std::string_view name, const std::string_view desc, const std
 //Function that draws a movie on the screen
 void Movie::draw()
 {
-	// If the movie is disabled, return
 	if (state_info.isDisabled())
 	{
 		return;
@@ -54,24 +53,20 @@ void Movie::draw()
 // Function that updates the movie on the screen.
 void Movie::update()
 {
-	// If the movie is disabled do not update it.
 	if (state_info.isDisabled())
 	{
 		return;
 	}
 
-	//Get mouse state.
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
-	//Convert mouse coordinates to canvas units.
 	float mx{ graphics::windowToCanvasX(ms.cur_pos_x) };
 	float my{ graphics::windowToCanvasY(ms.cur_pos_y) };
 
 	// If the mouse is within the coordinates of the movie.
 	if (contains(mx, my)) {
 
-		// If the movie is updatable and not disabled, highlight it and display its state_information.
 		if (state_info.isInformationVisible())
 		{
 			if (playSound)

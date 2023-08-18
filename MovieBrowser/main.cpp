@@ -15,7 +15,6 @@ void update(float ms)
 	gui->update();
 }
 
-// Creating Window, getting the instance of GUI, initializing objects, setting canvas sizes
 void createProgram()
 {
 	graphics::createWindow(1400, 800, WindowConst::WINDOW_NAME);

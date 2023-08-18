@@ -11,10 +11,8 @@ class ResetFilterButton final : public Button
 {
 private:
 
-    //Continuously updates the reset filter button.
     void update() override;
 
-    // Continuously draws the reset filter button.
     void draw() override;
     /*
     *  Called when the reset filter button is clicked.

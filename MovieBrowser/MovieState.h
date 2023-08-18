@@ -97,8 +97,6 @@ private:
 
 public:
 
-    //Setters and Getters
-
     int getGenreCount() const { return _genreCount; }
     void resetGenreCount() { _genreCount = 0; }
     void addGenreCount(int g) { _genreCount += g; }

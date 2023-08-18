@@ -5,24 +5,14 @@ used to sychronize all filters with all widgets that can filter, together.
 \param movie: a pointer to the movie to be checked
 \return true if the movie meets the requirements else false
 */
-FilterableWidget::FilterableWidget()
-{
-}
-
-FilterableWidget::FilterableWidget(bool invisible)
-{
-	m_visible = !invisible;
-}
-
 bool FilterableWidget::hasRequirements(const Movie* const movie) const
 {
-    // Common implementation for all FilterableWidget subclasses except Slider
-    // You can implement the common behavior here.
-
+	// Common implementation for all FilterableWidget subclasses except Slider
 	if (movie)
 	{
 		for (const auto& filter : filterToBeChecked)
-		{//If getWidgeState returns disabled, return false since this movie doesnt meet the requirementes for filtering
+		{
+			//If getWidgeState returns disabled, return false since this movie doesnt meet the requirementes for filtering
 			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)
 			{
 				return false;
@@ -31,4 +21,13 @@ bool FilterableWidget::hasRequirements(const Movie* const movie) const
 		return std::stoi(movie->getDate()) <= movie->state_info.getLastSelectedToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastSelectedFromYear();
 	}
 
+}
+
+FilterableWidget::FilterableWidget()
+{
+}
+
+FilterableWidget::FilterableWidget(bool invisible)
+{
+	m_visible = !invisible;
 }

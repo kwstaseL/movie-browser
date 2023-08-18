@@ -14,21 +14,15 @@
 struct InfoBox
 {
 private:
-	// Position X of the box on the screen.
-	float m_posX{};
 
-	// Position Y of the box on the screen.
+	float m_posX{};
 	float m_posY{};
 
 public:
-	// Setters and getters for the position of the box.
 	void setPosX(float x) { m_posX = x; }
 	void setPosY(float y) { m_posY = y; }
 
-	//Return the X position of the movie
 	float getPosX() const { return m_posX; }
-
-	//Return the Y position of the movie
 	float getPosY() const { return m_posY; }
 };
 
@@ -66,27 +60,20 @@ private:
 
 private:
 
-	// Position of the movie on the screen.
 	float m_pos[2];
 
-	const std::string m_name{}; // Movie name.
+	const std::string m_name{};
 
-	// Description of the movie.
 	const std::string m_description{};
 
-	// Image of the movie.
 	const std::string m_image{};
 
-	// Production Year of the movie.
 	const std::string m_production_year{};
 
-	// Director of the movie.
 	const std::string m_director{};
 
-	//Vector that stores all genres for a specific movie
 	const std::vector<std::string> m_genres;
 
-	//Vector that stores all protagonists for a specific movie
 	const std::vector<std::string> m_protagonists;
 
 	// Variables used for "glowing" animation when the mouse hovers the movie frame.
@@ -125,7 +112,6 @@ public:
 
 	//Getters for the information of each movie
 
-	//Returns the name of the movie
 	const std::string& getName() const;
 
 	//Returns the description (not tokenized) of the movie
@@ -134,22 +120,16 @@ public:
 	//Returns the released year of the movie
 	const std::string& getDate() const;
 
-	//Returns the director of the movie
 	const std::string& getDir() const;
 
-	//Returns a vector of all the genres of the movie
 	const std::vector<std::string>& getGenres() const;
 
-	//Returns a vector of all the protagonists of the movie
 	const std::vector<std::string>& getProtagonists() const;
 
-	//Sets the X position of the movie
 	void setPosX(float x) { m_pos[0] = x; }
 
-	//Sets the Y position of the movie
 	void setPosY(float y) { m_pos[1] = y; }
 
-	//Sets the highlight of the movie
 	void setHighlight(bool h) { m_highlighted = h; }
 };
 

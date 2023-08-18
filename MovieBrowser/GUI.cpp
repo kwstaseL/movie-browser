@@ -4,7 +4,6 @@
 // Draw is the function that is continuously running and drawing all our objects to the screen.
 // - drawStartedScreen() -> Indicates the scene where all the objects(movies,widgets) appear and are being drawned.	(STATUS_STARTED)
 // - drawPressedMovieScreen() -> Indicates the scene where a movie is pressed, and information is displayed for that movie.	(STATUS_MOVIE_PRESSED)
-
 void GUI::draw()
 {
 	switch (m_state)
@@ -25,7 +24,6 @@ void GUI::draw()
 // Update is the function that is continuously running and updating all our objects to the screen.
 // - updateStartedScreen() -> Indicates the scene where all the objects(movies,widgets) appear and are being updated.	(STATUS_STARTED)
 // - updatePressedMovieScreen() -> Indicates the scene where a movie is pressed, and information is displayed for that movie.	(STATUS_MOVIE_PRESSED)
-	
 void GUI::update()
 {
 	switch (m_state)
@@ -47,9 +45,6 @@ void GUI::update()
 
 void GUI::updateStartedScreen()
 {
-	//Function which updates our starting screen
-
-	//For every movie, update it.
 	for (const auto& movie : movies)
 	{
 		if (movie)
@@ -67,8 +62,6 @@ void GUI::updateStartedScreen()
 			}
 		}
 	}
-
-	//For every widget run each update function.
 	for (const auto& widget : widgets)
 	{
 		if (widget)
@@ -101,7 +94,6 @@ void GUI::drawStartedScreen()
 	brush.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::BACKGROUND);
 	graphics::drawRect(CanvasConst::CANVAS_WIDTH / 2, CanvasConst::CANVAS_HEIGHT / 2, CanvasConst::CANVAS_WIDTH, CanvasConst::CANVAS_HEIGHT, brush);
 
-	//For each movie we call Movie's draw function
 	for (const auto& movie : movies)
 	{
 		if (movie)
@@ -110,7 +102,6 @@ void GUI::drawStartedScreen()
 		}
 	}
 
-	//For each widget we call its draw function
 	for (const auto& widget : widgets)
 	{
 		if (widget)
@@ -125,7 +116,6 @@ void GUI::drawStartedScreen()
 // Draws the pressed movie screen (where information about 1 movie is shown)
 void GUI::drawPressedMovieScreen()
 {
-	//Drawing the scene when a movie is pressed
 	if (clickedMovie)
 	{
 		clickedMovie->drawMovieInformation();
@@ -139,14 +129,12 @@ void GUI::drawPressedMovieScreen()
 // Updates the pressed movie screen (where information about 1 movie is shown)
 void GUI::updatePressedMovieScreen()
 {
-	//Updating the scene when a movie is pressed
-
 	if (clickedMovie)
-	{// Set it to False so information from the other scene about this movie doesn't show in this screen.
+	{
+		// Set it to False so information from the other scene about this movie doesn't show in this screen.
 		clickedMovie->state_info.setInformationVisible(false);
 		clickedMovie->update();
 
-		//If user released the mouse, go to the previous state
 		if (!clickedMovie->state_info.isClickTriggered())
 		{
 			m_state = STATUS_STARTED;
@@ -172,7 +160,6 @@ void GUI::init()
 
 void GUI::createWidgets()
 {
-	//Creating all our widget objects
 	const float y_offset = 12.0f + 2.0f;
 	const float x_offset = CanvasConst::CANVAS_WIDTH / 15;
 	const float row1_y = CanvasConst::CANVAS_HEIGHT / 1.28 - y_offset;
@@ -201,8 +188,6 @@ void GUI::createWidgets()
 
 void GUI::createMovies()
 {
-	//Creating all our movies, and placing each one in the right position
-
 	movies.push_back(new Movie("Harry Potter and the Goblet Of Fire", "Harry Potter finds himself competing in a hazardous tournament between rival schools of magic, but he is distracted by recurring nightmares.", AssetsConst::HARRY_POTTER, "2004", "Chris Columbus", { "Daniel Radcliffe","Rupert Grint","Richard Harris" }, { "Adventure", "Fantasy" }));
 	movies.push_back(new Movie("The Godfather", "The aging patriarch of an organized crime dynasty in postwar New York City transfers control of his clandestine empire to his reluctant youngest son.", AssetsConst::GODFATHER, "1972", "Francis Ford Coppola", { "Marlon brushando", "Al Pacino", "James Caan" }, { "Crime","Drama" }));
 	movies.push_back(new Movie("Terminator", "A human soldier is sent from 2029 to 1984 to stop an almost indestructible cyborg killing machine, sent from the same year, which has been programmed to execute a young woman whose unborn son is the key to humanity's future salvation.", AssetsConst::TERMINATOR, "1984", "James Cameron", { "Arnold Schwarzenegger", "Linda Hamilton", "Michael Biehn" }, { "Action","Sci-Fi" }));
@@ -244,7 +229,6 @@ void GUI::createMovies()
 
 }
 
-//Destroying our objects
 GUI::~GUI()
 {
 
@@ -264,8 +248,6 @@ GUI::~GUI()
 //This method returns the instance of the GUI class. If an instance does not already exist, it creates a new one.
 GUI* GUI::Get()
 {
-	//Getting our GUI Instance
-
 	if (!s_gui)
 	{
 		s_gui = new GUI();

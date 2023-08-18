@@ -2,10 +2,8 @@
 #include <algorithm>
 
 
-// Continuously draws our textfield.
 void TextField::draw()
 {
-	//If the textfield is invisible return.
 	if (!m_visible)
 	{
 		return;
@@ -33,27 +31,23 @@ void TextField::draw()
 
 }
 
-// Continously updates our TextField.
 void TextField::update()
 {
 
-	//If the textfield is invisible , reset the highlighting and return.
 	if (!m_visible)
 	{
 		m_highlighted = false;
 		return;
 	}
 
-	// Getting mouse state and converting pos_x,pos_y to canvas units
 	graphics::MouseState ms;
 	graphics::getMouseState(ms);
 
 	mouse_X = graphics::windowToCanvasX(ms.cur_pos_x);
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
-
-	// If our mouse contains textfields coordinates
-	if (contains(mouse_X, mouse_Y))
+	bool mouseOverField = contains(mouse_X, mouse_Y);
+	if (mouseOverField)
 	{
 		//If button is pressed, hide the text "Search Movie/Dir/Prot", and highlight the box
 		if (ms.button_left_pressed)

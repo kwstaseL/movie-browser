@@ -1,6 +1,5 @@
 #include "Dock.h"
 
-// Function that handles dock animation and widget height adjustments
 void Dock::update()
 {
     graphics::MouseState ms;
@@ -28,7 +27,6 @@ void Dock::update()
         // Increase dock height with animation speed, ensuring it doesn't exceed max height
         m_height = std::min(m_height + DOCK_ANIMATION_SPEED * graphics::getDeltaTime(), MAX_DOCK_HEIGHT);
 
-        // Adjust widget heights if they are not at their target height
         for (const auto& widget : widgets)
         {
             if (widget->m_height != widget->getHeightOffset())
@@ -48,7 +46,6 @@ void Dock::update()
 
         if (m_dock_state == m_dock_status::GOING_DOWN)
         {
-            // Handle dock going up animation
             m_dock_state = m_dock_status::GOING_UP;
             m_action = true;
             playSound = true;
@@ -87,7 +84,6 @@ void Dock::draw()
 	brush.fill_opacity = 0.95f;
 	brush.outline_opacity = 0.0f;
 	brush.texture = AssetsConst::ASSET_PATH + static_cast<std::string>(AssetsConst::DOCK);
-	//Drawing the Dock.
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_dock_width, m_dock_height, brush);	
 	graphics::resetPose();
 }
@@ -121,8 +117,6 @@ bool Dock::contains(float mouse_x, float mouse_y) const
 
 
 //Sets all movies as not updatable or updatable using the `movie_list` depending if the dock is going down or it's going up, 
-// Not Updatable:  which means it still can be drawn, but information is not being updated or drawn about this movie, the movie can't be hovered over in general.
-//\param movie_list: a vector of all our movies
 void Dock::takeAction(const std::vector<Movie*>& movie_list)
 {
     for (const auto& movie : movie_list)

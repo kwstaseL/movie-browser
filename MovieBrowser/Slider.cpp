@@ -1,9 +1,7 @@
 #include "Slider.h"
 
-// Continously updates the state of the slider.
 void Slider::update()
 {
-    // If the slider is invisible, return.
     if (!m_visible)
     {
         return;
@@ -61,7 +59,6 @@ void Slider::update()
     }
 }
 
-// Continuously draws the slider on the canvas.
 void Slider::draw()
 {
 

@@ -1,5 +1,5 @@
 #include "Widget.h"
-
+#include <iostream>
 /*
 * Releases focus when the operation is complete.
 */
@@ -32,4 +32,8 @@ Widget::Widget(float posX, float posY)
 	: m_positionX{ posX }, m_positionY{ posY }, m_uid{ s_idGenerator++ }
 {
 	
+}
+
+Widget::Widget()
+{
 }

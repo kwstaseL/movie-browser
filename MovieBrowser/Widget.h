@@ -33,15 +33,12 @@ public:
     virtual void clear() = 0;
 
     //  Helper functions
-    // Gets the visibility of a widget
+  
     virtual bool isVisible() const { return m_visible; }
-    // Sets the visibility of a widget
     virtual void setVisibility(bool v) { m_visible = v; }
     virtual float getHeightOffset() const { return m_height_offset; }
 
-    // Returns if a widget is operating or not
     virtual bool isOperating() const { return m_operating; }
-    // Sets a widget to operating/not operating
     virtual void setOperating(bool o) { m_operating = o; }
 
 protected:
@@ -106,6 +103,7 @@ public:
      * \param posY The y position of the widget.
      */
     Widget(float posX, float posY);
+    Widget();
 
     virtual ~Widget() = default;
 };

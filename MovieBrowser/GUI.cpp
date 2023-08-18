@@ -193,8 +193,10 @@ void GUI::createWidgets()
 	widgets.emplace_back(new Slider(x_offset + 11.5f, CanvasConst::CANVAS_HEIGHT / 1.10 - y_offset, "To", 1970, 2020, SliderPosition::Type::TO));
 
 	widgets.emplace_back(new TextField(x_offset + 17.6f, CanvasConst::CANVAS_HEIGHT / 1.15f - y_offset, "Search Title/Dir/Prot", TextFieldFiltering::FilterBy::TITLE_PROTAGONIST_DIRECTOR));
+
 	widgets.emplace_back(new ResetFilterButton(x_offset + 18.0f, row2_y, "Clear Filter", widgets));
 	widgets.emplace_back(new Dock(CanvasConst::CANVAS_WIDTH / 2, -3.5f, widgets));
+
 }
 
 void GUI::createMovies()

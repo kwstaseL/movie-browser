@@ -1,5 +1,6 @@
 #include "FilterGenreButton.h"
 
+
 //Updating all filter genre buttons
 void FilterGenreButton::update()
 {
@@ -18,7 +19,9 @@ void FilterGenreButton::update()
 	mouse_Y = graphics::windowToCanvasY(ms.cur_pos_y);
 
 	//Checking if our mouse is inside the coordinates of our button
-	if (contains(mouse_X, mouse_Y))
+	bool mouseOverButton = contains(mouse_X, mouse_Y);
+
+	if (mouseOverButton)
 	{
 		m_button_state = button_state_t::BUTTON_HIGHLIGHTED;
 
@@ -82,27 +85,6 @@ void FilterGenreButton::draw()
 	graphics::drawRect(m_positionX, m_positionY + m_height, m_button_width, m_button_height, brush);
 }
 
-/*
-Checks if the given movie meets the requirements for filtering (checks if is already filtered or not by other widgets),
-used to sychronize all filters with all widgets that can filter, together.
-\param movie: a pointer to the movie to be checked
-\return true if the movie meets the requirements else false
-*/
-bool FilterGenreButton::hasRequirements(const Movie* const movie) const
-{
-	if (movie)
-	{
-		for (const auto& filter : filterToBeChecked)
-		{//If getWidgeState returns disabled, return false since this movie doesnt meet the requirementes for filtering
-			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)
-			{
-				return false;
-			}
-		}// Otherwise, if all the other widgets are enabled, check if it between the sliders years.
-		return std::stoi(movie->getDate()) <= movie->state_info.getLastSelectedToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastSelectedFromYear();
-	}
-}
-
 // Filters all movies by genre
 // \param movie_list: a vector of all the movies
 void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
@@ -114,7 +96,6 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 	}
 	//Inserting to the unordered set the button (text) that was pressed
 	s_scanned_genres.insert(m_button_text);
-
 	hasAllGenres = false;
 	/*
 		For every movie, we disable it and turn genre filter state to false, we also reset the Genre count which holds
@@ -168,7 +149,7 @@ void FilterGenreButton::filterByGenre(const std::vector<Movie*>& movie_list)
 		}
 	}
 	//Releasing focus since operation is done
-	releaseFocus();	
+	Widget::releaseFocus();	
 }
 
 
@@ -201,13 +182,14 @@ void FilterGenreButton::takeAction(const std::vector<Movie*>& movie_list)
 }
 
 
+
 /* Constructs a new filter genre button
 \param posX: the x coordinate of the filtergenrebutton's position
 \param posY: the y coordinate of the filtergenrebutton's position
 \param text: the text displayed on the button
 */
 FilterGenreButton::FilterGenreButton(float posX, float posY, const std::string_view text, bool invisible)
-	: Button(posX, posY, text)
+	:Widget(posX,posY), Button(text)
 {
 	m_visible = !invisible;
 	// Inserting the widgets this class needs to check before filtering the movies

@@ -135,42 +135,38 @@ void Slider::clear()
 
 // Filter the list of movies based on the year on the slider, 
 // and taking into consideration all the other filters that might be active for a specfic movie.
-
 void Slider::filterByYear(const std::vector<Movie*>& movie_list)
 {
-    if (m_slider_position_type == SliderPosition::Type::FROM)
+    //Iterate through the list of movies to apply the year-based filtering
+    for (auto& movie : movie_list)
     {
-        for (const auto& movie : movie_list)
+        // Skip movies that don't meet other filter requirements
+        if (!hasRequirements(movie))
         {
-            //Here we are checkinng if the specific movie hasRequirements, and its years movie is between the sliders state
-            if (std::stoi(movie->getDate()) >= m_value && std::stoi(movie->getDate()) <= (movie->state_info.getLastSelectedToYear())
-                && hasRequirements(movie))
-            {
-                movie->state_info.setDisabled(false);
-            }
-            else
-            {
-                movie->state_info.setDisabled(true);
-            }
-            movie->state_info.setLastSelectedFromYear(m_value);    //Updating the last year that was filtered from the first slider
+            continue;
         }
 
-    }
-    else if (m_slider_position_type == SliderPosition::Type::TO)
-    {
-        for (const auto& movie : movie_list)
-        {   //Here we are checkinng if the specific movie hasRequirements, and its years movie is between the sliders state
-            if (std::stoi(movie->getDate()) <= m_value && (std::stoi(movie->getDate()) >= movie->state_info.getLastSelectedFromYear()) &&
-                !(movie->state_info.getLastSelectedFromYear() > m_value) && hasRequirements(movie))
-            {
-                movie->state_info.setDisabled(false);
-            }
-            else
-            {
-                movie->state_info.setDisabled(true);
+        // Extract the release year of the movie
+        int movieYear = std::stoi(movie->getDate());
 
-            }
-            movie->state_info.setLastSelectedToYear(m_value);  //Updating the last year that was filtered from the second slider
+        // Determine the year of the other slider based on the slider type
+        int otherSliderYear = (m_slider_position_type == SliderPosition::Type::FROM)
+            ? movie->state_info.getLastSelectedToYear()
+            : movie->state_info.getLastSelectedFromYear();
+
+        if (m_slider_position_type == SliderPosition::Type::FROM)
+        {
+            // Disable the movie if its year is outside the selected range
+            movie->state_info.setDisabled(movieYear < m_value || movieYear > otherSliderYear);
+            // Update the last selected "from" year
+            movie->state_info.setLastSelectedFromYear(m_value);
+        }
+        else if (m_slider_position_type == SliderPosition::Type::TO)
+        {
+            //Disable the movie if its year is outside the selected range
+            // or if the other slider's "from" year is outside the current range
+            movie->state_info.setDisabled(movieYear > m_value || movieYear < otherSliderYear || otherSliderYear > m_value);
+            movie->state_info.setLastSelectedToYear(m_value);
         }
     }
     m_action = false;
@@ -178,12 +174,8 @@ void Slider::filterByYear(const std::vector<Movie*>& movie_list)
     m_status_slider = SLIDER_IDLE;
 }
 
-/*
-Checks if the given movie meets the requirements for filtering (checks if it is filtered by other widgets),
- used to sychronize all filters with all widgets that can filter, together.
- \param movie: a pointer to the movie
- \return true if the movie meets the requirements
-*/
+
+
 bool Slider::hasRequirements(const Movie* movie) const
 {
     if (movie)
@@ -202,10 +194,9 @@ bool Slider::hasRequirements(const Movie* movie) const
 
 Slider::Slider(float posX, float posY, const std::string_view text,int min_v,
     int max_v, SliderPosition::Type position, bool invisible)
-    : Widget(posX, posY), m_text{ text }, m_min_value{ min_v }, m_max_value{ max_v }, m_slider_position_type{ position }
+    : Widget(posX,posY), FilterableWidget(invisible), m_text{ text }, m_min_value{ min_v }, m_max_value{ max_v }, m_slider_position_type{ position }
 {
     clear();
-    m_visible = !invisible;
 
     //Inserting all the widgetfilters slider needs to check before filtering
     filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);

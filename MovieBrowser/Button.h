@@ -3,7 +3,8 @@
 
 #include "Widget.h"
 
-class Button : public Widget
+// Using virtual to handle the diamond problem 
+class Button : public virtual Widget
 {
 private:
 
@@ -59,7 +60,7 @@ public:
 	// \param posX: the x coordinate of the button's position
 	// \param posY: the y coordinate of the button's position
 	// \param text: the text displayed on the button
-	Button(float posX, float posY, const std::string_view text);
+	Button(const std::string_view text);
 	virtual ~Button() = default;
 
 };

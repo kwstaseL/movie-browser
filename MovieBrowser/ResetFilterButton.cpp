@@ -122,14 +122,11 @@ void ResetFilterButton::clearWidgets()
     {
         widget->clear();
     }
-    clear();
 }
 
 
 void ResetFilterButton::clear()
-{
-
-}
+{}
 
 /*
 * Constructs a new ResetFilterButton.
@@ -138,7 +135,7 @@ void ResetFilterButton::clear()
 * \param text The text to display on the button.
 */
 ResetFilterButton::ResetFilterButton(float posX, float posY, const std::string_view text, const std::vector<Widget*>& widgets, bool invisible)
-	: Button(posX, posY, text), m_widgets{widgets}
+	: Widget(posX,posY) , Button(text), m_widgets{widgets}
 {
     m_visible = !invisible;
 }

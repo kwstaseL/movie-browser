@@ -35,9 +35,9 @@ private:
 	//Representing the different states of our dock: idle, going down, or going up
 	enum class m_dock_status
 	{
-		STATE_IDLE,				// Dock is not being hovered or its moving.
-		STATE_GOING_DOWN,		// Dock is hovered and is coming down.
-		STATE_GOING_UP			// Dock was previously hovered and now is going up.
+		IDLE,				// Dock is not being hovered or its moving.
+		GOING_DOWN,		// Dock is hovered and is coming down.
+		GOING_UP			// Dock was previously hovered and now is going up.
 	};
 
 	const float m_dock_height{ CanvasConst::CANVAS_HEIGHT / 2 };
@@ -47,19 +47,19 @@ private:
 	std::vector<Widget*> widgets{};
 
 	//Variable which keeps the current state of the dock
-	m_dock_status m_dock_state{ m_dock_status::STATE_IDLE };
+	m_dock_status m_dock_state{ m_dock_status::IDLE };
 
 	// Represents the maximum height that the dock will have
-	static constexpr float max_dock_height{ 6.0f };
+	static constexpr float MAX_DOCK_HEIGHT{ 6.0f };
 
 	// Represents the speed that the dock will come down
-	static constexpr float dock_animation_speed{ 0.013f };
+	static constexpr float DOCK_ANIMATION_SPEED{ 0.013f };
 
 	// Represents the speed that the widgets will come down
-	static constexpr float widget_animation_speed{ 0.008f };
+	static constexpr float WIDGET_ANIMATION_SPEED{ 0.008f };
 
 	// Represents the speed that the widgets will go up
-	static constexpr float widget_restore_speed{ 0.01f };
+	static constexpr float WIDGET_RESTORE_SPEED{ 0.01f };
 
 	//A boolean variable to play the sound of the dock sliding only once.
 	bool playSound{ true };

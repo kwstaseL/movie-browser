@@ -96,7 +96,7 @@ void TextField::update()
 
 					if (isFull)	//If the text field is full, store the first character in a stack and remove it from the text field
 					{
-						outofsight_characters.push(m_characters[0]);
+						m_inputHistory.push(m_characters[0]);
 						m_characters.erase(m_characters.begin());	
 					}
 				}
@@ -115,7 +115,7 @@ void TextField::update()
 					// inserted in tto the stack.
 					if (isFull)
 					{
-						outofsight_characters.push(m_characters[0]);
+						m_inputHistory.push(m_characters[0]);
 						m_characters.erase(m_characters.begin());
 					}
 				}
@@ -126,10 +126,10 @@ void TextField::update()
 				{
 					if (isFull)	// If the textfield is full
 					{
-						if (!outofsight_characters.empty())
+						if (!m_inputHistory.empty())
 						{
-							m_characters.push_front(outofsight_characters.top());	//Starting putting back to the beginning of the textfield the words of the stack
-							outofsight_characters.pop();	//Removing the world we have already inserted to the front of the word from the stack.
+							m_characters.push_front(m_inputHistory.top());	//Starting putting back to the beginning of the textfield the words of the stack
+							m_inputHistory.pop();	//Removing the world we have already inserted to the front of the word from the stack.
 						}
 					}
 
@@ -147,10 +147,10 @@ void TextField::update()
 		}
 		timer++;	//Increments the timer
 
-		if (timer > m_textfield_speed)	//If the timer surpasses a default value of 8
+		if (timer > TEXTFIELD_SPEED)	//If the timer surpasses a default value of 8
 			typed = false;	//Alerts that the user can now type again
 
-		if (m_characters.size() + outofsight_characters.size() +1 >= max_textfield_words)	//If m_characters surpasses 25, the textfield is full
+		if (m_characters.size() + m_inputHistory.size() +1 >= MAX_TEXTFIELD_WORDS)	//If m_characters surpasses 25, the textfield is full
 		{
 			isFull = true;
 		}
@@ -229,8 +229,8 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 		//If keystate was BackSpace or the character is empty, it finds
 		// all the movies that have the current string on their title, director or protagonist (with the backspace applied or if the character is empty (empty string)))
 		// and have all other widgets applied
-
-		if ((movie_name.find(search_string) != std::string::npos || movie_director.find(search_string) != std::string::npos || hasProtagonist)
+		if ((movie_name.find(search_string) != std::string::npos 
+			|| movie_director.find(search_string) != std::string::npos || hasProtagonist)
 			&& ((graphics::getKeyState(graphics::SCANCODE_BACKSPACE) || m_characters.empty())))
 		{
 			if (hasRequirements(movie))
@@ -242,7 +242,8 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 		}
 
 		//If movie title,director or protagonist doesn't have the current textfield title (find() returned npos) anywhere in their name, disable it, and also set the filterstate to be disabled for this movie.
-		if (movie_name.find(search_string) == std::string::npos && movie_director.find(search_string) == std::string::npos && !hasProtagonist)
+		if (movie_name.find(search_string) == std::string::npos &&
+			movie_director.find(search_string) == std::string::npos && !hasProtagonist)
 		{
 			movie->state_info.setDisabled(true);
 			movie->state_info.updateWidgetState(WidgetEnums::WidgetFilters::TitleFilter, WidgetEnums::WidgetFilterState::DISABLED);
@@ -257,29 +258,6 @@ void TextField::searchByTitleProtDir(const std::vector<Movie*>& movie_list)
 	releaseFocus();
 }
 
-/*
-Function which takes as input a Movie pointer, and checks if this particular movie
-has the filtered genre (if any filter button was pressed) ,
-and if it has the 2 years we filter with the slider
-It helps us filter movies, synchronizing all widgets
-Returns true if movie has a filtered genre("Action","Drama" etc..) and is between the 2 years
-Returns false otherwise
-*/
-bool TextField::hasRequirements(const Movie* const movie) const
-{
-	if (movie)
-	{
-		for (const auto& filter : filterToBeChecked)
-		{
-			if (movie->state_info.getWidgetState(filter) != WidgetEnums::WidgetFilterState::ENABLED)
-			{
-				return false;
-			}
-		}
-		return std::stoi(movie->getDate()) <= movie->state_info.getLastSelectedToYear() && std::stoi(movie->getDate()) >= movie->state_info.getLastSelectedFromYear();
-	}
-	return false;
-}
 
 // Clears all variables of the textfield
 void TextField::clear()
@@ -304,10 +282,8 @@ bool TextField::contains(float mouse_x, float mouse_y) const
 }
 
 TextField::TextField(float posX, float posY, const std::string_view text, const TextFieldFiltering::FilterBy& filter, bool invisible)
-	: Widget(posX, posY), m_text{ text },m_textfield_filter{filter}
+	: Widget(posX,posY), FilterableWidget(invisible), m_text{ text },m_textfield_filter{filter}
 {
-	m_visible = !invisible;
-
 	//Inserting all the widgets textfield must check before filtering the movies.
 	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::TitleFilter);
 	filterToBeChecked.push_back(WidgetEnums::WidgetFilters::GenreFilter);

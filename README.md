@@ -5,6 +5,14 @@ This project was developed as an assignment for a C++ course at AUEB University.
 
 The goal was to create a simple graphical interface for a film library using the [Simple Graphics Library](https://github.com/cgaueb/sgg) (SGG).
 
+
+
+https://github.com/kwstaseL/Movie-Browser/assets/81611844/b3661015-ec0c-49be-b37f-2621886d367a
+
+
+
+
+
 ## Usage
 To run the application
 - Download the ZIP file of the project.
